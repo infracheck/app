@@ -14,16 +14,14 @@ class PluginManager(object):
     def list_plugins(self):
         """Returns a list of plugins that are available
         """
-        res = list(map(lambda x:
-                       {
-                           "name": x.id,
-                           "version": x.version,
-                           "package_id": x.package_name,
-                           "documentation": x.documentation,
-                           "module_count": len(x.modules),
-                           "modules": x.list_modules()
-                       }
-                       , self.plugins))
+        res = list({
+                       "name": x.id,
+                       "version": x.version,
+                       "package_id": x.package_name,
+                       "documentation": x.documentation,
+                       "module_count": len(x.modules),
+                       "modules": x.list_modules()
+                   } for x in self.plugins)
         return res
 
     def __init__(self):

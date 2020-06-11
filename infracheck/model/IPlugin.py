@@ -56,11 +56,12 @@ class IPlugin(object):
         self.modules = load_packages(F"plugins.{self.package_name}.modules", ITestModule)
 
     def list_modules(self):
-        res = list(map(lambda x: {
-            "id": x.id,
-            "version": x.version,
-            "documentation": x.documentation,
-            "fields": x.fields
-        }, self.modules))
-
+        res = list(
+            {
+                "id": x.id,
+                "version": x.version,
+                "documentation": x.documentation,
+                "fields": x.fields
+            }
+            for x in self.modules)
         return res
