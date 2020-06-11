@@ -3,13 +3,16 @@ import os
 import pkgutil
 from typing import List
 
-from infracheck.Plugin import IPlugin
+from infracheck.model.IPlugin import IPlugin
 
 
 class PluginManager(object):
     """Upon creation, this class will read the plugins package for modules
     that contain a class definition that is inheriting from the Plugin class
     """
+
+    plugins: List[IPlugin] = []
+    seen_paths = []
 
     def list_plugins(self):
         """Returns a list of plugins that are available
@@ -57,7 +60,6 @@ class PluginManager(object):
         """Recursively walk the supplied package to retrieve all plugins
         """
         imported_package = __import__(package, fromlist=['blah'])
-
         for _, pluginname, ispkg in pkgutil.iter_modules(imported_package.__path__, imported_package.__name__ + '.'):
             if not ispkg:
                 plugin_module = __import__(pluginname, fromlist=['blah'])

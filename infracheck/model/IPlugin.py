@@ -1,7 +1,9 @@
 import typing as t
 from abc import ABCMeta, abstractmethod
-from enum import Enum
 from typing import TypedDict, List
+
+from infracheck.helper.load_packages import load_packages
+from infracheck.model.ITestModule import ITestModule
 
 
 class FieldData(TypedDict):
@@ -34,43 +36,28 @@ class TestResult(t.TypedDict):
     data: t.Any
 
 
-class FieldType(Enum):
-    Text = "string"
-    Number = "number"
-    List = "array"
-    Dict = "dict"
-
-
-class ITestModule(object):
-    """ A Test module is a single test inside a test set """
-    __metaclass__ = ABCMeta
-    documentation: t.Any
-    id: str
-    version: str
-    fields: t.Dict[str, FieldType]
-
-    def __init__(self):
-        self.fields = {}
-        self.id = 'BasePlugin'
-        self.version = '0.1'
-        self.documentation = 'This is some documentation'
-
-
 class IPlugin(object):
     __metaclass__ = ABCMeta
     modules: List[ITestModule]
     id: str
     version: str
     documentation: str
+    seen_paths = []
 
     def __init__(self):
         self.modules = []
         self.id = 'BasePlugin'
         self.version = '0.1'
+        self.package_name = 'UNSET'
         self.documentation = 'This is some documentation'
 
     def __str__(self) -> str:
         return self.id
 
     @abstractmethod
-    def test(self, data: PluginData) -> TestResult: raise NotImplementedError
+    def test(self, data: PluginData) -> TestResult:
+        raise NotImplementedError
+
+    def reload_modules(self, package_name: str):
+        """ Reloads all available modules from ./modules folder """
+        self.modules = load_packages(package_name, ITestModule)

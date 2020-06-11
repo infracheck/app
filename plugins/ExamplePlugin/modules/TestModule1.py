@@ -1,4 +1,5 @@
-from infracheck.IPlugin import ITestModule, FieldType
+from infracheck.model.FieldTypes import FieldType
+from infracheck.model.ITestModule import ITestModule
 
 
 class ExampleModule(ITestModule):

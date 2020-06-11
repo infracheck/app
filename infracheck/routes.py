@@ -18,3 +18,12 @@ def add():
 @app.route('/plugins', methods=['GET'])
 def list_plugins():
     return jsonify(plugin_manager.list_plugins())
+
+
+@app.route('/plugin/<path:name>/<path:version>', methods=['GET'])
+def list_plugin(name, version):
+    try:
+        plugins = plugin_manager.list_plugins()
+        return jsonify(list(filter(lambda x: x['version'] == version and x['name'] == name, plugins))[0])
+    except IndexError as e:
+        return str(F"Plugin with id {name}:{version} does not exist")
