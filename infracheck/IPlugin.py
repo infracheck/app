@@ -42,8 +42,8 @@ class FieldType(Enum):
 
 
 class ITestModule(object):
+    """ A Test module is a single test inside a test set """
     __metaclass__ = ABCMeta
-
     documentation: t.Any
     id: str
     version: str
