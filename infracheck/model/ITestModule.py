@@ -12,11 +12,5 @@ class ITestModule(object):
     version: str
     fields: t.Dict[str, FieldType]
 
-    def __init__(self):
-        self.fields = {}
-        self.id = 'BasePlugin'
-        self.version = '0.1'
-        self.documentation = 'This is some documentation'
-
     def __str__(self) -> str:
         return F"{self.id}:{self.version}"

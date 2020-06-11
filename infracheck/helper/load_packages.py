@@ -1,4 +1,5 @@
 import inspect
+import os
 import pkgutil
 from typing import Any
 
@@ -31,5 +32,12 @@ def load_packages(package, class_object: Any):
     for pkg_path in all_current_paths:
         if pkg_path not in seen_paths:
             seen_paths.append(pkg_path)
+
+            # Get all sub directory of the current package path directory
+            child_pkgs = [p for p in os.listdir(pkg_path) if os.path.isdir(os.path.join(pkg_path, p))]
+
+            # For each sub directory, apply the walk_package method recursively
+            for child_pkg in child_pkgs:
+                packages = packages + load_packages(package + '.' + child_pkg, class_object)
 
     return packages

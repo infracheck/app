@@ -43,13 +43,7 @@ class IPlugin(object):
     version: str
     documentation: str
     seen_paths = []
-
-    def __init__(self):
-        self.modules = []
-        self.id = 'BasePlugin'
-        self.version = '0.1'
-        self.package_name = 'UNSET'
-        self.documentation = 'This is some documentation'
+    package_name: str
 
     def __str__(self) -> str:
         return self.id
@@ -61,3 +55,13 @@ class IPlugin(object):
     def reload_modules(self, package_name: str):
         """ Reloads all available modules from ./modules folder """
         self.modules = load_packages(package_name, ITestModule)
+
+    def list_modules(self):
+        res = list(map(lambda x: {
+            "id": x.id,
+            "version": x.version,
+            "documentation": x.documentation,
+            "fields": x.fields
+        }, self.modules))
+
+        return res

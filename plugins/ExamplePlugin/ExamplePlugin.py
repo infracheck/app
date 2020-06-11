@@ -8,20 +8,12 @@ class Example(IPlugin):
         super().__init__()
         self.id = 'example'
         self.version = '1.0'
+        self.documentation = '1.0'
         self.package_name = F"plugins.{os.path.basename(__file__).split('.')[0]}.modules"
         self.reload_modules(self.package_name)
 
     def test(self, data: PluginData) -> TestResult:
-        failed = 0
-        succeeded = 0
-        for number in data['numbers']:
-            print(number % 2)
-            if number % 2 == 0:
-                succeeded += 1
-            else:
-                failed += 1
-
         return {
-            'succeededd': succeeded,
-            'failed': failed
+            'succeededd': 1,
+            'failed': 2
         }
