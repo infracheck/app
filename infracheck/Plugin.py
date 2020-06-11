@@ -39,6 +39,7 @@ class Plugin(object):
     def __init__(self):
         self.id = 'BasePlugin'
         self.version = '0.1'
+        self.documentation = 'This is some documentation'
 
     def __str__(self) -> str:
         return self.id

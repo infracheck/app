@@ -1,6 +1,7 @@
 import inspect
 import os
 import pkgutil
+from typing import List
 
 from infracheck.Plugin import Plugin
 
@@ -9,6 +10,19 @@ class PluginManager(object):
     """Upon creation, this class will read the plugins package for modules
     that contain a class definition that is inheriting from the Plugin class
     """
+
+    def list_plugins(self):
+        """Returns a list of plugins that are available
+        """
+        res = list(map(lambda x:
+                       {
+                           "name": x.id,
+                           "version": x.version,
+                           "documentation": x.documentation,
+                       }
+                       , self.plugins))
+        print(res)
+        return res
 
     def __init__(self, plugin_package):
         """Constructor that initiates the reading of all available plugins
@@ -21,7 +35,7 @@ class PluginManager(object):
         """Reset the list of all plugins and initiate the walk over the main
         provided plugin package to load all available plugins
         """
-        self.plugins = []
+        self.plugins: List[Plugin] = []
         self.seen_paths = []
         print()
         print(f'Looking for plugins under package {self.plugin_package}')
