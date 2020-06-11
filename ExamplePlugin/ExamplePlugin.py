@@ -4,16 +4,17 @@ from infracheck.model.IPlugin import PluginData, TestResult, IPlugin
 
 
 class Example(IPlugin):
+    package_name = F"{os.path.basename(__file__).split('.')[0]}"
+    id = 'exadasdas dasd asddample'
+    version = '1.1'
+    documentation = '1.0'
+
     def __init__(self):
         super().__init__()
-        self.id = 'example'
-        self.version = '1.0'
-        self.documentation = '1.0'
-        self.package_name = F"plugins.{os.path.basename(__file__).split('.')[0]}.modules"
-        self.reload_modules(self.package_name)
+        self.reload_modules()
 
     def test(self, data: PluginData) -> TestResult:
         return {
-            'succeededd': 1,
+            'succeededd': 23121,
             'failed': 2
         }

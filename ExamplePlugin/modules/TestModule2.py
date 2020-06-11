@@ -3,10 +3,10 @@ from infracheck.model.ITestModule import ITestModule
 
 
 class ExampleModule(ITestModule):
-    id = "ExampleModule"
+    id = "SECOND"
     version = "1.0"
-    documentation = "Example documentation"
+    documentation = "SECOND"
     fields = {
-        "field_1": str(FieldType.Number),
-        "field_2": str(FieldType.Text)
+        "SECOND_1": str(FieldType.Number),
+        "SECOND_2": str(FieldType.Number)
     }

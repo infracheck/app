@@ -42,7 +42,6 @@ class IPlugin(object):
     id: str
     version: str
     documentation: str
-    seen_paths = []
     package_name: str
 
     def __str__(self) -> str:
@@ -52,9 +51,9 @@ class IPlugin(object):
     def test(self, data: PluginData) -> TestResult:
         raise NotImplementedError
 
-    def reload_modules(self, package_name: str):
+    def reload_modules(self):
         """ Reloads all available modules from ./modules folder """
-        self.modules = load_packages(package_name, ITestModule)
+        self.modules = load_packages(F"plugins.{self.package_name}.modules", ITestModule)
 
     def list_modules(self):
         res = list(map(lambda x: {

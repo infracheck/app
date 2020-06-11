@@ -10,7 +10,6 @@ class PluginManager(object):
     """
 
     plugins: List[IPlugin] = []
-    seen_paths = []
 
     def list_plugins(self):
         """Returns a list of plugins that are available
@@ -19,6 +18,7 @@ class PluginManager(object):
                        {
                            "name": x.id,
                            "version": x.version,
+                           "package_id": x.package_name,
                            "documentation": x.documentation,
                            "module_count": len(x.modules),
                            "modules": x.list_modules()
@@ -26,11 +26,10 @@ class PluginManager(object):
                        , self.plugins))
         return res
 
-    def __init__(self, plugin_package):
+    def __init__(self):
         """Constructor that initiates the reading of all available plugins
         when an instance of the PluginCollection object is created
         """
-        self.plugin_package = plugin_package
         self.reload_plugins()
 
     def reload_plugins(self):
