@@ -1,11 +1,13 @@
-from typing import TypedDict, Dict
+from infracheck.IPlugin import ITestModule, FieldType
 
 
-class TestModule(TypedDict):
-    documentation: str = """
-    THIS IS MY DOCUMENTATION
-    """
-    fields: Dict = {
-        "Field1": "Field1COntent",
-        "Field2": 3
-    }
+class ExampleModule(ITestModule):
+    def __init__(self):
+        super().__init__()
+        self.id = "ExampleModule"
+        self.version = "1.0"
+        self.documentation = "Example documentation"
+        self.fields = {
+            "field_1": FieldType.Number,
+            "field_2": FieldType.Text
+        }

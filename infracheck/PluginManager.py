@@ -3,7 +3,7 @@ import os
 import pkgutil
 from typing import List
 
-from infracheck.Plugin import Plugin
+from infracheck.Plugin import IPlugin
 
 
 class PluginManager(object):
@@ -35,7 +35,7 @@ class PluginManager(object):
         """Reset the list of all plugins and initiate the walk over the main
         provided plugin package to load all available plugins
         """
-        self.plugins: List[Plugin] = []
+        self.plugins: List[IPlugin] = []
         self.seen_paths = []
         print()
         print(f'Looking for plugins under package {self.plugin_package}')
@@ -64,7 +64,7 @@ class PluginManager(object):
                 clsmembers = inspect.getmembers(plugin_module, inspect.isclass)
                 for (_, c) in clsmembers:
                     # Only add classes that are a sub class of Plugin, but NOT Plugin itself
-                    if issubclass(c, Plugin) & (c is not Plugin):
+                    if issubclass(c, IPlugin) & (c is not IPlugin):
                         print(f'    Found plugin class: {c.__module__}.{c.__name__}')
                         self.plugins.append(c())
 

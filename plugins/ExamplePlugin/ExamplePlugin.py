@@ -1,7 +1,7 @@
-from infracheck.Plugin import TestResult, Plugin, PluginData
+from infracheck.IPlugin import TestResult, IPlugin, PluginData
 
 
-class Example(Plugin):
+class Example(IPlugin):
     def __init__(self):
         super().__init__()
         self.id = 'example'
