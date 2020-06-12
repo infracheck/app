@@ -1,0 +1,2 @@
+testinfra==5.1.0
+pytest==5.4.3

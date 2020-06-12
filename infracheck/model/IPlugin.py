@@ -47,19 +47,23 @@ class IPlugin(object):
     version: str
     documentation: str
     package_name: str
+    requirements: List[str]
 
     def __init__(self) -> None:
+        with open(F"plugins/{self.package_name}/requirements.txt") as requirements_file:
+            self.requirements = requirements_file.read().splitlines()
         self.install_packages()
 
     def __str__(self) -> str:
         return self.id
 
     def install_packages(self):
-        with open(F"plugins/TestInfraPlugin/requirements.txt") as requirements_file:
-            requirements = requirements_file.read().splitlines()
-        for package in requirements:
-            log.info(F" --- {package}")
-            subprocess.call(['pip', 'install', package])
+        for package in self.requirements:
+            log.info(F"|---- {package}")
+            try:
+                subprocess.Popen(['pip', 'install', package], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            except Exception as e:
+                log.error(e)
 
     @abstractmethod
     def test(self, data: PluginData) -> TestResult:

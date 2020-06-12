@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 logging.basicConfig(
     level=Environment.LOG_LEVEL,
-    format="%(message)s     | %(asctime)s | %(name)s | %(levelname)s |",
+    format="%(message)s              | %(name)s | %(levelname)s | %(asctime)s ",
     datefmt="%Y-%m-%d %H:%M:%S")
 app = Flask(__name__)
 app.secret_key = 'secret'

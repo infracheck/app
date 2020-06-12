@@ -3,16 +3,10 @@
     "name": "Hello World",
     "description": "Hey there its me"
   },
-  "MainPlugin": {
-    "version": "1.0",
-    "data": {
-      "test_set": [{
-        "test_module_id": {
-          "field_1": "value",
-          "field_2": "value",
-          "field_3": "value"
-        }
-      }]
+  "tests": [
+    {
+      "name": "TestInfraPlugin",
+      "version": "1.0"
     }
-  }
+  ]
 }

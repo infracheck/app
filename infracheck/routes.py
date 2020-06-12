@@ -30,7 +30,6 @@ def list_single_history(log_id: str):
 
 @app.route('/test', methods=['POST'])
 def run_test():
-    raise NotImplementedError
     data = request.get_json()
     res = plugin_manager.launch_tests(data)
     return jsonify(res)

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  infracheck-server:
+    container_name: "infracheck-server"
+    build:
+      context: .
+      dockerfile: build/Dockerfile
+    ports:
+      - 9000:8080

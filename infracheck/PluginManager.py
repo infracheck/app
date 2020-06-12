@@ -20,7 +20,8 @@ class PluginManager(object):
                        "package_id": x.package_name,
                        "documentation": x.documentation,
                        "module_count": len(x.modules),
-                       "modules": x.list_modules()
+                       "modules": x.list_modules(),
+                       "used_packages": x.requirements,
                    } for x in self.plugins)
         return res
 
@@ -43,7 +44,17 @@ class PluginManager(object):
         :return:
         """
         result = []
-        for plugin in self.plugins:
-            if str(plugin) in data:
-                result.append(plugin.test(data[str(plugin)]['data']))
+        print(self.plugins)
+        for plugin_test_data in data['tests']:
+            result.append(
+                self.get_test_plugin(plugin_test_data['id'], plugin_test_data['version']).test(plugin_test_data))
         return result
+
+    def get_test_plugin(self, plugin_id: str, version: str) -> IPlugin:
+        """ Returns the right plugin object, receiving id and version
+
+        :param plugin_id:
+        :param version:
+        :return:
+        """
+        return list(filter(lambda plugin: plugin.id == plugin_id and plugin.version == version, self.plugins))[0]

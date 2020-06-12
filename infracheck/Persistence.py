@@ -18,18 +18,20 @@ class Persistence:
     db = sqlite3.connect('infracheck.db', check_same_thread=False)
 
     def __init__(self) -> None:
-        self.db.execute('''
+        create_history_sql = """
         CREATE TABLE IF NOT EXISTS history(
                         id PRIMARY KEY,
                         data BLOB
-        );
-        ''')
+        );"""
+        self.db.execute(create_history_sql)
 
     def get_log(self, *log_id: str):
         if log_id:
-            return json.loads(self.db.execute(F"SELECT data FROM history WHERE id = ?", log_id).fetchone()[0])
+            sql = F"SELECT data FROM history WHERE id = ?"
+            return json.loads(self.db.execute(sql, log_id).fetchone()[0])
         else:
-            res = self.db.execute(F"SELECT data FROM history").fetchall()
+            sql = F"SELECT data FROM history"
+            res = self.db.execute(sql).fetchall()
             return list(
                 json.loads(x[0])
                 for x in res)
@@ -41,7 +43,6 @@ class Persistence:
         :param data:
         :return:
         """
-        self.db.execute("""
-        INSERT INTO history (id, data) VALUES ("das", "{"lodasl":"rofl"}")
-        """)
+        sql = """INSERT INTO history (id, data) VALUES ("das", "{"lodasl":"rofl"}")"""
+        self.db.execute(sql)
         self.db.commit()

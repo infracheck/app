@@ -21,7 +21,10 @@ def load_packages(package, class_object: Any):
             for (_, c) in class_members:
                 # Only add classes that are a sub class of Plugin, but NOT Plugin itself
                 if issubclass(c, class_object) & (c is not class_object):
-                    log.info(f'| Add package: {c.__module__}.{c.__name__}')
+                    if 'modules' not in str(c.__module__):
+                        log.info(f'\nPlugin: {c.__name__}')
+                    else:
+                        log.info(f'|-- {c.__name__}')
                     packages.append(c())
 
     # Now that we have looked at all the modules in the current package, start looking
