@@ -6,7 +6,7 @@ import flask_login
 from flask import jsonify
 from flask import request
 
-from infracheck import app, login_manager
+from infracheck import app, login_manager, Persistence
 from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
 
@@ -20,7 +20,12 @@ def list_plugins():
 
 @app.route('/history', methods=['GET'])
 def list_history():
-    raise NotImplementedError
+    return jsonify(Persistence().get_log())
+
+
+@app.route('/history/<path:log_id>', methods=['GET'])
+def list_single_history(log_id: str):
+    return jsonify(Persistence().get_log(str(log_id)))
 
 
 @app.route('/test', methods=['POST'])

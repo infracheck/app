@@ -56,7 +56,7 @@ class IPlugin(object):
         self.modules = load_packages(F"plugins.{self.package_name}.modules", ITestModule)
 
     def list_modules(self):
-        res = list(
+        return list(
             {
                 "id": x.id,
                 "version": x.version,
@@ -64,4 +64,3 @@ class IPlugin(object):
                 "fields": x.fields
             }
             for x in self.modules)
-        return res
