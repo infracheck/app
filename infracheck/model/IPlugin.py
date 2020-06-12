@@ -1,12 +1,13 @@
+import logging
 import subprocess
 import typing as t
 from abc import ABCMeta, abstractmethod
 from typing import TypedDict, List
 
-import pip
-
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.ITestModule import ITestModule
+
+log = logging.getLogger(__name__)
 
 
 class FieldData(TypedDict):
@@ -57,10 +58,8 @@ class IPlugin(object):
         with open(F"plugins/TestInfraPlugin/requirements.txt") as requirements_file:
             requirements = requirements_file.read().splitlines()
         for package in requirements:
-            print(F"     |--- {package}")
+            log.info(F" --- {package}")
             subprocess.call(['pip', 'install', package])
-
-        subprocess.call(['pytest'])
 
     @abstractmethod
     def test(self, data: PluginData) -> TestResult:

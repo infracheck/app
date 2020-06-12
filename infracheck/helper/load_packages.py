@@ -1,7 +1,10 @@
 import inspect
+import logging
 import os
 import pkgutil
 from typing import Any
+
+log = logging.getLogger("pck_loader")
 
 
 def load_packages(package, class_object: Any):
@@ -18,7 +21,7 @@ def load_packages(package, class_object: Any):
             for (_, c) in class_members:
                 # Only add classes that are a sub class of Plugin, but NOT Plugin itself
                 if issubclass(c, class_object) & (c is not class_object):
-                    print(f'     Add package: {c.__module__}.{c.__name__}')
+                    log.info(f'| Add package: {c.__module__}.{c.__name__}')
                     packages.append(c())
 
     # Now that we have looked at all the modules in the current package, start looking
