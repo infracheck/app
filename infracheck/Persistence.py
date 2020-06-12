@@ -35,6 +35,12 @@ class Persistence:
                 for x in res)
 
     def add_log_entry(self, log_id: str, data: json):
+        """ TODO Implement
+
+        :param log_id:
+        :param data:
+        :return:
+        """
         self.db.execute("""
         INSERT INTO history (id, data) VALUES ("das", "{"lodasl":"rofl"}")
         """)

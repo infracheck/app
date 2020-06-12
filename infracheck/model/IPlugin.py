@@ -1,6 +1,9 @@
+import subprocess
 import typing as t
 from abc import ABCMeta, abstractmethod
 from typing import TypedDict, List
+
+import pip
 
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.ITestModule import ITestModule
@@ -44,8 +47,20 @@ class IPlugin(object):
     documentation: str
     package_name: str
 
+    def __init__(self) -> None:
+        self.install_packages()
+
     def __str__(self) -> str:
         return self.id
+
+    def install_packages(self):
+        with open(F"plugins/TestInfraPlugin/requirements.txt") as requirements_file:
+            requirements = requirements_file.read().splitlines()
+        for package in requirements:
+            print(F"     |--- {package}")
+            subprocess.call(['pip', 'install', package])
+
+        subprocess.call(['pytest'])
 
     @abstractmethod
     def test(self, data: PluginData) -> TestResult:
