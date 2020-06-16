@@ -44,10 +44,9 @@ class PluginManager(object):
         :return:
         """
         result = []
-        print(self.plugins)
         for plugin_test_data in data['tests']:
             result.append(
-                self.get_test_plugin(plugin_test_data['id'], plugin_test_data['version']).test(plugin_test_data))
+                self.get_test_plugin(plugin_test_data['id'], plugin_test_data['version']).test(plugin_test_data['data']))
         return result
 
     def get_test_plugin(self, plugin_id: str, version: str) -> IPlugin:
