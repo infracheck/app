@@ -16,7 +16,7 @@ class OSSpecs(ITestModule):
         "codename": DataTypes.Text
     }
 
-    @pytest.mark.parametrize("type", [fields["type"]])
+    @pytest.mark.parametrize("os_type", [fields["type"]])
     @pytest.mark.parametrize("distribution", [fields["distribution"]])
     @pytest.mark.parametrize("release", [fields["release"]])
     @pytest.mark.parametrize("codename", [fields["codename"]])

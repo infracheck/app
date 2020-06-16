@@ -1,5 +1,6 @@
 import pytest
 
+from infracheck.model.DataTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
 
 
@@ -8,12 +9,21 @@ class Service(ITestModule):
     documentation = """
     This test checks running and enabled services
     """
+    fields = {
+        "service": DataTypes.Text,
+        "enabled": DataTypes.Number,
+        "running": DataTypes.Number,
+    }
 
-    @pytest.mark.parametrize("name,version", [
-        ("nginx", "1.6"),
-        ("python", "2.7"),
-    ])
-    def test(host, name, version):
-        pkg = host.package(name)
-        assert pkg.is_installed
-        assert pkg.version.startswith(version)
+    @pytest.mark.parametrize("data", [fields])
+    def test(host, data):
+        service = host.service(data['service'])
+        if data['enabled'] == 1:
+            assert service.is_enabled
+        else:
+            assert not service.is_enabled
+
+        if data['running'] == 1:
+            assert service.is_running
+        else:
+            assert not service.is_running

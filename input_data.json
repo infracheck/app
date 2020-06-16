@@ -4,35 +4,36 @@
   "plugins": [
     {
       "name": "TestInfraPlugin",
-      "version": "0.1",
       "data": {
         "hosts": [
           "192.168.44.44"
         ],
         "username": "vagrant",
         "password": "vagrant",
-        "target_os":"linux"
+        "target_os": "linux"
       },
       "modules": [
         {
-          "name": "AddressReachableModule",
-          "version": "1.0",
+          "name": "service",
+          "fields": {
+            "service": "nginx",
+            "running": 0,
+            "enabled": 0
+          }
+        },
+        {
+          "name": "address",
           "fields": {
             "url": "google.de"
           }
         },
         {
-          "name": "AddressReachableModule",
-          "version": "1.0",
+          "name": "os_specs",
           "fields": {
-            "url": "google.com"
-          }
-        },
-        {
-          "name": "AddressReachableModule",
-          "version": "1.0",
-          "fields": {
-            "url": "amazon.de"
+            "type": "linux",
+            "distribution": "ubuntu",
+            "release": "14.04",
+            "codename": "trusty"
           }
         }
       ]
