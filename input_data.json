@@ -4,18 +4,35 @@
   "plugins": [
     {
       "name": "TestInfraPlugin",
+      "version": "0.1",
       "data": {
         "hosts": [
-          "localhost"
+          "192.168.44.44"
         ],
-        "username": "user",
-        "password": "pw"
+        "username": "vagrant",
+        "password": "vagrant",
+        "target_os":"linux"
       },
       "modules": [
         {
-          "name": "HelloModule",
+          "name": "AddressReachableModule",
+          "version": "1.0",
           "fields": {
-            "number": 0
+            "url": "google.de"
+          }
+        },
+        {
+          "name": "AddressReachableModule",
+          "version": "1.0",
+          "fields": {
+            "url": "google.com"
+          }
+        },
+        {
+          "name": "AddressReachableModule",
+          "version": "1.0",
+          "fields": {
+            "url": "amazon.de"
           }
         }
       ]

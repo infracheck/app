@@ -30,6 +30,7 @@ class TestInfraPlugin(IPlugin):
         "username": DataTypes.TextList,
         "target_os": DataTypes.Text,
         "password": DataTypes.TextList,
+        "port": DataTypes.TextList
     }
 
     def __init__(self):
@@ -73,7 +74,7 @@ class TestInfraPlugin(IPlugin):
                     )
             )
             host_string = ','.join(map(str, hosts_with_auth))
-            os_specific_cmd_part = F"--ssh-identity-file='key/id_rsa' --hosts='{host_string}'"
+            os_specific_cmd_part = F"--ssh-identity-file='.key/id_rsa' --hosts='{host_string}'"
         else:
             hosts_with_auth = list(
                 map(lambda host:

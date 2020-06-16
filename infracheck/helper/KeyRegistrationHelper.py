@@ -39,13 +39,13 @@ class KeyRegistrationHelper:
         child.logfile_read = self.logs
 
         i = child.expect(['password', 'added:'])
+        added_key = False
         if i == 0:
-            print('Wants to know PW')
+            child.sendline(self.pw)
         if i == 1:
             added_key = True
         else:
             child.sendline('yes')
-            added_key = False
 
         while not added_key:
             child.sendline(self.pw)
