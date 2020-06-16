@@ -2,33 +2,13 @@ import logging
 import subprocess
 import typing as t
 from abc import ABCMeta, abstractmethod
-from typing import TypedDict, List
+from typing import List
 
 from infracheck.helper.load_packages import load_packages
+from infracheck.model.ITestData import IPluginData, IGeneralPluginData
 from infracheck.model.ITestModule import ITestModule
 
 log = logging.getLogger(__name__)
-
-
-class FieldData(TypedDict):
-    """ This is the data for a single field in a test module
-
-    """
-    id: str
-    content: str
-
-
-class TestData(TypedDict):
-    """ This is the data for a single test module
-    """
-    id: str
-    fields: List[FieldData]
-
-
-class PluginData(TypedDict):
-    """ This data is delivered to a plugin during test launch
-    """
-    test_set: List[TestData]
 
 
 class TestResult(t.TypedDict):
@@ -43,11 +23,12 @@ class TestResult(t.TypedDict):
 class IPlugin(object):
     __metaclass__ = ABCMeta
     modules: List[ITestModule]
-    id: str
+    name: str
     version: str
     documentation: str
     package_name: str
     requirements: List[str]
+    data: IGeneralPluginData = {}
 
     def __init__(self) -> None:
         with open(F"plugins/{self.package_name}/requirements.txt") as requirements_file:
@@ -55,7 +36,7 @@ class IPlugin(object):
         self.install_packages()
 
     def __str__(self) -> str:
-        return self.id
+        return self.name
 
     def install_packages(self):
         for package in self.requirements:
@@ -66,7 +47,7 @@ class IPlugin(object):
                 log.error(e)
 
     @abstractmethod
-    def test(self, data: PluginData) -> TestResult:
+    def test(self, data: IPluginData) -> TestResult:
         raise NotImplementedError
 
     def reload_modules(self):
@@ -76,7 +57,7 @@ class IPlugin(object):
     def list_modules(self):
         return list(
             {
-                "id": x.id,
+                "name": x.name,
                 "version": x.version,
                 "documentation": x.documentation,
                 "fields": x.fields

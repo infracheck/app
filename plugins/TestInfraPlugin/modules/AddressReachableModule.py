@@ -1,17 +1,17 @@
 import pytest
 
-from infracheck.model.FieldTypes import FieldType
+from infracheck.model.FieldTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
 
 
 class AddressReachableModule(ITestModule):
-    id = "AddressReachableModule"
+    name = "AddressReachableModule"
     version = "1.0"
     documentation = """
     This test performs a regex comparison
     """
     fields = {
-        "url": str(FieldType.Text)
+        "url": str(DataTypes.Text.value)
     }
 
     @pytest.mark.parametrize("addr", [fields["url"]])

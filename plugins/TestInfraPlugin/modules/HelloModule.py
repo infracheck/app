@@ -1,19 +1,16 @@
-import pytest
-
-from infracheck.model.FieldTypes import FieldType
+from infracheck.model.FieldTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
 
 
 class HelloModule(ITestModule):
-    id = "HelloModule"
+    name = "HelloModule"
     version = "1.0"
     documentation = """
     Some stupid hello stuff
     """
     fields = {
-        "number": str(FieldType.Number)
+        "number": str(DataTypes.Number.value)
     }
-
 
     def test(number):
         assert number == 0

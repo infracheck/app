@@ -1,7 +1,12 @@
+import inspect
+import logging
 from typing import List
 
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.IPlugin import IPlugin
+from infracheck.model.ITestData import ITestData
+
+log = logging.getLogger()
 
 
 class PluginManager(object):
@@ -15,13 +20,14 @@ class PluginManager(object):
         """Returns a list of plugins that are available
         """
         res = list({
-                       "name": x.id,
+                       "name": x.name,
                        "version": x.version,
                        "package_id": x.package_name,
                        "documentation": x.documentation,
-                       "module_count": len(x.modules),
                        "modules": x.list_modules(),
                        "used_packages": x.requirements,
+                       "data": x.data,
+
                    } for x in self.plugins)
         return res
 
@@ -37,23 +43,25 @@ class PluginManager(object):
         """
         self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
 
-    def launch_tests(self, data):
+    def launch_tests(self, data: ITestData):
         """ Run all tests defined in the json
 
         :param data:
         :return:
         """
         result = []
-        for plugin_test_data in data['tests']:
+        log.info(F"Launching the test with name: {data['name']}")
+        for plugin_test_data in data['plugins']:
             result.append(
-                self.get_test_plugin(plugin_test_data['id'], plugin_test_data['version']).test(plugin_test_data['data']))
+                self.get_test_plugin(plugin_test_data['name'], plugin_test_data['version']).test(
+                    plugin_test_data))
         return result
 
-    def get_test_plugin(self, plugin_id: str, version: str) -> IPlugin:
+    def get_test_plugin(self, plugin_name: str, version: str) -> IPlugin:
         """ Returns the right plugin object, receiving id and version
 
-        :param plugin_id:
+        :param plugin_name:
         :param version:
         :return:
         """
-        return list(filter(lambda plugin: plugin.id == plugin_id and plugin.version == version, self.plugins))[0]
+        return list(filter(lambda plugin: plugin.name == plugin_name and plugin.version == version, self.plugins))[0]

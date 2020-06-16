@@ -4,7 +4,7 @@ import os
 import pkgutil
 from typing import Any
 
-log = logging.getLogger("pck_loader")
+log = logging.getLogger()
 
 
 def load_packages(package, class_object: Any):

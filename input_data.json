@@ -1,12 +1,26 @@
 {
-  "Meta": {
-    "name": "Hello World",
-    "description": "Hey there its me"
-  },
-  "tests": [
+  "name": "Hello World",
+  "description": "Hey there its me",
+  "plugins": [
     {
       "name": "TestInfraPlugin",
-      "version": "1.0"
+      "version": "0.1",
+      "data": {
+        "hosts": [
+          "localhost"
+        ],
+        "username": "user",
+        "password": "pw"
+      },
+      "modules": [
+        {
+          "name": "HelloModule",
+          "version": "0.1",
+          "fields": {
+            "number": 0
+          }
+        }
+      ]
     }
   ]
 }
