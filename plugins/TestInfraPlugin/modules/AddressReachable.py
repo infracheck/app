@@ -4,10 +4,10 @@ from infracheck.model.DataTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
 
 
-class AddressReachableModule(ITestModule):
-    name = "AddressReachableModule"
+class AddressReachable(ITestModule):
+    name = "address"
     documentation = """
-    This test performs a regex comparison
+    Check is a address is reachable
     """
     fields = {
         "url": DataTypes.Text
