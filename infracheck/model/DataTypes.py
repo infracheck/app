@@ -1,7 +1,7 @@
-from enum import Enum
+from typing import Dict
 
 
-class DataTypes(Enum):
+class DataTypes(Dict):
     """
     Defines all data types that are supported as inputs to tests
     """

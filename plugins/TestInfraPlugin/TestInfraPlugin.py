@@ -5,7 +5,7 @@ import subprocess
 import uuid
 from typing import List
 
-from infracheck.model.FieldTypes import DataTypes
+from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import TestResult, IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
 from plugins.TestInfraPlugin.Config import Config
@@ -25,9 +25,9 @@ class TestInfraPlugin(IPlugin):
     This Testinfra plugins enable you to run customized code snippets using the testinfra framework
     """
     data: TestInfraPluginData = {
-        "hosts": str(DataTypes.TextList.value),
-        "username": str(DataTypes.TextList.value),
-        "password": str(DataTypes.TextList.value)
+        "hosts": DataTypes.TextList,
+        "username": DataTypes.TextList,
+        "password": DataTypes.TextList
     }
 
     def __init__(self):
@@ -43,7 +43,8 @@ class TestInfraPlugin(IPlugin):
             os.makedirs(Config.OUTPUT_FOLDER)
 
     def test(self, data: IPluginData) -> TestResult:
-        self.data = data['data']
+        super().test(data)
+        print(self.data)
         uid = uuid.uuid4().hex
         self.generate_test_file(data, uid)
         subprocess.call(F"py.test -v .out/{uid}.py", shell=True)
@@ -68,6 +69,7 @@ class TestInfraPlugin(IPlugin):
         uid = uuid.uuid4().hex
         print(data)
         module = list(filter(lambda x: x.name == data['name'] and x.version == data['version'], self.modules))[0]
+        print(dir(module))
         code_without_intend = ("\n" + inspect.getsource(module.test)).replace("\n    ", "\n")
         code_with_uuid = code_without_intend \
             .replace('def test(', F'def test_{uid}(') \

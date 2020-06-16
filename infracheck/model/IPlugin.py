@@ -1,7 +1,7 @@
 import logging
 import subprocess
 import typing as t
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from typing import List
 
 from infracheck.helper.load_packages import load_packages
@@ -46,9 +46,10 @@ class IPlugin(object):
             except Exception as e:
                 log.error(e)
 
-    @abstractmethod
+    # noinspection PyTypeChecker
     def test(self, data: IPluginData) -> TestResult:
-        raise NotImplementedError
+        self.data = data['data']
+        pass
 
     def reload_modules(self):
         """ Reloads all available modules from ./modules folder """

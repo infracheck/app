@@ -1,7 +1,7 @@
 import typing as t
 from abc import ABCMeta
 
-from infracheck.model.FieldTypes import DataTypes
+from infracheck.model.DataTypes import DataTypes
 
 
 class ITestModule(object):
