@@ -5,3 +5,4 @@ infracheck.db
 backend
 .out
 .key
+.vagrant

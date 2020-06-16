@@ -61,7 +61,7 @@ class TestInfraPlugin(IPlugin):
         return data
 
     def create_test_command_and_launch_test(self, uid):
-        config_string = F"--junit-xml={Config.OUTPUT_FOLDER}{uid}.xml"
+        config_string = F"--junit-xml={Config.OUTPUT_FOLDER}/result_{uid}.xml"
         host_string = self.create_hosts_string()
         cmd: str = F"py.test {Config.OUTPUT_FOLDER}/test_{uid}.py {host_string} {config_string} "
         subprocess.call(cmd, shell=True)
