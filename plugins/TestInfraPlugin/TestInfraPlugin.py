@@ -34,7 +34,6 @@ class TestInfraPlugin(IPlugin):
 
     def __init__(self):
         super().__init__()
-        self.ssh_key_helper = KeyRegistrationHelper(self.data['username'], self.data['password'])
         self.reload_modules()
         self.init()
 
@@ -45,18 +44,46 @@ class TestInfraPlugin(IPlugin):
         if not os.path.exists(Config.OUTPUT_FOLDER):
             os.makedirs(Config.OUTPUT_FOLDER)
 
-    def test(self, data: IPluginData) -> TestResult:
-        super().test(data)
-
-        self.register_ssh_keys()
+    def test(self, _data: IPluginData) -> TestResult:
+        super().test(_data)
+        ssh_service = KeyRegistrationHelper(self.data['username'], self.data['password'])
+        if self.data["target_os"] == 'linux':
+            ssh_service.register_ssh_keys(self.data['hosts'])
 
         uid = uuid.uuid4().hex
-        self.generate_test_file(data, uid)
-        subprocess.call(F"py.test -v .out/{uid}.py", shell=True)
+        self.generate_test_file(_data, uid)
+        self.create_test_command_and_launch_test(uid)
+        # subprocess.call(F"py.test -v .out/{uid}.py", shell=True)
         data = {}
 
-        self.clean_ssh_keys()
+        if self.data["target_os"] == 'linux':
+            ssh_service.clean_ssh_keys(self.data['hosts'])
         return data
+
+    def create_test_command_and_launch_test(self, uid):
+        config_string = F"--junit-xml={Config.OUTPUT_FOLDER}{uid}.xml"
+        host_string = self.create_hosts_string()
+        cmd: str = F"py.test {Config.OUTPUT_FOLDER}/test_{uid}.py {host_string} {config_string} "
+        subprocess.call(cmd, shell=True)
+
+    def create_hosts_string(self):
+        if self.data['target_os'] == 'linux':
+            hosts_with_auth = list(
+                map(lambda host: F"ssh://{self.data['username']}@{host}", self.data['hosts']
+                    )
+            )
+            host_string = ','.join(map(str, hosts_with_auth))
+            os_specific_cmd_part = F"--ssh-identity-file='key/id_rsa' --hosts='{host_string}'"
+        else:
+            hosts_with_auth = list(
+                map(lambda host:
+                    F"winrm://{self.data['username']}:{self.data['password']}@{host}:5985?no_ssl=true&no_verify_ssl=true",
+                    self.data['hosts']
+                    )
+            )
+            host_string = ','.join(map(str, hosts_with_auth))
+            os_specific_cmd_part = F"--hosts='{host_string}'"
+        return os_specific_cmd_part
 
     def generate_test_file(self, test_data: IPluginData, uid: str):
         """ Creates a testfile and replaces all placeholders with the actual test data """
@@ -68,7 +95,7 @@ class TestInfraPlugin(IPlugin):
         for test_module_data in test_data['modules']:
             body.append(self.get_module_code(test_module_data))
 
-        file_name = F".out/{uid}.py"
+        file_name = F".out/test_{uid}.py"
         file = open(file_name, 'w+')
         file.writelines(head + body)
         file.close()
@@ -87,13 +114,3 @@ class TestInfraPlugin(IPlugin):
             .replace('def test(', F'def test_{uid}(') \
             .replace('fields', F'fields_{uid}')
         return F"fields_{uid} = {json.dumps(data['fields'])}\n\n{code_with_uuid}\n\n"
-
-    def register_ssh_keys(self):
-        if self.data['target_os'] == 'linux':
-            for host in self.data['hosts']:
-                self.ssh_key_helper.register_ssh_key_on_host(host)
-
-    def clean_ssh_keys(self):
-        if self.data['target_os'] == 'linux':
-            for host in self.data['hosts']:
-                self.ssh_key_helper.remove_ssh_key(host)

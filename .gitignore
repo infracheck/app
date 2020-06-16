@@ -4,3 +4,4 @@ infracheck.db
 .tmp
 backend
 .out
+.key

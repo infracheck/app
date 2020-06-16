@@ -1,28 +1,28 @@
 import os
+import subprocess
+from typing import List
 
 import pexpect
-from Crypto.PublicKey import RSA
 
 
 class KeyRegistrationHelper:
 
     def __init__(self, user, password):
-        self.key_path = ".key"
+        self.key_path = ".key/"
         if not os.path.exists(self.key_path):
             os.makedirs(self.key_path)
-        self.generate_ssh_key()
+        subprocess.call(F"ssh-keygen -y -q -t rsa -N '' -f {self.key_path}id_rsa", shell=True)
         self.user = user
         self.pw = password
         self.logs = open('.out/register-ssh-logs.txt', 'wb')
 
-    def generate_ssh_key(self):
-        key = RSA.generate(2048)
-        with open(F"{self.key_path}/id_rsa", 'wb') as content_file:
-            os.chmod(F"{self.key_path}/id_rsa", 0o600)
-            content_file.write(key.exportKey('PEM'))
-        pubkey = key.publickey()
-        with open(F"{self.key_path}/id_rsa.pub", 'wb') as content_file:
-            content_file.write(pubkey.exportKey('OpenSSH'))
+    def register_ssh_keys(self, hosts: List[str]):
+        for host in hosts:
+            self.register_ssh_key_on_host(host)
+
+    def clean_ssh_keys(self, hosts: List[str]):
+        for host in hosts:
+            self.remove_ssh_key(host)
 
     # used for linux ssh connections only
     def register_ssh_key_on_host(self, host):
@@ -38,18 +38,22 @@ class KeyRegistrationHelper:
             F' -o StrictHostKeyChecking=no -f')
         child.logfile_read = self.logs
 
-        i = child.expect(['password'])
+        i = child.expect(['password', 'added:'])
         if i == 0:
             print('Wants to know PW')
+        if i == 1:
+            added_key = True
         else:
             child.sendline('yes')
+            added_key = False
 
-        added_key = False
         while not added_key:
             child.sendline(self.pw)
             i = child.expect(['added:', 'denied'])
             if i == 0:  # Key successfully added
                 added_key = True
+                print("Key successfully added")
+
             if i == 1:  # Permission denied
                 child.close()
                 raise PermissionError(
