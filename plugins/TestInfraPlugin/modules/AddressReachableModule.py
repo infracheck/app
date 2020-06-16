@@ -6,7 +6,6 @@ from infracheck.model.ITestModule import ITestModule
 
 class AddressReachableModule(ITestModule):
     name = "AddressReachableModule"
-    version = "1.0"
     documentation = """
     This test performs a regex comparison
     """
@@ -14,9 +13,10 @@ class AddressReachableModule(ITestModule):
         "url": DataTypes.Text
     }
 
-    @pytest.mark.parametrize("fields", [fields])
-    def test(host, fields):
-        addr = fields['url']
+    # noinspection PyMethodParameters
+    @pytest.mark.parametrize("data", [fields])
+    def test(host, data):
+        addr = data['url']
         curr_addr = host.addr(addr)
         assert curr_addr.is_resolvable
         assert curr_addr.is_reachable

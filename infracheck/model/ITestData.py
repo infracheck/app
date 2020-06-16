@@ -3,7 +3,6 @@ from typing import TypedDict, List, Dict, Any
 
 class IModuleData(TypedDict):
     name: str
-    version: str
     fields: Dict[str, Any]
 
 
@@ -13,7 +12,6 @@ class IGeneralPluginData(TypedDict):
 
 class IPluginData(TypedDict):
     name: str
-    version: str
     data: IGeneralPluginData
     modules: List[IModuleData]
 

@@ -9,8 +9,7 @@ class ITestModule(object):
     __metaclass__ = ABCMeta
     documentation: t.Any
     name: str
-    version: str
     fields: t.Dict[str, DataTypes]
 
     def __str__(self) -> str:
-        return F"{self.name}:{self.version}"
+        return F"{self.name}"

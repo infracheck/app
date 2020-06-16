@@ -24,7 +24,6 @@ class IPlugin(object):
     __metaclass__ = ABCMeta
     modules: List[ITestModule]
     name: str
-    version: str
     documentation: str
     package_name: str
     requirements: List[str]
@@ -59,7 +58,6 @@ class IPlugin(object):
         return list(
             {
                 "name": x.name,
-                "version": x.version,
                 "documentation": x.documentation,
                 "fields": x.fields
             }

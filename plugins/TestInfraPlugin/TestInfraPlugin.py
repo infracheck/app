@@ -5,9 +5,11 @@ import subprocess
 import uuid
 from typing import List
 
+from infracheck.helper.KeyRegistrationHelper import KeyRegistrationHelper
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import TestResult, IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
+from infracheck.model.ITestModule import ITestModule
 from plugins.TestInfraPlugin.Config import Config
 
 
@@ -20,18 +22,19 @@ class TestInfraPluginData(IGeneralPluginData):
 class TestInfraPlugin(IPlugin):
     package_name = F"{os.path.basename(__file__).split('.')[0]}"
     name = 'TestInfraPlugin'
-    version = '0.1'
     documentation = """
     This Testinfra plugins enable you to run customized code snippets using the testinfra framework
     """
     data: TestInfraPluginData = {
         "hosts": DataTypes.TextList,
         "username": DataTypes.TextList,
-        "password": DataTypes.TextList
+        "target_os": DataTypes.Text,
+        "password": DataTypes.TextList,
     }
 
     def __init__(self):
         super().__init__()
+        self.ssh_key_helper = KeyRegistrationHelper(self.data['username'], self.data['password'])
         self.reload_modules()
         self.init()
 
@@ -44,14 +47,19 @@ class TestInfraPlugin(IPlugin):
 
     def test(self, data: IPluginData) -> TestResult:
         super().test(data)
-        print(self.data)
+
+        self.register_ssh_keys()
+
         uid = uuid.uuid4().hex
         self.generate_test_file(data, uid)
         subprocess.call(F"py.test -v .out/{uid}.py", shell=True)
         data = {}
+
+        self.clean_ssh_keys()
         return data
 
     def generate_test_file(self, test_data: IPluginData, uid: str):
+        """ Creates a testfile and replaces all placeholders with the actual test data """
         head = [
             'import pytest \n',
             '\n\n'
@@ -66,12 +74,26 @@ class TestInfraPlugin(IPlugin):
         file.close()
 
     def get_module_code(self, data: IModuleData):
+        """ Extracts test() function from modules and replaces the placeholders it with real data
+
+        :param data:
+        :return:
+        """
         uid = uuid.uuid4().hex
-        print(data)
-        module = list(filter(lambda x: x.name == data['name'] and x.version == data['version'], self.modules))[0]
-        print(dir(module))
+        module: ITestModule = \
+            list(filter(lambda x: x.name == data['name'], self.modules))[0]
         code_without_intend = ("\n" + inspect.getsource(module.test)).replace("\n    ", "\n")
         code_with_uuid = code_without_intend \
             .replace('def test(', F'def test_{uid}(') \
             .replace('fields', F'fields_{uid}')
-        return F"fields_{uid} = {json.dumps(data['fields'])}\n" + code_with_uuid
+        return F"fields_{uid} = {json.dumps(data['fields'])}\n\n{code_with_uuid}\n\n"
+
+    def register_ssh_keys(self):
+        if self.data['target_os'] == 'linux':
+            for host in self.data['hosts']:
+                self.ssh_key_helper.register_ssh_key_on_host(host)
+
+    def clean_ssh_keys(self):
+        if self.data['target_os'] == 'linux':
+            for host in self.data['hosts']:
+                self.ssh_key_helper.remove_ssh_key(host)

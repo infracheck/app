@@ -1,4 +1,3 @@
-import inspect
 import logging
 from typing import List
 
@@ -21,7 +20,6 @@ class PluginManager(object):
         """
         res = list({
                        "name": x.name,
-                       "version": x.version,
                        "package_id": x.package_name,
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
@@ -53,15 +51,14 @@ class PluginManager(object):
         log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
             result.append(
-                self.get_test_plugin(plugin_test_data['name'], plugin_test_data['version']).test(
+                self.get_test_plugin(plugin_test_data['name']).test(
                     plugin_test_data))
         return result
 
-    def get_test_plugin(self, plugin_name: str, version: str) -> IPlugin:
+    def get_test_plugin(self, plugin_name: str) -> IPlugin:
         """ Returns the right plugin object, receiving id and version
 
         :param plugin_name:
-        :param version:
         :return:
         """
-        return list(filter(lambda plugin: plugin.name == plugin_name and plugin.version == version, self.plugins))[0]
+        return list(filter(lambda plugin: plugin.name == plugin_name, self.plugins))[0]
