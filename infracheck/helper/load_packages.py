@@ -13,16 +13,16 @@ def load_packages(package, class_object: Any):
     """
     packages = []
     seen_paths = []
-    imported_package = __import__(package, fromlist=['blah'])
+    imported_package = __import__(package, fromlist=['na'])
     for _, plugin_name, is_package in pkgutil.iter_modules(imported_package.__path__, imported_package.__name__ + '.'):
         if not is_package:
-            plugin_module = __import__(plugin_name, fromlist=['blah'])
+            plugin_module = __import__(plugin_name, fromlist=['na'])
             class_members = inspect.getmembers(plugin_module, inspect.isclass)
             for (_, c) in class_members:
                 # Only add classes that are a sub class of Plugin, but NOT Plugin itself
                 if issubclass(c, class_object) & (c is not class_object):
                     if 'modules' not in str(c.__module__):
-                        log.info(f'\nPlugin: {c.__name__}')
+                        log.info(f'| Plugin: {c.__name__}')
                     else:
                         log.info(f'|-- {c.__name__}')
                     packages.append(c())

@@ -24,11 +24,11 @@ class PluginManager(object):
         """Returns a list of plugins that are available
         """
         res = list({
-                       "name": x.name,
-                       "package_id": x.package_name,
+                       "id": x.id,
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
-                       "data": x.data,
+                       "data": x.expected_data,
+                       "type": "plugin",
 
                    } for x in self.plugins)
         return res
@@ -52,10 +52,10 @@ class PluginManager(object):
         :return:
         """
         result = []
-        log.info(F"Launching the test with name: {data['name']}")
+        log.info(F"Launching the test with name: {data['id']}")
         for plugin_test_data in data['plugins']:
             result.append(
-                self._get_test_plugin(plugin_test_data['name']).test(
+                self._get_test_plugin(plugin_test_data['id']).test(
                     plugin_test_data))
         return result
 
@@ -65,4 +65,4 @@ class PluginManager(object):
         :param plugin_name:
         :return:
         """
-        return list(filter(lambda plugin: plugin.name == plugin_name, self.plugins))[0]
+        return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]

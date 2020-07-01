@@ -1,35 +1,25 @@
 import logging
 import subprocess
-import typing as t
 from abc import ABCMeta
 from typing import List
 
 from infracheck.helper.load_packages import load_packages
-from infracheck.model.ITestData import IPluginData, IGeneralPluginData
+from infracheck.model.ITestData import IPluginData, IGeneralPluginData, TestResult
 from infracheck.model.ITestModule import ITestModule
 
 log = logging.getLogger(__name__)
 
 
-class TestResult(t.TypedDict):
-    succeeded: int
-    failures: int
-    errors: int
-    total: int
-    message: str
-    data: t.Any
-
-
 class IPlugin(object):
     __metaclass__ = ABCMeta
     modules: List[ITestModule]
-    name: str
+    id: str
     documentation: str
-    package_name: str
-    data: IGeneralPluginData = {}
+    expected_data: IGeneralPluginData = {}
 
     def __init__(self) -> None:
-        with open(F"plugins/{self.package_name}/requirements.txt") as requirements_file:
+        self.reload_modules()
+        with open(F"plugins/{self.id}/requirements.txt") as requirements_file:
             requirements = requirements_file.read().splitlines()
             for package in requirements:
                 log.info(F"|---- {package}")
@@ -39,16 +29,16 @@ class IPlugin(object):
                     log.error(e)
 
     def __str__(self) -> str:
-        return self.name
+        return self.id
 
     # noinspection PyTypeChecker
     def test(self, data: IPluginData) -> TestResult:
-        self.data = data['data']
+        self.expected_data = data['data']
         pass
 
     def reload_modules(self):
         """ Reloads all available modules from ./modules folder """
-        self.modules = load_packages(F"plugins.{self.package_name}.modules", ITestModule)
+        self.modules = load_packages(F"plugins.{self.id}.modules", ITestModule)
 
     def list_modules(self):
         return list(

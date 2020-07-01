@@ -1,3 +1,4 @@
+import typing as t
 from typing import TypedDict, List, Dict, Any
 
 
@@ -23,3 +24,12 @@ class ITestData(TypedDict):
     name: str
     description: str
     plugins: List[IPluginData]
+
+
+class TestResult(t.TypedDict):
+    succeeded: int
+    failures: int
+    errors: int
+    total: int
+    message: str
+    data: t.Any

@@ -6,12 +6,14 @@ from flask import Flask
 from Environment import Environment
 from infracheck.Persistence import Persistence
 
-log = logging.getLogger(__name__)
+log = logging.getLogger()
+handler = logging.StreamHandler()
+formatter = logging.Formatter(
+    '%(levelname)-8s %(asctime)s    %(message)-38s  %(name)s', "%Y-%m-%d %H:%M:%S")
+handler.setFormatter(formatter)
+log.addHandler(handler)
+log.setLevel(Environment.LOG_LEVEL)
 
-logging.basicConfig(
-    level=Environment.LOG_LEVEL,
-    format="%(message)s              | %(name)s | %(levelname)s | %(asctime)s ",
-    datefmt="%Y-%m-%d %H:%M:%S")
 app = Flask(__name__)
 app.secret_key = 'secret'
 
