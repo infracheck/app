@@ -26,24 +26,20 @@ class IPlugin(object):
     name: str
     documentation: str
     package_name: str
-    requirements: List[str]
     data: IGeneralPluginData = {}
 
     def __init__(self) -> None:
         with open(F"plugins/{self.package_name}/requirements.txt") as requirements_file:
-            self.requirements = requirements_file.read().splitlines()
-        self.install_packages()
+            requirements = requirements_file.read().splitlines()
+            for package in requirements:
+                log.info(F"|---- {package}")
+                try:
+                    subprocess.Popen(['pip', 'install', package], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                except Exception as e:
+                    log.error(e)
 
     def __str__(self) -> str:
         return self.name
-
-    def install_packages(self):
-        for package in self.requirements:
-            log.info(F"|---- {package}")
-            try:
-                subprocess.Popen(['pip', 'install', package], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            except Exception as e:
-                log.error(e)
 
     # noinspection PyTypeChecker
     def test(self, data: IPluginData) -> TestResult:

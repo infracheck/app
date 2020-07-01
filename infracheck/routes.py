@@ -1,5 +1,4 @@
 import hashlib
-import json
 
 import flask
 import flask_login
@@ -33,18 +32,6 @@ def run_test():
     data = request.get_json()
     res = plugin_manager.launch_tests(data)
     return jsonify(res)
-
-
-@app.route('/reload', methods=['GET'])
-def reload_plugins():
-    before = plugin_manager.list_plugins()
-    plugin_manager.reload_plugins()
-    after = plugin_manager.list_plugins()
-
-    return {
-        "message": "Reload successful",
-        "updated": not json.dumps(before, sort_keys=True) == json.dumps(after, sort_keys=True)
-    }
 
 
 @app.route('/login', methods=['POST'])

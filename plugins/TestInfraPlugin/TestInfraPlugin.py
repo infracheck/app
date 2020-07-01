@@ -23,17 +23,17 @@ class TestInfraPluginData(IGeneralPluginData):
 
 
 class TestInfraPlugin(IPlugin):
-    package_name = F"{os.path.basename(__file__).split('.')[0]}"
+    package_name = F""
     name = 'TestInfraPlugin'
     documentation = """
     This Testinfra plugins enable you to run customized code snippets using the testinfra framework
     """
     data: TestInfraPluginData = {
         "hosts": DataTypes.TextList,
-        "username": DataTypes.TextList,
+        "username": DataTypes.Text,
         "target_os": DataTypes.Text,
-        "password": DataTypes.TextList,
-        "port": DataTypes.TextList
+        "password": DataTypes.Text,
+        "port": DataTypes.Number
     }
 
     def __init__(self):

@@ -8,6 +8,11 @@ from infracheck.model.ITestData import ITestData
 log = logging.getLogger()
 
 
+class ITestResult(object):
+    # TODO Implement
+    pass
+
+
 class PluginManager(object):
     """Upon creation, this class will read the plugins package for modules
     that contain a class definition that is inheriting from the Plugin class
@@ -23,7 +28,6 @@ class PluginManager(object):
                        "package_id": x.package_name,
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
-                       "used_packages": x.requirements,
                        "data": x.data,
 
                    } for x in self.plugins)
@@ -33,15 +37,15 @@ class PluginManager(object):
         """Constructor that initiates the reading of all available plugins
         when an instance of the PluginCollection object is created
         """
-        self.reload_plugins()
+        self._reload_plugins()
 
-    def reload_plugins(self):
+    def _reload_plugins(self):
         """Reset the list of all plugins and initiate the walk over the main
         provided plugin package to load all available plugins
         """
         self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
 
-    def launch_tests(self, data: ITestData):
+    def launch_tests(self, data: ITestData) -> ITestResult:
         """ Run all tests defined in the json
 
         :param data:
@@ -51,11 +55,11 @@ class PluginManager(object):
         log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
             result.append(
-                self.get_test_plugin(plugin_test_data['name']).test(
+                self._get_test_plugin(plugin_test_data['name']).test(
                     plugin_test_data))
         return result
 
-    def get_test_plugin(self, plugin_name: str) -> IPlugin:
+    def _get_test_plugin(self, plugin_name: str) -> IPlugin:
         """ Returns the right plugin object, receiving id and version
 
         :param plugin_name:
