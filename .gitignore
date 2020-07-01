@@ -6,3 +6,4 @@ backend
 .out
 .key
 .vagrant
+debug.log
