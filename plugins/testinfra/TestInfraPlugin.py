@@ -11,7 +11,8 @@ import xml.dom.minidom
 from infracheck.helper.KeyRegistrationHelper import KeyRegistrationHelper
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData, TestResult
+from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
+from infracheck.model.ITestResult import TestResult
 from infracheck.model.ITestModule import ITestModule
 from plugins.testinfra.Config import Config
 
@@ -48,15 +49,15 @@ class TestInfraPlugin(IPlugin):
         self.init_env()
         uid = uuid.uuid4().hex
 
-        ssh_service = KeyRegistrationHelper(self.expected_data['username'], self.expected_data['password'])
-        if self.expected_data["target_os"] == 'linux':
-            ssh_service.register_ssh_keys(self.expected_data['hosts'])
+        ssh_service = KeyRegistrationHelper(self.data['username'], self.data['password'])
+        if self.data["target_os"] == 'linux':
+            ssh_service.register_ssh_keys(self.data['hosts'])
 
         self.generate_test_file(_data, uid)
         self.create_test_command_and_launch_test(uid)
 
-        if self.expected_data["target_os"] == 'linux':
-            ssh_service.clean_ssh_keys(self.expected_data['hosts'])
+        if self.data["target_os"] == 'linux':
+            ssh_service.clean_ssh_keys(self.data['hosts'])
 
         return self.convert_result_to_csv(uid)
 
@@ -67,9 +68,9 @@ class TestInfraPlugin(IPlugin):
         subprocess.call(cmd, shell=True)
 
     def create_hosts_string(self):
-        if self.expected_data['target_os'] == 'linux':
+        if self.data['target_os'] == 'linux':
             hosts_with_auth = list(
-                map(lambda host: F"ssh://{self.expected_data['username']}@{host}", self.expected_data['hosts']
+                map(lambda host: F"ssh://{self.data['username']}@{host}", self.data['hosts']
                     )
             )
             host_string = ','.join(map(str, hosts_with_auth))
@@ -77,8 +78,8 @@ class TestInfraPlugin(IPlugin):
         else:
             hosts_with_auth = list(
                 map(lambda host:
-                    F"winrm://{self.expected_data['username']}:{self.expected_data['password']}@{host}:5985?no_ssl=true&no_verify_ssl=true",
-                    self.expected_data['hosts']
+                    F"winrm://{self.data['username']}:{self.data['password']}@{host}:5985?no_ssl=true&no_verify_ssl=true",
+                    self.data['hosts']
                     )
             )
             host_string = ','.join(map(str, hosts_with_auth))
@@ -110,7 +111,7 @@ class TestInfraPlugin(IPlugin):
         :return:
         """
         module: ITestModule = \
-            list(filter(lambda x: x.id == data['name'], self.modules))[0]
+            list(filter(lambda x: x.id == data['id'], self.modules))[0]
         code_without_intend = ("\n" + inspect.getsource(module.test)).replace("\n    ", "\n")
         code_with_uuid = code_without_intend \
             .replace('def test(', F'def test_{module.id}_{test_id}(') \

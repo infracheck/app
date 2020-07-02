@@ -1,16 +1,15 @@
 import logging
 from typing import List
 
+from jsonschema import validate
+
 from infracheck.helper.load_packages import load_packages
+from infracheck.helper.schemes import test_data_scheme
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import ITestData
+from infracheck.model.ITestResult import ITestResult
 
 log = logging.getLogger()
-
-
-class ITestResult(object):
-    # TODO Implement
-    pass
 
 
 class PluginManager(object):
@@ -28,8 +27,7 @@ class PluginManager(object):
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
                        "data": x.data,
-                       "type": "plugin",
-
+                       "type": "plugin"
                    } for x in self.plugins)
         return res
 
@@ -51,8 +49,12 @@ class PluginManager(object):
         :param data:
         :return:
         """
+        is_not_valid = validate(instance=data, schema=test_data_scheme)
+        if is_not_valid:
+            raise TypeError(is_not_valid)
+
         result = []
-        log.info(F"Launching the test with name: {data['id']}")
+        log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
             result.append(
                 self._get_test_plugin(plugin_test_data['id']).test(
@@ -65,4 +67,5 @@ class PluginManager(object):
         :param plugin_name:
         :return:
         """
+        print(self.plugins)
         return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]

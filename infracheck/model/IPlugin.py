@@ -4,7 +4,8 @@ from abc import ABCMeta
 from typing import List
 
 from infracheck.helper.load_packages import load_packages
-from infracheck.model.ITestData import IPluginData, IGeneralPluginData, TestResult
+from infracheck.model.ITestData import IPluginData, IGeneralPluginData
+from infracheck.model.ITestResult import TestResult
 from infracheck.model.ITestModule import ITestModule
 
 log = logging.getLogger(__name__)
