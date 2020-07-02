@@ -15,7 +15,7 @@ class IPlugin(object):
     modules: List[ITestModule]
     id: str
     documentation: str
-    expected_data: IGeneralPluginData = {}
+    data: IGeneralPluginData = {}
 
     def __init__(self) -> None:
         self.reload_modules()
@@ -33,7 +33,7 @@ class IPlugin(object):
 
     # noinspection PyTypeChecker
     def test(self, data: IPluginData) -> TestResult:
-        self.expected_data = data['data']
+        self.data = data['data']
         pass
 
     def reload_modules(self):
@@ -43,7 +43,7 @@ class IPlugin(object):
     def list_modules(self):
         return list(
             {
-                "name": x.name,
+                "id": x.id,
                 "documentation": x.documentation,
                 "fields": x.fields
             }

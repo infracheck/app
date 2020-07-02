@@ -5,7 +5,7 @@ import flask_login
 from flask import jsonify
 from flask import request
 
-from infracheck import app, login_manager, Persistence
+from infracheck import app, login_manager, Persistence, log
 from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
 

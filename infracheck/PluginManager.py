@@ -27,7 +27,7 @@ class PluginManager(object):
                        "id": x.id,
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
-                       "data": x.expected_data,
+                       "data": x.data,
                        "type": "plugin",
 
                    } for x in self.plugins)

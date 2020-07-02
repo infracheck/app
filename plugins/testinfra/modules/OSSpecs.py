@@ -5,7 +5,7 @@ from infracheck.model.ITestModule import ITestModule
 
 
 class OSSpecs(ITestModule):
-    name = "os_specs"
+    id = "os_specs"
     documentation = """
     This test performs a os specification comparison
     """

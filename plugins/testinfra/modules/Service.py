@@ -5,7 +5,7 @@ from infracheck.model.ITestModule import ITestModule
 
 
 class Service(ITestModule):
-    name = "service"
+    id = "service"
     documentation = """
     This test checks running and enabled services
     """

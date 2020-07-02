@@ -27,7 +27,7 @@ class TestInfraPlugin(IPlugin):
     documentation = """
     This Testinfra plugins enable you to run customized code snippets using the testinfra framework
     """
-    expected_data: TestInfraPluginData = {
+    data: TestInfraPluginData = {
         "hosts": DataTypes.TextList,
         "username": DataTypes.Text,
         "target_os": DataTypes.Text,
@@ -113,7 +113,7 @@ class TestInfraPlugin(IPlugin):
             list(filter(lambda x: x.id == data['name'], self.modules))[0]
         code_without_intend = ("\n" + inspect.getsource(module.test)).replace("\n    ", "\n")
         code_with_uuid = code_without_intend \
-            .replace('def test(', F'def test_{module.name}_{test_id}(') \
+            .replace('def test(', F'def test_{module.id}_{test_id}(') \
             .replace('fields', F'fields_{test_id}')
         return F"fields_{test_id} = {json.dumps(data['fields'])}\n\n{code_with_uuid}\n\n"
 
