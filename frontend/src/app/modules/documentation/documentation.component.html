@@ -1,0 +1,50 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="clr-row  clr-justify-content-center">
+      <div class="clr-col-md-12 clr-col-lg-10">
+        <div class="clr-row">
+          <div class="clr-col-sm-12 clr-col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                Test Documentation
+              </div>
+              <clr-stack-view>
+                <clr-stack-block *ngFor="let category of testDirs; index as i" [clrSbExpanded]="i === 0">
+                  <clr-stack-label>{{category |uppercase}}</clr-stack-label>
+                  <clr-stack-block (click)="selectTestId(test.id)"
+                                   *ngFor="let test of getTestsOfCategory(category)">
+                    <clr-stack-content class="text-center">{{test.id}}</clr-stack-content>
+                  </clr-stack-block>
+                </clr-stack-block>
+              </clr-stack-view>
+            </div>
+          </div>
+          <div class="clr-col-sm-12 clr-col-lg-8">
+            <ng-container *ngFor="let test of tests">
+              <div *ngIf="selectedTestId == test.id" class="card">
+                <div class="card-header">
+                  Documentation -  {{test.id}}
+                </div>
+                <div class="card-block">
+                  <div class="card-text">
+                    <markdown>
+                      {{test.description}}
+                    </markdown>
+                    <clr-accordion>
+                      <clr-accordion-panel>
+                        <clr-accordion-title>Code</clr-accordion-title>
+                        <clr-accordion-content *clrIfExpanded>
+                          <markdown lineNumbers>```python {{test.code}}```</markdown>
+                        </clr-accordion-content>
+                      </clr-accordion-panel>
+                    </clr-accordion>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

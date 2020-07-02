@@ -1,0 +1,27 @@
+.item {
+  padding: 10px 13px;
+  background: #324f62;
+  border: 1px solid #21333b;
+  margin: 7px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#tests .item {
+  cursor: pointer;
+}
+
+.card {
+  background-color: #1b2a32;
+  color: ivory;
+}
+
+clr-icon {
+  float: right;
+}
+
+#search {
+  padding: 20px;
+  font-size: 1.1em;
+  background: #324f62;
+}

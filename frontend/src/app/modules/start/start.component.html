@@ -1,0 +1,84 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="clr-row  clr-justify-content-center">
+      <div class="clr-col-md-12 clr-col-lg-10">
+        <div class="card">
+          <div class="card-block">
+            <div class="head text-center">
+              <img alt="" id="proficom-logo" src="assets/proficomlogo.png">
+              <h1>OS Testing Tool</h1>
+              <h4>Automate and parallelize your os tests for windows and linux.</h4>
+
+            </div>
+
+            <div class="content-container">
+              <div class="content-area">
+                <div class="clr-row  clr-justify-content-center">
+                  <div class="clr-col-md-12 clr-col-lg-10">
+                    <button (click)="lgOpen = true" class="btn btn-primary btn-block btn-lg">Create Test</button>
+                    <clr-wizard #wizard [(clrWizardOpen)]="lgOpen" clrWizardSize="xl">
+                      <clr-wizard-title>Test Creation Tool</clr-wizard-title>
+                      <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+                      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+                      <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+                      <clr-wizard-button (click)="launchTest()" [type]="'finish'">Launch Test</clr-wizard-button>
+
+
+                      <clr-wizard-page [clrWizardPageNextDisabled]=!metaFormValid>
+                        <ng-template clrPageTitle>General Information</ng-template>
+                        <app-test-builder-meta-data (formValid)="metaFormValid = $event"
+                                                    [testSet]="newTest"></app-test-builder-meta-data>
+                      </clr-wizard-page>
+
+                      <clr-wizard-page>
+                        <ng-template clrPageTitle>Test Presets</ng-template>
+                        <app-test-builder-presets [presets]="presets" [testSet]="newTest"></app-test-builder-presets>
+                      </clr-wizard-page>
+
+
+                      <clr-wizard-page>
+                        <ng-template clrPageTitle>Test Editor</ng-template>
+                        <app-test-editor [test]="newTest.testset"
+                                         (testSetChange)="newTest.testset = $event"></app-test-editor>
+                      </clr-wizard-page>
+
+                      <clr-accordion>
+                        <clr-accordion-panel>
+                          <clr-accordion-title>result</clr-accordion-title>
+                          <clr-accordion-content *clrIfExpanded>
+                            <pre>{{newTest | json}}</pre>
+                          </clr-accordion-content>
+                        </clr-accordion-panel>
+                      </clr-accordion>
+
+
+                    </clr-wizard>
+
+
+                    <div *ngIf="awaitingResponse" class="loading">
+        <span class="spinner spinner-inverse">
+          Waiting for result ...
+        </span>
+                    </div>
+
+                    <div *ngIf="testResults" class="results">
+                      <div class="alert alert-success">
+                        <a [routerLink]="'/results/' + testResults.id">Your detailed test results</a>
+                      </div>
+                      <app-result-view [results]="testResults"></app-result-view>
+                    </div>
+                    <div *ngIf="error" class="alert-warning alert">
+                      <markdown lineNumbers>```json {{error}}```</markdown>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,9 +1,9 @@
-venv
+backend/venv
 .idea
-infracheck.db
-.tmp
-backend
-.out
-.key
-.vagrant
-debug.log
+backend/infracheck.db
+backend/.tmp
+backend/.out
+backend/.key
+backend/.vagrant
+backend/debug.log
+frontend/node_modules

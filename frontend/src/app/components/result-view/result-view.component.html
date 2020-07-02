@@ -1,0 +1,75 @@
+<clr-stack-view>
+  <clr-stack-block>
+    <clr-stack-label>ID</clr-stack-label>
+    <clr-stack-content>{{results.id}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Result link</clr-stack-label>
+    <clr-stack-content><a [href]="'results/'+results.id" target="_blank">{{results.name}}</a></clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Date</clr-stack-label>
+    <clr-stack-content>{{results.date}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Name</clr-stack-label>
+    <clr-stack-content>{{results.name}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Description</clr-stack-label>
+    <clr-stack-content>{{results.description}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Test count</clr-stack-label>
+    <clr-stack-content>{{results.tests}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Errors</clr-stack-label>
+    <clr-stack-content>{{results.errors}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Failures</clr-stack-label>
+    <clr-stack-content>{{results.failures}}</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Duration</clr-stack-label>
+    <clr-stack-content>{{results.time | number}} s</clr-stack-content>
+  </clr-stack-block>
+  <clr-stack-block>
+    <clr-stack-label>Complete processing time</clr-stack-label>
+    <clr-stack-content>{{results.processing_time | number}} s</clr-stack-content>
+  </clr-stack-block>
+
+  <clr-stack-block [clrSbExpanded]="true">
+    <clr-stack-label>Testset</clr-stack-label>
+    <clr-stack-content>.</clr-stack-content>
+    <clr-stack-block *ngFor="let test of results.testset; index as i">
+      <clr-stack-label>{{test.host}}  {{test.name | testName}}</clr-stack-label>
+      <clr-stack-content>
+        <clr-icon shape="check" class="is-success" *ngIf="test.success"></clr-icon>
+        <clr-icon shape="times" class="is-error" *ngIf="!test.success"></clr-icon>
+      </clr-stack-content>
+      <clr-stack-block>
+        <clr-stack-label>Name</clr-stack-label>
+        <clr-stack-content>{{test.host}}</clr-stack-content>
+      </clr-stack-block>
+      <clr-stack-block>
+        <clr-stack-label>Name</clr-stack-label>
+        <clr-stack-content>{{test.name}}</clr-stack-content>
+      </clr-stack-block>
+      <clr-stack-block>
+        <clr-stack-label>Success</clr-stack-label>
+        <clr-stack-content>{{test.success}}</clr-stack-content>
+      </clr-stack-block>
+      <clr-stack-block>
+        <clr-stack-label>Time</clr-stack-label>
+        <clr-stack-content>{{test.time}}</clr-stack-content>
+      </clr-stack-block>
+      <clr-stack-block *ngIf="!test.success">
+        <clr-stack-label>Fail message</clr-stack-label>
+        <clr-stack-content>{{test.message}}</clr-stack-content>
+      </clr-stack-block>
+    </clr-stack-block>
+  </clr-stack-block>
+
+</clr-stack-view>

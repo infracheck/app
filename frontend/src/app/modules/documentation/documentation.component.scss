@@ -1,0 +1,11 @@
+clr-stack-block {
+  cursor: pointer;
+
+  :hover {
+    color: #b9bec4;
+  }
+}
+
+.stack-children dt {
+  display: none !important;
+}

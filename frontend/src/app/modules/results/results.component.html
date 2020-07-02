@@ -1,0 +1,69 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="clr-row  clr-justify-content-center">
+      <div class="clr-col-md-12 clr-col-lg-10">
+        <div class="clr-row">
+
+          <div class="clr-col-lg-4 crl-col-md-12">
+            <div class="clr-col-12">
+              <div class="card">
+                <div class="card-header">
+                  Results
+                </div>
+                <div class="card-block">
+                  <div class="card-text">
+                    <clr-input-container>
+                      <input [(ngModel)]="resultId" clrInput name="Test id" placeholder="ID of your test ..."
+                             type="text"/>
+                      <clr-control-error *ngIf="fetchError">The uid is invalid</clr-control-error>
+                    </clr-input-container>
+                    <button (click)="fetchResult()" class="btn btn-primary btn-block" type="submit">Get result</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clr-col-12">
+              <div class="card">
+                <div class="card-header">
+                  Latest tests
+                </div>
+                <div class="card-block">
+                  <div class="card-text">
+                    <clr-datagrid>
+                      <clr-dg-column>Name</clr-dg-column>
+                      <clr-dg-column>Date</clr-dg-column>
+                      <clr-dg-row (click)="selectedResult = test" *ngFor="let test of latestTests"
+                                  [class.active]="selectedResult === test">
+                        <clr-dg-cell>{{test.name}}</clr-dg-cell>
+                        <clr-dg-cell>{{test.date}}</clr-dg-cell>
+                      </clr-dg-row>
+                    </clr-datagrid>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="clr-col-lg-8 crl-col-md-12">
+            <div class="card">
+              <div class="card-header">
+                Test Results
+              </div>
+              <div class="card-block">
+                <div class="card-text">
+                  <ng-container *ngIf="!selectedResult">
+                    <clr-icon shape="search"></clr-icon>
+                    Please insert your test id or just click on one of the latest results.
+                  </ng-container>
+                  <app-result-view *ngIf="selectedResult" [results]="selectedResult"></app-result-view>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

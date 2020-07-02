@@ -1,0 +1,39 @@
+<div class="clr-row">
+  <div class="clr-col-xl-8 clr-col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Testset
+      </div>
+      <div  class="card-block" id="testset">
+        <div *ngIf="test.length === 0">. . .</div>
+        <div *ngFor="let test of test; index as i"
+             class="item">
+          <div (click)="toggleSettings(test); activeSettings = activeSettings === i ? -1 :  i" class="name">
+            {{test.id}}
+            <clr-icon (click)="removeTest(i)" shape="trash" size="24"></clr-icon>
+            <clr-icon *ngIf="activeSettings !== i" shape="pencil" size="24"></clr-icon>
+            <clr-icon *ngIf="activeSettings === i" shape="caret" size="24"></clr-icon>
+          </div>
+          <div *ngIf="activeSettings === i" class="settings">
+            <app-test-settings-modal [apiTestResult]="settingsContent.apiTestResult"
+                                     [test]="settingsContent.testData"></app-test-settings-modal>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clr-col-xl-4 clr-col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Tests
+      </div>
+      <input [(ngModel)]="searchTerm" class="clr-input" id="search" placeholder="Search..." type="text">
+      <div class="card-block"  id="tests">
+        <div (click)="addTest(test)" *ngFor="let test of apiTestResults | testSearch:searchTerm" class="item">
+          {{test.id}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

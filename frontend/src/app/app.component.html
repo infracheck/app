@@ -1,0 +1,39 @@
+<div class="main-container">
+  <header class="header header-6">
+    <div class="branding">
+      <span class="title">OS-TESTING-TOOL</span>
+    </div>
+    <div class="header-nav">
+      <a [routerLinkActive]="['active']" class="nav-link nav-text" routerLink="start">Testing</a>
+      <a [routerLinkActive]="['active']" class="nav-link nav-text" routerLink="docs">Documentation</a>
+      <a [routerLinkActive]="['active']" class="nav-link nav-text" routerLink="library">Presets</a>
+      <a [routerLinkActive]="['active']" class="nav-link nav-text" routerLink="results">Results</a>
+    </div>
+    <div class="header-actions">
+      <a class="nav-link nav-icon-text">
+        <clr-toggle-wrapper>
+          <input type="checkbox" (change)="switchTheme()" clrToggle/>
+        </clr-toggle-wrapper>
+        {{currTheme === 1 ? 'Dark' : 'Bright'}}
+      </a>
+    </div>
+  </header>
+  <div *ngIf="serverCheck !== 0" class="alert alert-sm" [class.alert-warning]="serverCheck === 2"
+       [class.alert-success]="serverCheck === 1" srole="alert">
+    <div class="alert-items">
+      <div class="alert-item static">
+        <div class="alert-icon-wrapper">
+          <clr-icon class="alert-icon" shape="exclamation-triangle"></clr-icon>
+        </div>
+        <div class="alert-text">
+          {{serverCheck === 2 ? 'Connection to the server could not be established' : 'Connection to the server was successful'}}
+        </div>
+      </div>
+    </div>
+    <button type="button" class="close" aria-label="Close" (click)="serverCheck=0">
+      <clr-icon aria-hidden="true" shape="close"></clr-icon>
+    </button>
+  </div>
+
+  <router-outlet></router-outlet>
+</div>
