@@ -1,12 +1,12 @@
 import {TestBed} from '@angular/core/testing';
 
-import {TestResolver} from './test-resolver.service';
+import {PluginResolver} from './test-resolver.service';
 
 describe('TestsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: TestResolver = TestBed.get(TestResolver);
+    const service: PluginResolver = TestBed.get(PluginResolver);
     expect(service).toBeTruthy();
   });
 });

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Test, TestSet} from '../../../definitions/TestSet';
-import {ApiTestsResult} from '../../../definitions/api';
+import {ApiPlugin} from '../../../definitions/api';
 import {ActivatedRoute} from '@angular/router';
 import {Preset} from '../../../definitions/Preset';
 
@@ -17,9 +17,9 @@ export class TestBuilderPresetsComponent implements OnInit {
 
 
   selected: Preset[] = [];
-  public settingsContent: { testData: Test, apiTestResult: ApiTestsResult };
+  public settingsContent: { testData: Test, apiTestResult: ApiPlugin };
   activeSettings = -1;
-  public apiTestResults: ApiTestsResult[];
+  public apiTestResults: ApiPlugin[];
 
 
   constructor(private acr: ActivatedRoute) {

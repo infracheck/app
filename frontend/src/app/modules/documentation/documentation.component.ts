@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiTestsResult} from '../../definitions/api';
+import {ApiModule, ApiPlugin} from '../../definitions/api';
 
 @Component({
   selector: 'app-documentation',
@@ -9,28 +9,18 @@ import {ApiTestsResult} from '../../definitions/api';
 })
 export class DocumentationComponent implements OnInit {
 
-  public tests: ApiTestsResult[];
+  public plugins: ApiPlugin[];
 
-  selectedTestId;
-  testDirs: string[];
+  selectedModule: ApiModule;
 
   constructor(private acr: ActivatedRoute) {
     this.acr.data.subscribe(data => {
-      this.tests = data.tests;
-      this.testDirs = Array.from(new Set(this.tests.map(test => test.directory)));
+      this.plugins = data.tests;
     });
 
   }
 
   ngOnInit() {
-    this.selectedTestId = this.tests[0].id;
-  }
-
-  selectTestId(testDesc: string) {
-    this.selectedTestId = testDesc;
-  }
-
-  getTestsOfCategory(category: string): ApiTestsResult[] {
-    return this.tests.filter(test => test.directory === category);
+    this.selectedModule = this.plugins[0].modules[0];
   }
 }

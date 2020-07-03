@@ -7,8 +7,35 @@ from infracheck.model.ITestModule import ITestModule
 class AddressReachable(ITestModule):
     id = "address"
     documentation = """
-    Check is a address is reachable
-    """
+    # Is adress reachable [Linux]
+---
+
+## Description:
+This test checks if a list of hosts is reachable.
+
+[Testinfra Docs](
+https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.addr.Addr) 
+        
+## Examples:
+```json
+# Checking a list of hosts
+{"addr_list": ["google.de", "proficom.de"]}
+
+# Checking for a single hosts
+{"addr_list": ["google.de"]}
+
+# Checks for 
+{"addr_list": ["192.168.0.10", "127.0.0.1"]}
+```
+
+## Plugin Version
+0.1.1
+
+
+## Author
+Martin Welcker <mwelcker@proficom.de>
+"""
+
     fields = {
         "url": DataTypes.Text
     }

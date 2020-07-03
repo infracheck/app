@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Preset} from '../../definitions/Preset';
 import {HttpService} from '../../services/http.service';
-import {ApiTestsResult} from '../../definitions/api';
+import {ApiPlugin} from '../../definitions/api';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class PresetPreviewComponent implements OnInit {
 
   @Input() preset: Preset;
   @Input() edit: boolean;
-  public apiTestResults: ApiTestsResult[];
+  public apiTestResults: ApiPlugin[];
 
   constructor(private http: HttpService, private acr: ActivatedRoute) {
     this.acr.data.subscribe(data => {

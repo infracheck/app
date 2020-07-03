@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TestResolver} from './resolver/test-resolver.service';
+import {PluginResolver} from './resolver/test-resolver.service';
 import {LatestTestsResolverService} from './resolver/latest-tests-resolver.service';
 import {PresetResolverService} from './resolver/preset-resolver.service';
 
@@ -11,14 +11,14 @@ const routes: Routes = [
     loadChildren: () => import('./modules/start/start.module').then(m => m.StartModule),
     resolve: {
       presets: PresetResolverService,
-      tests: TestResolver
+      tests: PluginResolver
     }
   },
   {
     path: 'docs',
     loadChildren: () => import('./modules/documentation/documentation.module').then(m => m.DocumentationModule),
     resolve: {
-      tests: TestResolver
+      tests: PluginResolver
     }
   },
   {
@@ -33,14 +33,6 @@ const routes: Routes = [
     loadChildren: () => import('./modules/results/results.module').then(m => m.ResultsModule),
     resolve: {
       latest: LatestTestsResolverService
-    }
-  },
-  {
-    path: 'library',
-    loadChildren: () => import('./modules/library/library.module').then(m => m.LibraryModule),
-    resolve: {
-      presets: PresetResolverService,
-      tests: TestResolver
     }
   },
   {

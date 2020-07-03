@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Test} from '../../definitions/TestSet';
-import {ApiTestsResult} from '../../definitions/api';
+import {ApiPlugin} from '../../definitions/api';
 
 @Component({
   selector: 'app-test-settings-modal',
@@ -9,7 +9,7 @@ import {ApiTestsResult} from '../../definitions/api';
 })
 export class TestSettingsModalComponent implements OnInit {
   @Input() test: Test;
-  @Input() apiTestResult: ApiTestsResult;
+  @Input() apiTestResult: ApiPlugin;
   public inputData: { field: string, type: string }[] = [];
   newListElem = '';
 

@@ -7,8 +7,31 @@ from infracheck.model.ITestModule import ITestModule
 class Service(ITestModule):
     id = "service"
     documentation = """
-    This test checks running and enabled services
-    """
+.. todo:: It should be possible to check for different service states
+# Is adress reachable [Linux]
+---
+
+## Description:
+Check for running services. 
+
+[Testinfra Docs](
+https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.service.Service) 
+        
+## Examples:
+```json
+# Checking a list of services
+{
+    "services": ["nginx", "apache2"]
+}
+```
+
+## Plugin Version
+0.1.0
+
+## Author
+Martin Welcker <mwelcker@proficom.de>
+"""
+
     fields = {
         "service": DataTypes.Text,
         "enabled": DataTypes.Number,

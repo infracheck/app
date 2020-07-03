@@ -1,4 +1,4 @@
-import {ApiTestsResult} from './api';
+import {ApiPlugin} from './api';
 
 export class TestSet {
   settings: {
@@ -29,7 +29,7 @@ export class Test {
   id: string;
   data: any;
 
-  constructor(test: ApiTestsResult) {
+  constructor(test: ApiPlugin) {
     this.id = test.id;
     this.data = {};
   }

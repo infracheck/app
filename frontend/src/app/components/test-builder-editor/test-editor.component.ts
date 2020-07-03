@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Test} from '../../definitions/TestSet';
-import {ApiTestsResult} from '../../definitions/api';
+import {ApiPlugin} from '../../definitions/api';
 
 
 @Component({
@@ -23,8 +23,8 @@ export class TestEditorComponent implements OnInit {
     this.testSetChange.emit(this.testSet);
   }
 
-  public apiTestResults: ApiTestsResult[];
-  public settingsContent: { testData: Test, apiTestResult: ApiTestsResult };
+  public apiTestResults: ApiPlugin[];
+  public settingsContent: { testData: Test, apiTestResult: ApiPlugin };
   activeSettings = -1;
   searchTerm = '';
 
