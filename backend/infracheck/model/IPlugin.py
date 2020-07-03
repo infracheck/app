@@ -46,6 +46,7 @@ class IPlugin(object):
             {
                 "id": x.id,
                 "documentation": x.documentation,
-                "fields": x.fields
+                "fields": x.fields,
+                "code": x.code
             }
             for x in self.modules)

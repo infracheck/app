@@ -1,47 +1,37 @@
 <div class="content-container">
+
+    <nav class="sidenav">
+        <section class="sidenav-content">
+            <section *ngFor="let plugin of plugins" class="nav-group collapsible">
+                <input [id]="plugin.id" type="checkbox">
+                <label [for]="plugin.id">Plugin: {{plugin.id}}</label>
+                <ul class="nav-list">
+                    <li><a class="nav-link"
+                           (click)=" this.selectedModule = plugin">Description</a>
+                    </li>
+                    <li>
+                        <b class="nav-text">&nbsp;&nbsp;&nbsp;Modules</b>
+                        <ul class="nav-list">
+                            <li *ngFor="let module of plugin.modules">
+                                <a class="nav-link"
+                                   (click)=" this.selectedModule = module">{{module.id}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </section>
+    </nav>
     <div class="content-area">
-        <div class="clr-row  clr-justify-content-center">
-            <div class="clr-col-md-12 clr-col-lg-10">
-                <div class="clr-row">
-                    <div class="clr-col-sm-12 clr-col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                Plugins
-                            </div>
-                            <clr-stack-view>
-                                <clr-stack-block *ngFor="let plugin of plugins; index as i" [clrSbExpanded]="i === 0">
-                                    <clr-stack-label>{{plugin.id |uppercase}}</clr-stack-label>
-                                    <clr-stack-block (click)=" this.selectedModule = module"
-                                                     *ngFor="let module of plugin.modules">
-                                        <clr-stack-content class="text-center">{{module.id}}</clr-stack-content>
-                                    </clr-stack-block>
-                                </clr-stack-block>
-                            </clr-stack-view>
-                        </div>
-                    </div>
-                    <div class="clr-col-sm-12 clr-col-lg-8">
-                        <div class="card">
-                            <div class="card-header">
-                                Documentation -  {{selectedModule.id}}
-                            </div>
-                            <div class="card-block">
-                                <div class="card-text">
-                                    <markdown [data]="selectedModule.documentation"></markdown>
-                                    <clr-accordion>
-                                        <clr-accordion-panel>
-                                            <clr-accordion-title>Code</clr-accordion-title>
-                                            <clr-accordion-content *clrIfExpanded>
-                                                <markdown lineNumbers>```python {{selectedModule.documentation}}```
-                                                </markdown>
-                                            </clr-accordion-content>
-                                        </clr-accordion-panel>
-                                    </clr-accordion>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <markdown [data]="selectedModule.documentation"></markdown>
+        <clr-accordion>
+            <clr-accordion-panel>
+                <clr-accordion-title>Code</clr-accordion-title>
+
+                <clr-accordion-content *clrIfExpanded>
+                    <markdown [data]="selectedModule.code | language : 'python' | markdown"></markdown>
+                </clr-accordion-content>
+            </clr-accordion-panel>
+        </clr-accordion>
     </div>
 </div>

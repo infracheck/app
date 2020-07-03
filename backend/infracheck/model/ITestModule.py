@@ -1,3 +1,4 @@
+import inspect
 import typing as t
 from abc import ABCMeta
 
@@ -10,3 +11,10 @@ class ITestModule(object):
     documentation: t.Any
     id: str
     fields: t.Dict[str, DataTypes]
+
+    @property
+    def code(self):
+        return inspect.getsource(self.test)
+
+    def test(self):
+        pass

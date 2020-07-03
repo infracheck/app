@@ -2,6 +2,7 @@ export interface ApiModule {
     id: string;
     documentation: string;
     fields: any;
+    code: string;
 }
 
 export interface ApiPlugin {

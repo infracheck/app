@@ -1,11 +1,3 @@
-clr-stack-block {
-  cursor: pointer;
-
-  :hover {
-    color: #b9bec4;
-  }
-}
-
-.stack-children dt {
-  display: none !important;
+.sidenav .nav-group .nav-list, .sidenav .nav-group label {
+  padding: 0 0 0 0.2rem;
 }
