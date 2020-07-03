@@ -18,31 +18,29 @@ class Persistence:
     db = sqlite3.connect('infracheck.db', check_same_thread=False)
 
     def __init__(self) -> None:
+        print("CREATE DATABASES")
         create_history_sql = """
         CREATE TABLE IF NOT EXISTS history(
-                        id PRIMARY KEY,
-                        data BLOB
+                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                      data BLOB
         );"""
         self.db.execute(create_history_sql)
 
-    def get_log(self, *log_id: str):
-        if log_id:
-            sql = F"SELECT data FROM history WHERE id = ?"
-            return json.loads(self.db.execute(sql, log_id).fetchone()[0])
-        else:
-            sql = F"SELECT data FROM history"
-            res = self.db.execute(sql).fetchall()
-            return list(
-                json.loads(x[0])
-                for x in res)
+    def get_log(self, limit: int = 10, offset: int = 0):
+        res = self.db.execute(
+            """SELECT data
+            FROM history
+            LIMIT ? OFFSET ?
+            """, (limit, offset,)).fetchall()
+        return list(
+            json.loads(x[0])
+            for x in res)
 
-    def add_log_entry(self, log_id: str, data: json):
+    def insert_test_result(self, result):
         """ TODO Implement
 
-        :param log_id:
-        :param data:
+        :param result:
         :return:
         """
-        sql = """INSERT INTO history (id, data) VALUES ("das", "{"lodasl":"rofl"}")"""
-        self.db.execute(sql)
+        self.db.execute("INSERT INTO history (data) VALUES (?)", (json.dumps(result),))
         self.db.commit()

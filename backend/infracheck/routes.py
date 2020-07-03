@@ -19,12 +19,12 @@ def list_plugins():
 
 @app.route('/history', methods=['GET'])
 def list_history():
-    return jsonify(Persistence().get_log())
-
-
-@app.route('/history/<path:log_id>', methods=['GET'])
-def list_single_history(log_id: str):
-    return jsonify(Persistence().get_log(str(log_id)))
+    limit = request.args.get('limit')
+    offset = request.args.get('offset')
+    if limit and offset:
+        return jsonify(Persistence().get_log(int(limit), int(offset)))
+    else:
+        return jsonify(Persistence().get_log())
 
 
 @app.route('/test', methods=['POST'])

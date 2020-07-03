@@ -9,6 +9,8 @@ from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import ITestData
 from infracheck.model.ITestResult import ITestResult
 
+from infracheck.Persistence import Persistence
+
 log = logging.getLogger()
 
 
@@ -18,6 +20,7 @@ class PluginManager(object):
     """
 
     plugins: List[IPlugin] = []
+    database = Persistence()
 
     def list_plugins(self):
         """Returns a list of plugins that are available
@@ -53,12 +56,14 @@ class PluginManager(object):
         if is_not_valid:
             raise TypeError(is_not_valid)
 
-        result = []
+        result: ITestResult = {"data": []}
         log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
-            result.append(
+            result['data'].append(
                 self._get_test_plugin(plugin_test_data['id']).test(
                     plugin_test_data))
+
+        self.database.insert_test_result(result)
         return result
 
     def _get_test_plugin(self, plugin_name: str) -> IPlugin:
@@ -67,5 +72,4 @@ class PluginManager(object):
         :param plugin_name:
         :return:
         """
-        print(self.plugins)
         return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]
