@@ -7,6 +7,8 @@ class ITestResult(object):
 
 
 class TestResult(t.TypedDict):
+    name: str
+    description: str
     succeeded: int
     failures: int
     errors: int

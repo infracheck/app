@@ -1,4 +1,5 @@
 import hashlib
+import json
 
 import flask
 import flask_login
@@ -22,9 +23,10 @@ def list_history():
     limit = request.args.get('limit')
     offset = request.args.get('offset')
     if limit and offset:
-        return jsonify(Persistence().get_log(int(limit), int(offset)))
+        result = jsonify(Persistence().get_log(int(limit), int(offset)))
     else:
-        return jsonify(Persistence().get_log())
+        result = jsonify(Persistence().get_log())
+    return result
 
 
 @app.route('/test', methods=['POST'])

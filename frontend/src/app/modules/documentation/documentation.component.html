@@ -24,7 +24,17 @@
     </nav>
     <div class="content-area">
         <markdown [data]="selectedModule.documentation"></markdown>
-        <clr-accordion>
+        <clr-accordion *ngIf="selectedModule.fields">
+            <clr-accordion-panel>
+                <clr-accordion-title>Expected Fields</clr-accordion-title>
+
+                <clr-accordion-content *clrIfExpanded>
+                    <pre>{{selectedModule.fields | json}}</pre>
+                </clr-accordion-content>
+            </clr-accordion-panel>
+        </clr-accordion>
+
+        <clr-accordion *ngIf="selectedModule.code">
             <clr-accordion-panel>
                 <clr-accordion-title>Code</clr-accordion-title>
 

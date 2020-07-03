@@ -131,13 +131,15 @@ class TestInfraPlugin(IPlugin):
             "errors",
             "failures",
             "skipped",
-            "tests",
-            "time"
+            "tests"
         ]
 
         testsuite = input_file.getElementsByTagName("testsuite")[0]
         for key in testsuite_keys:
-            result[key] = testsuite.getAttribute(key)
+            result[key] = int(testsuite.getAttribute(key))
+
+        result['total'] = result['tests']
+        result['succeeded'] = result['total'] - result['failures']
 
         result["testset"] = []
         test_cases = input_file.getElementsByTagName("testcase")

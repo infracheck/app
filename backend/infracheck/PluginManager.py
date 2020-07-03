@@ -1,4 +1,5 @@
 import logging
+import uuid
 from typing import List
 
 from jsonschema import validate
@@ -52,17 +53,23 @@ class PluginManager(object):
         :param data:
         :return:
         """
+        uid = uuid.uuid4().hex
         is_not_valid = validate(instance=data, schema=test_data_scheme)
         if is_not_valid:
             raise TypeError(is_not_valid)
 
-        result: ITestResult = {"data": []}
+        result: ITestResult = {
+            ""
+            "data": []
+        }
         log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
             result['data'].append(
                 self._get_test_plugin(plugin_test_data['id']).test(
                     plugin_test_data))
 
+        result['id'] = uid
+        result = self.serialize_result(data, result)
         self.database.insert_test_result(result)
         return result
 
@@ -73,3 +80,26 @@ class PluginManager(object):
         :return:
         """
         return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]
+
+    @staticmethod
+    def serialize_result(input_data: ITestData, result_data: ITestResult) -> ITestResult:
+        """ Takes multiple plugin results and serialize them to one response
+        """
+        result = {
+            "id": result_data['id'],
+            "name": input_data['name'],
+            "description": input_data['description'],
+            "succeeded": sum(c['succeeded'] for c in result_data['data']),
+            "failures": sum(c['failures'] for c in result_data['data']),
+            "errors": sum(c['errors'] for c in result_data['data']),
+            "total": sum(c['total'] for c in result_data['data']),
+            "message": "PLEASE IMPLEMENT",
+            "date": "",
+            "data": result_data
+        }
+        if result["failures"] == 0:
+            result["message"] = 'Test complete. No failures.'
+        else:
+            result["message"] = F"Test complete but {result['failures']} failure detected."
+
+        return result

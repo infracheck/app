@@ -23,14 +23,14 @@ const routes: Routes = [
   },
   {
     path: 'results',
-    loadChildren: () => import('./modules/results/results.module').then(m => m.ResultsModule),
+    loadChildren: () => import('./modules/history/results.module').then(m => m.ResultsModule),
     resolve: {
       latest: LatestTestsResolverService
     }
   },
   {
     path: 'results/:id',
-    loadChildren: () => import('./modules/results/results.module').then(m => m.ResultsModule),
+    loadChildren: () => import('./modules/history/results.module').then(m => m.ResultsModule),
     resolve: {
       latest: LatestTestsResolverService
     }

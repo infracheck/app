@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApiLatestTestsResult} from '../../definitions/api';
+import {ApiHistory} from '../../definitions/api';
 
 @Component({
   selector: 'app-result-view',
@@ -7,7 +7,7 @@ import {ApiLatestTestsResult} from '../../definitions/api';
   styleUrls: ['./result-view.component.scss']
 })
 export class ResultViewComponent implements OnInit {
-  @Input() results: ApiLatestTestsResult;
+  @Input() results: ApiHistory;
 
   constructor() {
   }

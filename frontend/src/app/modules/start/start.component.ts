@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TestSet} from '../../definitions/TestSet';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from '../../services/http.service';
-import {ApiLatestTestsResult} from '../../definitions/api';
+import {ApiHistory} from '../../definitions/api';
 
 @Component({
   selector: 'app-test-builder',
@@ -16,7 +16,7 @@ export class StartComponent implements OnInit {
   // TODO: Change to false in prod
   metaFormValid = true;
   awaitingResponse = false;
-  testResults: ApiLatestTestsResult;
+  testResults: ApiHistory;
   public error: any;
 
   constructor(private acr: ActivatedRoute, private http: HttpService) {
@@ -34,7 +34,7 @@ export class StartComponent implements OnInit {
     this.error = null;
     this.testResults = null;
     this.awaitingResponse = true;
-    this.http.runTest(this.newTest).subscribe((res: ApiLatestTestsResult) => {
+    this.http.runTest(this.newTest).subscribe((res: ApiHistory) => {
         this.testResults = res;
         this.awaitingResponse = false;
       },

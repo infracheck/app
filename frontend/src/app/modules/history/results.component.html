@@ -1,0 +1,19 @@
+<div class="content-container">
+    <clr-datagrid>
+        <clr-dg-column [clrDgField]="'id'">ID</clr-dg-column>
+        <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+        <clr-dg-column [clrDgField]="'date'">Date</clr-dg-column>
+        <clr-dg-column [clrDgField]="'description'" [clrDgColType]="'number'">Description</clr-dg-column>
+        <clr-dg-column [clrDgField]="'succeeded'" [clrDgColType]="'number'">Succeeded</clr-dg-column>
+
+        <clr-dg-row *clrDgItems="let item of history">
+            <clr-dg-cell>{{item.id}}</clr-dg-cell>
+            <clr-dg-cell>{{item.name}}</clr-dg-cell>
+            <clr-dg-cell>{{item.date}}</clr-dg-cell>
+            <clr-dg-cell>{{item.description|slice: 0 : 20}}..</clr-dg-cell>
+            <clr-dg-cell>{{item.succeeded}}</clr-dg-cell>
+        </clr-dg-row>
+
+        <clr-dg-footer>{{history.length}} logs</clr-dg-footer>
+    </clr-datagrid>
+</div>

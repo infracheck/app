@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
-import {ApiLatestTestsResult, ApiPlugin} from '../definitions/api';
+import {ApiHistory, ApiPlugin} from '../definitions/api';
 import {TestSet} from '../definitions/TestSet';
 import {Preset} from '../definitions/Preset';
 
@@ -49,17 +49,18 @@ export class HttpService {
     }
 
 
-    getLatestTests(): Observable<ApiLatestTestsResult[]> {
-        return this.http.get<ApiLatestTestsResult[]>(`${url}/latest_tests`).pipe(
+    getHistory(limit: number = 10, offset: number = 0): Observable<ApiHistory[]> {
+        let params = new HttpParams();
+
+        params = params.append('limit', limit.toString());
+        params = params.append('offset', offset.toString());
+        return this.http.get<ApiHistory[]>(`${url}/history`, {
+            params: params
+        }).pipe(
             catchError(HttpService.handleError)
         );
     }
 
-    getTestResult(resultId: string): Observable<ApiLatestTestsResult> {
-        return this.http.get<ApiLatestTestsResult>(`${url}/latest_tests/${resultId}`).pipe(
-            catchError(HttpService.handleError)
-        );
-    }
 
     healthCheck() {
         return this.http.get<any>(`${url}/check`).pipe(

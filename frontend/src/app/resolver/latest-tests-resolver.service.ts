@@ -2,17 +2,17 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {HttpService} from '../services/http.service';
-import {ApiLatestTestsResult} from '../definitions/api';
+import {ApiHistory} from '../definitions/api';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LatestTestsResolverService implements Resolve<ApiLatestTestsResult[]> {
+export class LatestTestsResolverService implements Resolve<ApiHistory[]> {
 
   constructor(private http: HttpService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiLatestTestsResult[]> {
-    return this.http.getLatestTests();
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiHistory[]> {
+    return this.http.getHistory();
   }
 }

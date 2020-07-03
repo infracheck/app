@@ -1,20 +1,20 @@
 {
-  "name": "Hello World",
+  "name": "Just another test",
   "description": "Hey there its me",
   "plugins": [
     {
-      "name": "TestInfraPlugin",
+      "id": "testinfra",
       "data": {
         "hosts": [
-          "192.168.44.44"
+          "localhost"
         ],
-        "username": "vagrant",
-        "password": "vagrant",
+        "username": "martin",
+        "password": "password",
         "target_os": "linux"
       },
       "modules": [
         {
-          "name": "service",
+          "id": "service",
           "fields": {
             "service": "nginx",
             "running": 0,
@@ -22,13 +22,13 @@
           }
         },
         {
-          "name": "address",
+          "id": "address",
           "fields": {
             "url": "google.de"
           }
         },
         {
-          "name": "os_specs",
+          "id": "os_specs",
           "fields": {
             "type": "linux",
             "distribution": "ubuntu",
