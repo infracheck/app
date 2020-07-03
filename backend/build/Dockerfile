@@ -4,4 +4,4 @@ RUN pip3 install -r requirements.txt
 CMD ssh-keygen -q -t rsa -N '' -f /app/.key/id_rsa
 COPY . /app
 WORKDIR /app
-waitress-serve --port=8080 infracheck
+CMD waitress-serve --port=8080 infracheck:app

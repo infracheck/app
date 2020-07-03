@@ -4,6 +4,7 @@ import flask_login
 from flask import Flask
 
 from Environment import Environment
+from flask_cors import CORS
 from infracheck.Persistence import Persistence
 
 # Log
@@ -25,6 +26,7 @@ log.addHandler(file_handler)
 # Init Flask
 app = Flask(__name__)
 app.secret_key = 'secret'
+CORS(app)
 
 login_manager = flask_login.LoginManager()
 
