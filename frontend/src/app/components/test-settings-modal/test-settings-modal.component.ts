@@ -18,10 +18,10 @@ export class TestSettingsModalComponent implements OnInit {
 
   ngOnInit() {
 
-    Object.keys(this.apiTestResult.input).forEach(key => {
+    Object.keys(this.apiTestResult.modules).forEach(key => {
       this.inputData.push({
         field: key,
-        type: this.apiTestResult.input[key]
+        type: this.apiTestResult.id[key]
       });
     });
   }

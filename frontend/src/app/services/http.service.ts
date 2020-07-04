@@ -49,7 +49,7 @@ export class HttpService {
     }
 
 
-    getHistory(limit: number = 10, offset: number = 0): Observable<ApiHistory[]> {
+    getHistory(limit: number = 100, offset: number = 0): Observable<ApiHistory[]> {
         let params = new HttpParams();
 
         params = params.append('limit', limit.toString());

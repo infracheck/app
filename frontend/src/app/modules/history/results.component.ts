@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from '../../services/http.service';
 import {ApiHistory} from '../../definitions/api';
+import {ClrDatagridSortOrder} from "@clr/angular";
 
 @Component({
     selector: 'app-results',
@@ -12,6 +13,7 @@ export class ResultsComponent {
     selected: ApiHistory;
     history: ApiHistory[];
     resultId: string;
+    sort_desc = ClrDatagridSortOrder.DESC;
 
     constructor(private acr: ActivatedRoute, private http: HttpService) {
         this.resultId = this.acr.snapshot.paramMap.get('id');

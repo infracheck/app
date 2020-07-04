@@ -39,7 +39,9 @@ class Persistence:
         conn.row_factory = sqlite3.Row
         db = conn.cursor()
         rows = db.execute("""
-        SELECT * from history
+        SELECT * 
+        FROM history
+        ORDER BY id DESC
         LIMIT ? 
         OFFSET ?
         """, (limit, offset,)).fetchall()

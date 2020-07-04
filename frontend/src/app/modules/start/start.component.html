@@ -65,7 +65,7 @@
                       <div class="alert alert-success">
                         <a [routerLink]="'/results/' + testResults.id">Your detailed test results</a>
                       </div>
-                      <app-result-view [results]="testResults"></app-result-view>
+                      <app-result-view [HistoryItem]="testResults"></app-result-view>
                     </div>
                     <div *ngIf="error" class="alert-warning alert">
                       <markdown lineNumbers>```json {{error}}```</markdown>
