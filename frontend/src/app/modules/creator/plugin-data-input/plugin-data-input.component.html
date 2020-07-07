@@ -1,0 +1,11 @@
+<form (ngSubmit)="onSubmit()" clrForm>
+    <h5>General Data</h5>
+    <div *ngFor="let inputData of pluginDocumentation.data | keyvalue">
+        <app-dynamic-form-element [input]="inputData"></app-dynamic-form-element>
+    </div>
+</form>
+
+
+<h1 *ngFor="let module of pluginDocumentation.modules">
+    {{module.id}}
+</h1>

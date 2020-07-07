@@ -8,15 +8,15 @@ import {CommonModule} from '@angular/common';
 
 
 @NgModule({
-  declarations: [
-    DocumentationComponent,
-  ],
-  imports: [
-    CommonModule,
-    DocumentationRoutingModule,
-    SharedModule,
-    MarkdownModule.forRoot()
-  ]
+    declarations: [
+        DocumentationComponent,
+    ],
+    imports: [
+        CommonModule,
+        DocumentationRoutingModule,
+        SharedModule,
+        MarkdownModule.forRoot()
+    ]
 })
 export class DocumentationModule {
 }

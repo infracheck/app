@@ -3,19 +3,19 @@ import {RouterModule, Routes} from '@angular/router';
 import {DocumentationComponent} from './documentation.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: DocumentationComponent
-  }
+    {
+        path: '',
+        component: DocumentationComponent
+    }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+    imports: [
+        RouterModule.forChild(routes)
+    ],
+    exports: [
+        RouterModule
+    ]
 })
 export class DocumentationRoutingModule {
 }

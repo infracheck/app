@@ -6,14 +6,14 @@ import {CommonModule} from '@angular/common';
 
 
 @NgModule({
-  declarations: [
-    ResultsComponent,
-  ],
-  imports: [
-    ResultsRoutingModule,
-    SharedModule,
-    CommonModule
-  ]
+    declarations: [
+        ResultsComponent,
+    ],
+    imports: [
+        ResultsRoutingModule,
+        SharedModule,
+        CommonModule
+    ]
 })
 export class ResultsModule {
 }

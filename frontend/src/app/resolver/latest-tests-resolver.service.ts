@@ -5,14 +5,14 @@ import {HttpService} from '../services/http.service';
 import {ApiHistory} from '../definitions/api';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LatestTestsResolverService implements Resolve<ApiHistory[]> {
 
-  constructor(private http: HttpService) {
-  }
+    constructor(private http: HttpService) {
+    }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiHistory[]> {
-    return this.http.getHistory();
-  }
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiHistory[]> {
+        return this.http.getHistory();
+    }
 }

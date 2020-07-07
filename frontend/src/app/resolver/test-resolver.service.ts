@@ -5,14 +5,14 @@ import {HttpService} from '../services/http.service';
 import {ApiPlugin} from '../definitions/api';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PluginResolver implements Resolve<any> {
 
-  constructor(private http: HttpService) {
-  }
+    constructor(private http: HttpService) {
+    }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiPlugin[]> {
-    return this.http.getPlugins();
-  }
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ApiPlugin[]> {
+        return this.http.getPlugins();
+    }
 }

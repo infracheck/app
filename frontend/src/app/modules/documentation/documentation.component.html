@@ -1,20 +1,20 @@
 <div class="content-container">
 
-    <nav class="sidenav">
+    <nav [clr-nav-level]="2" class="sidenav">
         <section class="sidenav-content">
             <section *ngFor="let plugin of plugins" class="nav-group collapsible">
                 <input [id]="plugin.id" type="checkbox">
                 <label [for]="plugin.id">Plugin: {{plugin.id}}</label>
                 <ul class="nav-list">
-                    <li><a class="nav-link"
-                           (click)=" this.selectedModule = plugin">Description</a>
+                    <li><a (click)=" this.selectedModule = plugin"
+                           class="nav-link">Description</a>
                     </li>
                     <li>
                         <b class="nav-text">&nbsp;&nbsp;&nbsp;Modules</b>
                         <ul class="nav-list">
                             <li *ngFor="let module of plugin.modules">
-                                <a class="nav-link"
-                                   (click)=" this.selectedModule = module">{{module.id}}</a>
+                                <a (click)=" this.selectedModule = module"
+                                   class="nav-link">{{module.id}}</a>
                             </li>
                         </ul>
                     </li>

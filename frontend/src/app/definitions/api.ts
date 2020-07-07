@@ -24,3 +24,11 @@ export interface ApiHistory {
     message: string
     data: any
 }
+
+export class InputTypes {
+    Text = "string";
+    Number = "number";
+    Boolean = "boolean";
+    TextList = "Array<string>";
+    NumberList = "Array<number>";
+}

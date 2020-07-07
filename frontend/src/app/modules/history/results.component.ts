@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpService} from '../../services/http.service';
 import {ApiHistory} from '../../definitions/api';

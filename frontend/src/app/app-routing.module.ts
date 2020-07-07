@@ -9,6 +9,7 @@ const routes: Routes = [
         path: 'start',
         loadChildren: () => import('./modules/creator/creator.module').then(m => m.CreatorModule),
         resolve: {
+            tests: PluginResolver
         }
     },
     {
@@ -43,5 +44,5 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
+
