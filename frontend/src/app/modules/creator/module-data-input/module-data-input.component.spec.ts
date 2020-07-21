@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GeneralDataInputComponent } from './general-data-input.component';
+import { ModuleDataInputComponent } from './module-data-input.component';
 
-describe('GeneralDataInputComponent', () => {
-  let component: GeneralDataInputComponent;
-  let fixture: ComponentFixture<GeneralDataInputComponent>;
+describe('ModuleDataInputComponent', () => {
+  let component: ModuleDataInputComponent;
+  let fixture: ComponentFixture<ModuleDataInputComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GeneralDataInputComponent ]
+      declarations: [ ModuleDataInputComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GeneralDataInputComponent);
+    fixture = TestBed.createComponent(ModuleDataInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

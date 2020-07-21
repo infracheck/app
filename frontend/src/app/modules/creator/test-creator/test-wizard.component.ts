@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ClrWizard} from "@clr/angular";
-import {ApiPlugin} from "../../../definitions/api";
+import {ApiInputData, ApiPlugin} from "../../../definitions/api";
+import {HttpService} from "../../../services/http.service";
 
 @Component({
     selector: 'app-test-wizard',
@@ -12,12 +13,20 @@ export class TestWizard {
     @Input() show: boolean;
     @Input() plugins: ApiPlugin[];
     @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-    data: any = {
-        "plugins": []
+    data: ApiInputData = {
+        name: "Hello World",
+        description: "Hello",
+        plugins: [
+            {
+                modules: [],
+                data: {},
+                id: "testinfra"
+            }
+        ]
     }
     chosenPlugins: any[] = []
 
-    constructor() {
+    constructor(private http: HttpService) {
     }
 
     changeVisibility() {
@@ -43,5 +52,10 @@ export class TestWizard {
 
     getPluginData(pluginId: string) {
         return this.data.plugins.find(plugin => plugin.id === pluginId)
+    }
+
+    finishWizard() {
+        console.log(this.data);
+        this.http.launchTest(this.data).subscribe(res => console.log(res))
     }
 }

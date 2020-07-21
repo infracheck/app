@@ -4,16 +4,16 @@ import {CreatorComponent} from "./creator.component";
 import {SharedModule} from "../shared.module";
 import {CreatorRoutingModule} from './creator-routing.module';
 import {TestWizard} from "./test-creator/test-wizard.component";
-import {GeneralDataInputComponent} from "./general-data-input/general-data-input.component";
 import {PluginDataInputComponent} from "./plugin-data-input/plugin-data-input.component";
+import {ModuleDataInputComponent} from "./module-data-input/module-data-input.component";
 
 
 @NgModule({
     declarations: [
         CreatorComponent,
-        GeneralDataInputComponent,
         TestWizard,
-        PluginDataInputComponent
+        PluginDataInputComponent,
+        ModuleDataInputComponent
     ],
     imports: [
         CommonModule,

@@ -3,9 +3,7 @@ import {Observable, throwError} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
-import {ApiHistory, ApiPlugin} from '../definitions/api';
-import {TestSet} from '../definitions/TestSet';
-import {Preset} from '../definitions/Preset';
+import {ApiHistory, ApiInputData, ApiPlugin} from '../definitions/api';
 
 
 export const url = environment.server;
@@ -36,14 +34,14 @@ export class HttpService {
         );
     }
 
-    runTest(testSet: TestSet): Observable<any> {
+    launchTest(testSet: ApiInputData): Observable<any> {
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
 
-        return this.http.post(`${url}/run`, testSet, httpOptions).pipe(
+        return this.http.post(`${url}/test`, testSet, httpOptions).pipe(
             catchError(HttpService.handleError)
         );
     }
@@ -64,13 +62,6 @@ export class HttpService {
 
     healthCheck() {
         return this.http.get<any>(`${url}/check`).pipe(
-            catchError(HttpService.handleError)
-        );
-    }
-
-
-    getAllPresets(): Observable<Preset[]> {
-        return this.http.get<Preset[]>(`${url}/presets`).pipe(
             catchError(HttpService.handleError)
         );
     }

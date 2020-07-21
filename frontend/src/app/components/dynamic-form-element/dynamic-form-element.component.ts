@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import {InputTypes} from "../../definitions/api";
 
 @Component({
     selector: 'app-dynamic-form-element',
@@ -8,7 +8,11 @@ import {FormGroup} from "@angular/forms";
 })
 export class DynamicFormElementComponent implements OnInit {
 
-    @Input() input: { key: string, value: string };
+    @Input() inputDefinition: { key: string, value: string };
+    @Input() data: any;
+    inputTypes = InputTypes;
+    newListElem: any = '';
+    editableListElem: number = -1;
 
     constructor() {
     }
@@ -16,4 +20,15 @@ export class DynamicFormElementComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    addListElement(key: string) {
+        this.data[key] = this.data[key] ? this.data[key] : [];
+        if (this.newListElem !== '') {
+            this.data[key].push(this.newListElem);
+            this.newListElem = '';
+        }
+    }
+
+    removeListElement(key: string, position: number) {
+        this.data[key].splice(position, 1)
+    }
 }

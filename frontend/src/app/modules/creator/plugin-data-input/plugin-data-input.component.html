@@ -1,11 +1,23 @@
-<form (ngSubmit)="onSubmit()" clrForm>
-    <h5>General Data</h5>
-    <div *ngFor="let inputData of pluginDocumentation.data | keyvalue">
-        <app-dynamic-form-element [input]="inputData"></app-dynamic-form-element>
-    </div>
-</form>
-
-
-<h1 *ngFor="let module of pluginDocumentation.modules">
-    {{module.id}}
-</h1>
+<clr-tabs>
+    <clr-tab>
+        <button clrTabLink id="link1">General Data</button>
+        <clr-tab-content id="content1" *clrIfActive="true">
+            <div class="clr-row">
+                <div class="clr-col-12" *ngFor="let inputDefinition of pluginDocumentation.data | keyvalue">
+                    <app-dynamic-form-element
+                            [data]="pluginData.data"
+                            [inputDefinition]="inputDefinition"></app-dynamic-form-element>
+                </div>
+            </div>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button clrTabLink>Modules</button>
+        <clr-tab-content *clrIfActive>
+            <app-module-data-input
+                    [moduleData]="pluginData.modules"
+                    [moduleDefinitions]="pluginDocumentation.modules">
+            </app-module-data-input>
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>

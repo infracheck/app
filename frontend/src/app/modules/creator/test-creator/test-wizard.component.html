@@ -1,10 +1,10 @@
 <clr-wizard #wizardxl [(clrWizardOpen)]="show" (clrWizardOnCancel)="changeVisibility()">
-    <clr-wizard-title>Test Creation Wizard</clr-wizard-title>
+    <clr-wizard-title>Launch Test</clr-wizard-title>
 
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
     <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-    <clr-wizard-button [type]="'finish'" (clrWizardButtonClicked)="changeVisibility()">Finish</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (clrWizardButtonClicked)="changeVisibility(); finishWizard()">Finish</clr-wizard-button>
 
     <clr-wizard-page>
         <ng-template clrPageTitle>General Data</ng-template>
@@ -24,7 +24,7 @@
         <h5>Plugins</h5>
 
         <clr-datagrid [(clrDgSelected)]="chosenPlugins" (clrDgSelectedChange)="selectionChanged()">
-            <clr-dg-column>User ID</clr-dg-column>
+            <clr-dg-column>Plugin ID</clr-dg-column>
             <clr-dg-column>Documentation</clr-dg-column>
             <clr-dg-column>Modules</clr-dg-column>
 
@@ -45,7 +45,5 @@
         <app-plugin-data-input [pluginData]="getPluginData(plugin.id)"
                                [pluginDocumentation]="plugin"></app-plugin-data-input>
     </clr-wizard-page>
-
-    <pre>{{data | json}}</pre>
 </clr-wizard>
 

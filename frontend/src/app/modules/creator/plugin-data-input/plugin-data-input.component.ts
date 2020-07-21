@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ApiPlugin} from "../../../definitions/api";
-import {FormGroup} from "@angular/forms";
+import {ApiInputPluginData, ApiPlugin} from "../../../definitions/api";
 
 @Component({
     selector: 'app-plugin-data-input',
@@ -10,7 +9,7 @@ import {FormGroup} from "@angular/forms";
 export class PluginDataInputComponent implements OnInit {
 
     @Input() pluginDocumentation: ApiPlugin;
-    @Input() pluginData;
+    @Input() pluginData: ApiInputPluginData;
 
     ngOnInit() {
     }

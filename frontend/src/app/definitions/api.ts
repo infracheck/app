@@ -25,10 +25,28 @@ export interface ApiHistory {
     data: any
 }
 
-export class InputTypes {
-    Text = "string";
-    Number = "number";
-    Boolean = "boolean";
-    TextList = "Array<string>";
-    NumberList = "Array<number>";
+export enum InputTypes {
+    Text = "string",
+    Password = "password",
+    Number = "number",
+    Boolean = "boolean",
+    TextList = "Array<string>",
+    NumberList = "Array<number>",
+}
+
+export interface ApiInputPluginData {
+    id: string
+    data: any
+    modules: ApiInputModuleData[]
+}
+
+export interface ApiInputModuleData {
+    id: string
+    fields: any
+}
+
+export interface ApiInputData {
+    name: string
+    description: string,
+    plugins: ApiInputPluginData[]
 }
