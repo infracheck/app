@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  server: $ENV.SERVER
+  server: '/api'
 };
 
 /*
