@@ -10,6 +10,7 @@ class ITestModule(object):
     __metaclass__ = ABCMeta
     documentation: t.Any
     id: str
+    version: float
     fields: t.Dict[str, DataTypes]
 
     @property

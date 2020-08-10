@@ -1,10 +1,10 @@
-
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
 
 
 class DemoModule(ITestModule):
     id = "demo_module"
+    version = 0.1
     documentation = """
 Name of your test
 ============

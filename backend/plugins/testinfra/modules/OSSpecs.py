@@ -6,6 +6,7 @@ from infracheck.model.ITestModule import ITestModule
 
 class OSSpecs(ITestModule):
     id = "os_specs"
+    version = 0.1
     documentation = """
 # Checks specs of operating system [Linux]
 ---

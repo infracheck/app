@@ -4,16 +4,15 @@ import json
 import os
 import subprocess
 import uuid
-from typing import List
-
 import xml.dom.minidom
+from typing import List
 
 from infracheck.helper.KeyRegistrationHelper import KeyRegistrationHelper
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
-from infracheck.model.ITestResult import TestResult
 from infracheck.model.ITestModule import ITestModule
+from infracheck.model.ITestResult import TestResult
 from plugins.testinfra.Config import Config
 
 
@@ -25,6 +24,7 @@ class TestInfraPluginData(IGeneralPluginData):
 
 class TestInfraPlugin(IPlugin):
     id = 'testinfra'
+    version = 0.1
     documentation = """
     This Testinfra plugins enable you to run customized code snippets using the testinfra framework
     """

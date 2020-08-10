@@ -6,6 +6,7 @@ from infracheck.model.ITestModule import ITestModule
 
 class Service(ITestModule):
     id = "service"
+    version = 0.1
     documentation = """
 .. todo:: It should be possible to check for different service states
 # Is adress reachable [Linux]

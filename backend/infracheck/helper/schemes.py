@@ -1,3 +1,8 @@
+"""
+This file contains all JSON schemes that can be send to the backend
+"""
+
+# This is how the input data, to launch a test, should look like
 test_data_scheme = {
     "type": "object",
     "required": ["name", "description", "plugins"],
@@ -29,4 +34,3 @@ test_data_scheme = {
     },
     "additionalProperties": False
 }
-

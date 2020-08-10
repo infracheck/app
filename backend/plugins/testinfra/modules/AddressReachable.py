@@ -6,6 +6,7 @@ from infracheck.model.ITestModule import ITestModule
 
 class AddressReachable(ITestModule):
     id = "address"
+    version = 0.1
     documentation = """
     # Is adress reachable [Linux]
 ---

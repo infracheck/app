@@ -7,6 +7,7 @@ from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
 from infracheck.model.ITestResult import TestResult
 
+
 class TestInfraPluginData(IGeneralPluginData):
     hosts: List[str]
     username: str
@@ -15,6 +16,7 @@ class TestInfraPluginData(IGeneralPluginData):
 
 class DemoPlugin(IPlugin):
     id = 'demo_plugin'
+    version = 0.1
     documentation = """
     ## Dulichium Victoria faciem Boeotia agris
 

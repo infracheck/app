@@ -5,8 +5,8 @@ from typing import List
 
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.ITestData import IPluginData, IGeneralPluginData
-from infracheck.model.ITestResult import TestResult
 from infracheck.model.ITestModule import ITestModule
+from infracheck.model.ITestResult import TestResult
 
 log = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ class IPlugin(object):
     __metaclass__ = ABCMeta
     modules: List[ITestModule]
     id: str
+    version: float
     documentation: str
     data: IGeneralPluginData = {}
 
@@ -47,6 +48,7 @@ class IPlugin(object):
                 "id": x.id,
                 "documentation": x.documentation,
                 "fields": x.fields,
+                "version": x.version,
                 "code": x.code
             }
             for x in self.modules)

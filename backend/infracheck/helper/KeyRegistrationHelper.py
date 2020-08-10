@@ -6,6 +6,9 @@ import pexpect
 
 
 class KeyRegistrationHelper:
+    """
+    This class can be used to register your ssh ke at a remote host
+    """
 
     def __init__(self, user, password):
         self.key_path = ".key/"
