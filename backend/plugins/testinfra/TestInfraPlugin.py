@@ -7,13 +7,13 @@ import uuid
 import xml.dom.minidom
 from typing import List
 
-from infracheck.helper.KeyRegistrationHelper import KeyRegistrationHelper
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
 from infracheck.model.ITestModule import ITestModule
 from infracheck.model.ITestResult import TestResult
 from plugins.testinfra.Config import Config
+from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
 
 
 class TestInfraPluginData(IGeneralPluginData):
@@ -44,6 +44,12 @@ class TestInfraPlugin(IPlugin):
         if not os.path.exists(Config.OUTPUT_FOLDER):
             os.makedirs(Config.OUTPUT_FOLDER)
 
+        # Create ssh key
+        if not os.path.exists(Config.SSH_FOLDER):
+            os.makedirs(Config.SSH_FOLDER)
+        subprocess.run(F"echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa", shell=True,
+                       check=True)
+
     def test(self, _data: IPluginData) -> TestResult:
         super().test(_data)
         self.init_env()
@@ -62,9 +68,9 @@ class TestInfraPlugin(IPlugin):
         return self.convert_result_to_csv(uid)
 
     def create_test_command_and_launch_test(self, uid):
-        config_string = F"--junit-xml={Config.OUTPUT_FOLDER}/result_{uid}.xml "
+        config_string = F"--junit-xml={Config.OUTPUT_FOLDER}result_{uid}.xml "
         host_string = self.create_hosts_string()
-        cmd: str = F"py.test {Config.OUTPUT_FOLDER}/test_{uid}.py {host_string} {config_string} "
+        cmd: str = F"py.test {Config.OUTPUT_FOLDER}test_{uid}.py {host_string} {config_string} "
         subprocess.call(cmd, shell=True)
 
     def create_hosts_string(self):
@@ -74,7 +80,7 @@ class TestInfraPlugin(IPlugin):
                     )
             )
             host_string = ','.join(map(str, hosts_with_auth))
-            os_specific_cmd_part = F"--ssh-identity-file='.key/id_rsa' --hosts='{host_string}'"
+            os_specific_cmd_part = F"--ssh-identity-file='{Config.SSH_FOLDER}id_rsa' --hosts='{host_string}'"
         else:
             hosts_with_auth = list(
                 map(lambda host:
@@ -98,7 +104,7 @@ class TestInfraPlugin(IPlugin):
             body.append(self.get_module_code(test_module_data, test_id))
             test_id += 1
 
-        file_name = F".out/test_{uid}.py"
+        file_name = F"{Config.OUTPUT_FOLDER}test_{uid}.py"
         file = open(file_name, 'w+')
         file.writelines(head + body)
         file.close()

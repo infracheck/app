@@ -1,45 +1,64 @@
-import os
 import subprocess
 from typing import List
 
 import pexpect
 
+from plugins.testinfra.Config import Config
+
 
 class KeyRegistrationHelper:
     """
-    This class can be used to register your ssh ke at a remote host
+    This class can be used to register your ssh key at the remote host
     """
 
     def __init__(self, user, password):
-        self.key_path = ".key/"
-        if not os.path.exists(self.key_path):
-            os.makedirs(self.key_path)
-        subprocess.call(F"ssh-keygen -y -q -t rsa -N '' -f {self.key_path}id_rsa", shell=True)
+        """
+        Create new ssh key every launch
+        :param user:
+        :param password:
+        """
+        subprocess.call(F"ssh-keygen -y -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa", shell=True)
         self.user = user
         self.pw = password
-        self.logs = open('.out/register-ssh-logs.txt', 'wb')
 
     def register_ssh_keys(self, hosts: List[str]):
+        """
+        Register ssh key for every given host
+        :param hosts:
+        :return:
+        """
         for host in hosts:
             self.register_ssh_key_on_host(host)
 
     def clean_ssh_keys(self, hosts: List[str]):
+        """
+        Remove ssh keys on every given host
+        :param hosts:
+        :return:
+        """
         for host in hosts:
             self.remove_ssh_key(host)
 
-    # used for linux ssh connections only
     def register_ssh_key_on_host(self, host):
+        """
+        used for linux ssh connections only
+        :param host:
+        :return:
+        """
         self.register_key(host)
         self.test_ssh_with_key(host)
 
-    # Use ssh-copy-id to register the local key on a remote host
     def register_key(self, ip):
+        """
+        Use ssh-copy-id to register the local key on a remote host
+        :param ip:
+        :return:
+        """
         child = pexpect.spawn(
             F'ssh-copy-id'
-            F' -i {self.key_path}id_rsa'
+            F' -i {Config.SSH_FOLDER}id_rsa'
             F' {self.user}@{ip}'
             F' -o StrictHostKeyChecking=no -f')
-        child.logfile_read = self.logs
 
         i = child.expect(['password', 'added:'])
         added_key = False
@@ -63,14 +82,18 @@ class KeyRegistrationHelper:
                     'SSH connection denied because of permission issues')
         child.close()
 
-    # connect to the host via ssh and closes the connection afterwards
     def test_ssh_with_key(self, ip):
+        """
+        connect to the host via ssh and closes the connection afterwards
+        :param ip:
+        :return:
+        """
         child = pexpect.spawn(
             F"ssh -i"
-            F" {self.key_path}id_rsa"
+            F" {Config.SSH_FOLDER}id_rsa"
             F" -o 'StrictHostKeyChecking=no'"
             F" {self.user}@{ip}")
-        child.logfile_read = open('.out/register-ssh-logs.txt', 'wb')
+        child.logfile_read = open(F'{Config.OUTPUT_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
@@ -84,13 +107,17 @@ class KeyRegistrationHelper:
             raise ConnectionError('Could not login via ssh')
         child.close()
 
-    # connect to the host via ssh and remove ssh key
     def remove_ssh_key(self, ip):
+        """
+        connect to the host via ssh and remove ssh key
+        :param ip:
+        :return:
+        """
         child = pexpect.spawn(
-            F"ssh -i {self.key_path}id_rsa"
+            F"ssh -i {Config.SSH_FOLDER}id_rsa"
             F" -o 'StrictHostKeyChecking=no'"
             F"  {self.user}@{ip}")
-        child.logfile_read = open('.out/register-ssh-logs.txt', 'wb')
+        child.logfile_read = open(F'{Config.OUTPUT_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
@@ -104,8 +131,13 @@ class KeyRegistrationHelper:
             raise ConnectionError('Could not login via ssh')
         child.close()
 
-    def ssh_key_delete_cmd(self):
-        key = open(F"{self.key_path}id_rsa.pub", "r").read().rstrip()
+    @staticmethod
+    def ssh_key_delete_cmd():
+        """
+        Create command to remove the ssh_key from remote host
+        :return:
+        """
+        key = open(F"{Config.SSH_FOLDER}id_rsa.pub", "r").read().rstrip()
 
         # split the key in its three parts (ssh-rsa, content, name)
         key_parts = key.split(' ')

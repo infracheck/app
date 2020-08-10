@@ -1,9 +1,7 @@
 Flask==1.1.2
 flask-login==0.5.0
-pytest~=5.4.3
-setuptools~=47.3.1
+setuptools~=49.3.0
 pexpect~=4.8.0
-cryptography==2.9.2
 waitress==1.4.4
 jsonschema==3.2.0
 flask-cors==3.0.8
