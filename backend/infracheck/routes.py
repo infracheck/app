@@ -1,12 +1,11 @@
 import hashlib
-import json
 
 import flask
 import flask_login
 from flask import jsonify
 from flask import request
 
-from infracheck import app, login_manager, Persistence, log
+from infracheck import app, login_manager, Persistence
 from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
 
@@ -34,6 +33,18 @@ def run_test():
     data = request.get_json()
     res = plugin_manager.launch_tests(data)
     return jsonify(res)
+
+
+@app.route('/preset', methods=['POST', 'GET'])
+def preset():
+    if request.method == 'GET':
+        limit = 10
+        offset = 0
+        return jsonify(Persistence().get_presets(int(limit), int(offset)))
+    if request.method == 'POST':
+        data = request.get_json()
+        res = Persistence().insert_preset(data)
+        return jsonify(res)
 
 
 @app.route('/login', methods=['POST'])

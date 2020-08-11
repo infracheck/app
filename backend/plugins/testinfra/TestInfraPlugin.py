@@ -26,7 +26,10 @@ class TestInfraPlugin(IPlugin):
     id = 'testinfra'
     version = 0.1
     documentation = """
-    This Testinfra plugins enable you to run customized code snippets using the testinfra framework
+    This Testinfra plugins enable you to run customized code snippets using the testinfra framework.
+    
+    **Note:** You can run tests on this machine too. For that, simply enter ['localhost'] to your hosts array. 
+    In that case you dont need any username or password at all.
     """
     data: TestInfraPluginData = {
         "hosts": DataTypes.TextList,
@@ -44,16 +47,29 @@ class TestInfraPlugin(IPlugin):
         if not os.path.exists(Config.OUTPUT_FOLDER):
             os.makedirs(Config.OUTPUT_FOLDER)
 
-        # Create ssh key
-        if not os.path.exists(Config.SSH_FOLDER):
-            os.makedirs(Config.SSH_FOLDER)
-        subprocess.run(F"echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa", shell=True,
-                       check=True)
-
     def test(self, _data: IPluginData) -> TestResult:
+        """
+        The complete test run
+        1. Setup environment
+        2. Create test uid
+        3. Register ssh keys on remote hosts
+        4. Generate test files
+        5. Launch tests
+        6. Remove remote ssh keys
+        7. Create results
+
+        :param _data:
+        :return:
+        """
         super().test(_data)
         self.init_env()
         uid = uuid.uuid4().hex
+
+        # Catch special case if tests should be performend on localhost only
+        if self.data['hosts'] == ['localhost']:
+            self.generate_test_file(_data, uid)
+            self.create_test_command_and_launch_test(uid, localhost_only=True)
+            return self.convert_result_to_csv(uid)
 
         ssh_service = KeyRegistrationHelper(self.data['username'], self.data['password'])
         if self.data["target_os"] == 'linux':
@@ -67,17 +83,19 @@ class TestInfraPlugin(IPlugin):
 
         return self.convert_result_to_csv(uid)
 
-    def create_test_command_and_launch_test(self, uid):
+    def create_test_command_and_launch_test(self, uid, localhost_only: bool = False):
         config_string = F"--junit-xml={Config.OUTPUT_FOLDER}result_{uid}.xml "
         host_string = self.create_hosts_string()
-        cmd: str = F"py.test {Config.OUTPUT_FOLDER}test_{uid}.py {host_string} {config_string} "
+        if localhost_only:
+            cmd: str = F"py.test {Config.OUTPUT_FOLDER}test_{uid}.py {config_string} "
+        else:
+            cmd: str = F"py.test {Config.OUTPUT_FOLDER}test_{uid}.py {host_string} {config_string} "
         subprocess.call(cmd, shell=True)
 
     def create_hosts_string(self):
         if self.data['target_os'] == 'linux':
             hosts_with_auth = list(
-                map(lambda host: F"ssh://{self.data['username']}@{host}", self.data['hosts']
-                    )
+                map(lambda host: F"ssh://{self.data['username']}@{host}", self.data['hosts'])
             )
             host_string = ','.join(map(str, hosts_with_auth))
             os_specific_cmd_part = F"--ssh-identity-file='{Config.SSH_FOLDER}id_rsa' --hosts='{host_string}'"

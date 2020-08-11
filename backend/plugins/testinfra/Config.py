@@ -1,4 +1,4 @@
 class Config(object):
     """ Configuration data, explicitly for the TestInfraPlugin """
-    OUTPUT_FOLDER = '.testinfra-plugin/out/'
-    SSH_FOLDER = '.testinfra-plugin/ssh/'
+    OUTPUT_FOLDER = '.tmp/testinfra/out/'
+    SSH_FOLDER = '.tmp/testinfra/ssh/'

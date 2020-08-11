@@ -1,3 +1,4 @@
+import os
 import subprocess
 from typing import List
 
@@ -9,6 +10,8 @@ from plugins.testinfra.Config import Config
 class KeyRegistrationHelper:
     """
     This class can be used to register your ssh key at the remote host
+    This is needed by the testinfra plugin.
+    To test linux machines via ssh testinfra only supports key based authentication.
     """
 
     def __init__(self, user, password):
@@ -17,7 +20,12 @@ class KeyRegistrationHelper:
         :param user:
         :param password:
         """
-        subprocess.call(F"ssh-keygen -y -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa", shell=True)
+        # Create ssh key
+        if not os.path.exists(Config.SSH_FOLDER):
+            os.makedirs(Config.SSH_FOLDER)
+        subprocess.run(F"echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa",
+                       shell=True,
+                       check=True)
         self.user = user
         self.pw = password
 
