@@ -11,6 +11,8 @@ export class CreatorComponent implements OnInit {
     open_wizard: boolean = true;
 
     public plugins: ApiPlugin[];
+    public result;
+    user_edited: boolean = false;
 
 
     constructor(private acr: ActivatedRoute) {
@@ -22,5 +24,4 @@ export class CreatorComponent implements OnInit {
 
     ngOnInit(): void {
     }
-
 }

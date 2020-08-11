@@ -13,16 +13,11 @@ export class TestWizard {
     @Input() show: boolean;
     @Input() plugins: ApiPlugin[];
     @Output() showChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() resultChange: EventEmitter<any> = new EventEmitter<any>();
     data: ApiInputData = {
         name: "Hello World",
         description: "Hello",
-        plugins: [
-            {
-                modules: [],
-                data: {},
-                id: "testinfra"
-            }
-        ]
+        plugins: []
     }
     chosenPlugins: any[] = []
 
@@ -43,6 +38,8 @@ export class TestWizard {
                     "modules": [],
                     "data": {},
                     "id": plugin.id,
+                    "documentation": plugin.documentation,
+                    "version": plugin.version,
                 })
             }
         })
@@ -54,8 +51,28 @@ export class TestWizard {
         return this.data.plugins.find(plugin => plugin.id === pluginId)
     }
 
+
+    resetWizard(): void {
+        this.chosenPlugins = []
+        this.data = {
+            name: '',
+            description: '',
+            plugins: []
+        }
+        this.changeVisibility()
+        this.wizard.reset()
+    }
+
     finishWizard() {
         console.log(this.data);
-        this.http.launchTest(this.data).subscribe(res => console.log(res))
+
+        this.http.launchTest(this.data).subscribe(
+            success => {
+                this.resultChange.emit(success);
+            },
+            err => {
+                console.log(err);
+            }
+        )
     }
 }

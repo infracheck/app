@@ -9,6 +9,7 @@ export interface ApiPlugin {
     data: any
     documentation: string
     id: string
+    version: number;
     modules: ApiModule[]
 }
 
@@ -35,6 +36,8 @@ export enum InputTypes {
 }
 
 export interface ApiInputPluginData {
+    documentation: string;
+    version: number;
     id: string
     data: any
     modules: ApiInputModuleData[]

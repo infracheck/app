@@ -13,9 +13,5 @@ export class AppComponent {
 
     constructor(http: HttpService) {
         this.linkRef = document.getElementById('theme') as HTMLLinkElement;
-
-        http.healthCheck().subscribe(
-            () => this.serverCheck = 1,
-            () => this.serverCheck = 2);
     }
 }

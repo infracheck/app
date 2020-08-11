@@ -1,10 +1,12 @@
-<clr-wizard #wizardxl [(clrWizardOpen)]="show" (clrWizardOnCancel)="changeVisibility()">
+<clr-wizard #wizard [(clrWizardOpen)]="show" (clrWizardOnCancel)="changeVisibility()">
     <clr-wizard-title>Launch Test</clr-wizard-title>
 
+    <clr-wizard-button (click)="resetWizard()">Reset</clr-wizard-button>
     <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
     <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
     <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-    <clr-wizard-button [type]="'finish'" (clrWizardButtonClicked)="changeVisibility(); finishWizard()">Finish</clr-wizard-button>
+    <clr-wizard-button [type]="'finish'" (clrWizardButtonClicked)="changeVisibility(); finishWizard()">Finish
+    </clr-wizard-button>
 
     <clr-wizard-page>
         <ng-template clrPageTitle>General Data</ng-template>
@@ -22,6 +24,7 @@
         </form>
 
         <h5>Plugins</h5>
+        <pre>{{data |json}}</pre>
 
         <clr-datagrid [(clrDgSelected)]="chosenPlugins" (clrDgSelectedChange)="selectionChanged()">
             <clr-dg-column>Plugin ID</clr-dg-column>
@@ -40,10 +43,12 @@
 
     </clr-wizard-page>
 
-    <clr-wizard-page *ngFor="let plugin of chosenPlugins">
-        <ng-template clrPageTitle>Plugin: {{plugin.id}}</ng-template>
-        <app-plugin-data-input [pluginData]="getPluginData(plugin.id)"
-                               [pluginDocumentation]="plugin"></app-plugin-data-input>
-    </clr-wizard-page>
+    <ng-container *ngIf="chosenPlugins.length!== 0">
+        <clr-wizard-page *ngFor="let plugin of chosenPlugins">
+            <ng-template clrPageTitle>Plugin: {{plugin.id}}</ng-template>
+            <app-plugin-data-input [pluginData]="getPluginData(plugin.id)"
+                                   [pluginDocumentation]="plugin"></app-plugin-data-input>
+        </clr-wizard-page>
+    </ng-container>
 </clr-wizard>
 

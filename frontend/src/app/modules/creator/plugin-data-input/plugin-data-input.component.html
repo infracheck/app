@@ -1,5 +1,11 @@
 <clr-tabs>
     <clr-tab>
+        <button clrTabLink>Description</button>
+        <clr-tab-content *clrIfActive>
+            <markdown [data]="pluginData.documentation"></markdown>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
         <button clrTabLink id="link1">General Data</button>
         <clr-tab-content id="content1" *clrIfActive="true">
             <div class="clr-row">
