@@ -25,7 +25,7 @@ class PdfGenerator(FPDF):
     def chapter_title(self, num, label):
         self.set_font_size(16)
         self.set_text_color(255, 255, 255)
-        self.set_fill_color(45, 133, 191)
+        self.set_fill_color(11, 114, 181)
         self.cell(0, 15, 'Part %d : %s' % (num, label), 0, 1, 'L', 1)
         self.ln(4)
         self.set_text_color(0, 0, 0)
