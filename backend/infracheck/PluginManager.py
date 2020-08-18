@@ -7,6 +7,7 @@ from typing import List
 from jsonschema import validate
 
 from infracheck.Persistence import Persistence
+from infracheck.helper.PdfGenerator import PdfGenerator
 from infracheck.helper.load_packages import load_packages
 from infracheck.helper.schemes import test_data_scheme
 from infracheck.model.IPlugin import IPlugin
@@ -23,6 +24,7 @@ class PluginManager(object):
 
     plugins: List[IPlugin] = []
     database = Persistence()
+    pdf_generator = PdfGenerator()
 
     def list_plugins(self):
         """Returns a list of plugins that are available
@@ -75,8 +77,12 @@ class PluginManager(object):
                     .test(plugin_test_data))
 
         result['id'] = uid
+
+        # Create results
         result = self.serialize_result(data, result)
+        self.pdf_generator.generate(result)
         self.database.insert_test_result(result)
+
         return result
 
     def _get_test_plugin(self, plugin_name: str) -> IPlugin:
@@ -144,5 +150,4 @@ class PluginManager(object):
             result["message"] = 'Test complete. No failures.'
         else:
             result["message"] = F"Test complete but {result['failures']} failure detected."
-
         return result
