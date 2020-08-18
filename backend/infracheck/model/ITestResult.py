@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import TypedDict, Any, List
 
 
@@ -11,6 +12,7 @@ class ITestResult(TypedDict, total=True):
     errors: int
     total: int
     message: str
+    date: datetime
     plugin_data: List[Any]
 
 

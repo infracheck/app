@@ -1,6 +1,7 @@
 import logging
 import subprocess
 import uuid
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
@@ -75,8 +76,8 @@ class PluginManager(object):
 
         # Create results
         result = self._serialize_result(uid, data, plugin_results)
-        PdfGenerator().generate(result)
         self.database.insert_test_result(result)
+        PdfGenerator().generate(result)
 
         return result
 
@@ -139,6 +140,7 @@ class PluginManager(object):
             "errors": sum(c['errors'] for c in plugin_results),
             "total": sum(c['total'] for c in plugin_results),
             "message": "PLEASE IMPLEMENT",
+            "date": datetime.now(),
             "plugin_data": plugin_results
         }
         if result["failures"] == 0:

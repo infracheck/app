@@ -3,7 +3,6 @@ import os
 from fpdf import FPDF
 
 from Environment import Environment
-from infracheck.model.ITestData import ITestData
 from infracheck.model.ITestResult import ITestResult
 
 
@@ -40,8 +39,8 @@ class PdfGenerator(FPDF):
 
     def print_info(self, name, value):
         self.set_text_color(0, 0, 0)
-        self.cell(30, 12, str(name), border=1)
-        self.cell(160, 12, str(value), border=1)
+        self.cell(45, 12, str(name), border=1)
+        self.cell(145, 12, str(value), border=1)
         self.ln(12)
 
     def generate(self, report: ITestResult):
@@ -58,5 +57,5 @@ class PdfGenerator(FPDF):
             for key in plugin_data:
                 self.print_info(key, plugin_data[key])
 
-        self.output(F"{report['id']}.pdf", 'F')
+        self.output(F"{Environment.RESULT_FOLDER}{report['id']}.pdf", 'F')
         del self
