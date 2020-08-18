@@ -1,10 +1,7 @@
 from typing import List
-
-import xml.dom.minidom
-
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
+from infracheck.model.ITestData import IPluginData, IGeneralPluginData
 from infracheck.model.ITestResult import TestResult
 
 
@@ -70,4 +67,13 @@ Celebrant habetis stabis.
     }
 
     def test(self, _data: IPluginData) -> TestResult:
-        return {"PLACEHOLDER": "PLACEHOLDER"}
+        return {
+            "name": "Hello World",
+            "description": "TEST",
+            "succeeded": 0,
+            "failures": 0,
+            "errors": 0,
+            "total": 0,
+            "message": "Hello World",
+            "data": {}
+        }

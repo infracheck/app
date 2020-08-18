@@ -1,5 +1,7 @@
 import logging
+import subprocess
 import uuid
+from pathlib import Path
 from typing import List
 
 from jsonschema import validate
@@ -45,6 +47,11 @@ class PluginManager(object):
         """Reset the list of all plugins and initiate the walk over the main
         provided plugin package to load all available plugins
         """
+        # Install requirements for all plugins
+        log.info(F"|- INSTALL REQUIREMENTS -|")
+        self._install_requirements()
+        # Load all plugins
+        log.info(F"|- INSTALL PLUGINS -|")
         self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
 
     def launch_tests(self, data: ITestData) -> ITestResult:
@@ -79,6 +86,43 @@ class PluginManager(object):
         :return:
         """
         return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]
+
+    @staticmethod
+    def _install_requirements():
+        """
+        Before loading plugins it is necessary to install their requirements
+        This function search for requirements.txt files inside the plugin folder and installs them
+
+        :return:
+        """
+        requirements = []
+        for path in Path('plugins').rglob('requirements.txt'):
+            with open(path) as requirements_file:
+                requirements = requirements + requirements_file.read().splitlines()
+
+        # Remove duplicates
+        requirements = sorted(list(dict.fromkeys(requirements)))
+
+        # Check version conflicts
+        mapped_requirements = [entry.split("==")[0] for entry in requirements]
+        conflicts = set([x for x in mapped_requirements if mapped_requirements.count(x) > 1])
+        [
+            log.warning(F"Different '{conflict}' versions detected.")
+            for conflict in conflicts
+        ]
+
+        # Install every package, but remove duplicates beforehand
+        for package in requirements:
+            try:
+                sp = subprocess.Popen(['pip', 'install', package], stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT)
+                sp.communicate()
+                if sp.returncode == 0:
+                    log.info(F"|---- {package}")
+                else:
+                    log.error(F"{package} was not installed")
+            except Exception as e:
+                log.error(e)
 
     @staticmethod
     def serialize_result(input_data: ITestData, result_data: ITestResult) -> ITestResult:

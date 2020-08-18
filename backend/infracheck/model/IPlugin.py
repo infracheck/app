@@ -20,18 +20,6 @@ class IPlugin(object):
     data: IGeneralPluginData = {}
 
     def __init__(self) -> None:
-        with open(F"plugins/{self.id}/requirements.txt") as requirements_file:
-            requirements = requirements_file.read().splitlines()
-            for package in requirements:
-                try:
-                    sp = subprocess.Popen(['pip', 'install', package], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                    sp.communicate()
-                    if sp.returncode == 0:
-                        log.info(F"|---- {package}")
-                    else:
-                        log.error(F"{package} was not installed")
-                except Exception as e:
-                    log.error(e)
         self.reload_modules()
 
     def __str__(self) -> str:
