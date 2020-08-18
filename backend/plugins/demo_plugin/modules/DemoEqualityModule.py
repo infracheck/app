@@ -1,12 +1,13 @@
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.ITestModule import ITestModule
+from infracheck.model.ITestResult import IModuleResult
 
 
-class DemoModule(ITestModule):
-    id = "demo_module"
+class DemoEqualityModule(ITestModule):
+    id = "equality_check"
     version = 0.1
     documentation = """
-Name of your test
+Check equality of two inputs
 ============
 
 ## Description
@@ -31,8 +32,17 @@ Write who to blame for bad test (or celebrate for good ones).
 Martin Welcker <mwelcker@proficom.de>
 """
     fields = {
-        "url": DataTypes.Text
+        "number1": DataTypes.Number,
+        "number2": DataTypes.Number
     }
 
-    def test(self, data):
-        return data
+    def test(self) -> IModuleResult:
+        equal = self.fields['input1'] == self.fields['input2']
+        result: IModuleResult = {
+            "module_name": self.id,
+            "module_version": self.version,
+            "fields": self.fields,
+            "success": equal,
+            "message": "They are equal" if equal else "They are not equal",
+        }
+        return result

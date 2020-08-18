@@ -1,9 +1,8 @@
 from typing import List
 
-from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData, IGeneralPluginData
-from infracheck.model.ITestResult import IPluginResult
+from infracheck.model.ITestData import IPluginData, IGeneralPluginData, IModuleData
+from infracheck.model.ITestResult import IPluginResult, IModuleResult
 
 
 class TestInfraPluginData(IGeneralPluginData):
@@ -59,28 +58,32 @@ Non pectore arserunt, qua solent sanguine
 Celebrant habetis stabis.
 
     """
-    data: TestInfraPluginData = {
-        "hosts": DataTypes.TextList,
-        "username": DataTypes.Text,
-        "target_os": DataTypes.Text,
-        "password": DataTypes.Text,
-        "port": DataTypes.Number
+    data: IGeneralPluginData = {
     }
 
     def test(self, _data: IPluginData) -> IPluginResult:
+        """
+        This is the demo test function
+
+        :param _data:
+        :return:
+        """
+        module_result: List[IModuleResult] = []
+        for module_data in _data['modules']:
+            module = self.get_module_by_id(module_data['id'])
+            module.fields = module_data['fields']
+            module_result.append(module.test())
+            del module
+
         result: IPluginResult = {
             "plugin_name": self.id,
             "plugin_version": self.version,
-            "succeeded": 1,
-            "failures": 2,
-            "errors": 3,
-            "total": 4,
+            "succeeded": sum(c['success'] for c in module_result),
+            "failures": sum(not c['success'] for c in module_result),
+            "errors": 0,
+            "total": len(module_result),
             "message": "Hello World",
-            "custom_data": {
-                "name1": "rofl",
-                "name2": "rofl",
-                "name3": "rofl",
-                "name4": "rofl",
-            }
+            "module_data": module_result,
+            "custom_data": {}
         }
         return result

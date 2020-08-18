@@ -24,4 +24,13 @@ class IPluginResult(TypedDict, total=True):
     errors: int
     total: int
     message: str
+    module_data: List[Any]
     custom_data: Any
+
+
+class IModuleResult(TypedDict, total=True):
+    module_name: str
+    module_version: float
+    fields: Any
+    success: bool
+    message: str

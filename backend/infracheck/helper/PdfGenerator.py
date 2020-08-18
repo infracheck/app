@@ -44,7 +44,7 @@ class PdfGenerator(FPDF):
         self.set_font('Arial', 'b', 12)
         self.multi_cell(190, 4, str(name.title()), 0, 'J', 0, False)
         self.set_font('Arial', '', 10)
-        if isinstance(value, collections.abc.Mapping):
+        if isinstance(value, (collections.abc.Mapping, list, tuple)):
             self.multi_cell(190, 4, json.dumps(value, sort_keys=True, indent=4), 0, 'J', 0, False)
         else:
             self.multi_cell(190, 4, str(value), 0, 'J', 0, False)

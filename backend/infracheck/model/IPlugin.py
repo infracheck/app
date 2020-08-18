@@ -32,6 +32,14 @@ class IPlugin(object):
         """ Reloads all available modules from ./modules folder """
         self.modules = load_packages(F"plugins.{self.id}.modules", ITestModule)
 
+    def get_module_by_id(self, module_id: str):
+        """
+        Returns the test module based on its id
+        :param module_id:
+        :return:
+        """
+        return list(filter(lambda module: module.id == module_id, self.modules))[0]
+
     def list_modules(self):
         return list(
             {
