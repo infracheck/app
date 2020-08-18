@@ -2,9 +2,9 @@ import logging
 
 import flask_login
 from flask import Flask
+from flask_cors import CORS
 
 from Environment import Environment
-from flask_cors import CORS
 from infracheck.Persistence import Persistence
 
 # Log
@@ -24,7 +24,7 @@ file_handler.setLevel(logging.DEBUG)
 log.addHandler(file_handler)
 
 # Init Flask
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.secret_key = 'secret'
 CORS(app)
 

@@ -1,17 +1,18 @@
-import datetime
+import inspect
 import inspect
 import json
 import os
 import subprocess
 import uuid
-import xml.dom.minidom
 from typing import List
+
+import xml.dom.minidom
 
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
 from infracheck.model.ITestModule import ITestModule
-from infracheck.model.ITestResult import TestResult
+from infracheck.model.ITestResult import IPluginResult
 from plugins.testinfra.Config import Config
 from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
 
@@ -47,7 +48,7 @@ class TestInfraPlugin(IPlugin):
         if not os.path.exists(Config.OUTPUT_FOLDER):
             os.makedirs(Config.OUTPUT_FOLDER)
 
-    def test(self, _data: IPluginData) -> TestResult:
+    def test(self, _data: IPluginData) -> IPluginResult:
         """
         The complete test run
         1. Setup environment
@@ -69,7 +70,7 @@ class TestInfraPlugin(IPlugin):
         if self.data['hosts'] == ['localhost']:
             self.generate_test_file(_data, uid)
             self.create_test_command_and_launch_test(uid, localhost_only=True)
-            return self.convert_result_to_csv(uid)
+            return self.create_result_from_xml_output(uid)
 
         ssh_service = KeyRegistrationHelper(self.data['username'], self.data['password'])
         if self.data["target_os"] == 'linux':
@@ -81,7 +82,7 @@ class TestInfraPlugin(IPlugin):
         if self.data["target_os"] == 'linux':
             ssh_service.clean_ssh_keys(self.data['hosts'])
 
-        return self.convert_result_to_csv(uid)
+        return self.create_result_from_xml_output(uid)
 
     def create_test_command_and_launch_test(self, uid, localhost_only: bool = False):
         config_string = F"--junit-xml={Config.OUTPUT_FOLDER}result_{uid}.xml "
@@ -142,30 +143,21 @@ class TestInfraPlugin(IPlugin):
             .replace('fields', F'fields_{test_id}')
         return F"fields_{test_id} = {json.dumps(data['fields'])}\n\n{code_with_uuid}\n\n"
 
-    @staticmethod
-    def convert_result_to_csv(uid):
+    def create_result_from_xml_output(self, uid):
         xml_file = Config.OUTPUT_FOLDER + '/result_' + uid + '.xml'
         input_file = xml.dom.minidom.parse(xml_file)
-        result = {
-            "id": uid,
-            "date": datetime.datetime.today().strftime('%m/%d/%Y-%H:%M'),
+        data = input_file.getElementsByTagName("testsuite")[0]
+
+        result: IPluginResult = {
+            "plugin_name": self.id,
+            "plugin_version": self.version,
+            "succeeded": int(data.getAttribute("tests")) - int(data.getAttribute("failures")),
+            "failures": int(data.getAttribute("failures")),
+            "errors": int(data.getAttribute("errors")),
+            "total": int(data.getAttribute("tests")),
+            "message": "",
+            "custom_data": []
         }
-
-        testsuite_keys = [
-            "errors",
-            "failures",
-            "skipped",
-            "tests"
-        ]
-
-        testsuite = input_file.getElementsByTagName("testsuite")[0]
-        for key in testsuite_keys:
-            result[key] = int(testsuite.getAttribute(key))
-
-        result['total'] = result['tests']
-        result['succeeded'] = result['total'] - result['failures']
-
-        result["testset"] = []
         test_cases = input_file.getElementsByTagName("testcase")
         for test in test_cases:
             test_data = {
@@ -180,5 +172,5 @@ class TestInfraPlugin(IPlugin):
                 success = True
 
             test_data["success"] = success
-            result["testset"].append(test_data)
+            result["custom_data"].append(test_data)
         return result

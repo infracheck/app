@@ -2,7 +2,7 @@ import hashlib
 
 import flask
 import flask_login
-from flask import jsonify
+from flask import jsonify, send_from_directory
 from flask import request
 
 from infracheck import app, login_manager, Persistence
@@ -10,6 +10,11 @@ from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
 
 plugin_manager = PluginManager()
+
+
+@app.route('/results/<path:path>')
+def send_results(path):
+    return send_from_directory('../results/', path)
 
 
 @app.route('/plugins', methods=['GET'])

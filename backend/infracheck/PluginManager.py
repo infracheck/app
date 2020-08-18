@@ -6,13 +6,14 @@ from typing import List
 
 from jsonschema import validate
 
+from Environment import Environment
 from infracheck.Persistence import Persistence
 from infracheck.helper.PdfGenerator import PdfGenerator
 from infracheck.helper.load_packages import load_packages
 from infracheck.helper.schemes import test_data_scheme
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import ITestData
-from infracheck.model.ITestResult import ITestResult
+from infracheck.model.ITestResult import ITestResult, IPluginResult
 
 log = logging.getLogger()
 
@@ -24,7 +25,6 @@ class PluginManager(object):
 
     plugins: List[IPlugin] = []
     database = Persistence()
-    pdf_generator = PdfGenerator()
 
     def list_plugins(self):
         """Returns a list of plugins that are available
@@ -67,20 +67,15 @@ class PluginManager(object):
         if is_not_valid:
             raise TypeError(is_not_valid)
 
-        result: ITestResult = {
-            "data": []
-        }
+        plugin_results: List[IPluginResult] = []
         log.info(F"Launching the test with name: {data['name']}")
         for plugin_test_data in data['plugins']:
-            result['data'].append(
-                self._get_test_plugin(plugin_test_data['id'])
-                    .test(plugin_test_data))
-
-        result['id'] = uid
+            plugin_result: IPluginResult = self._get_test_plugin(plugin_test_data['id']).test(plugin_test_data)
+            plugin_results.append(plugin_result)
 
         # Create results
-        result = self.serialize_result(data, result)
-        self.pdf_generator.generate(result)
+        result = self._serialize_result(uid, data, plugin_results)
+        PdfGenerator().generate(result)
         self.database.insert_test_result(result)
 
         return result
@@ -131,20 +126,20 @@ class PluginManager(object):
                 log.error(e)
 
     @staticmethod
-    def serialize_result(input_data: ITestData, result_data: ITestResult) -> ITestResult:
+    def _serialize_result(uid: str, input_data: ITestData, plugin_results: List[IPluginResult]) -> ITestResult:
         """ Takes multiple plugin results and serialize them to one response
         """
-        result = {
-            "id": result_data['id'],
+        result: ITestResult = {
+            "id": uid,
+            "pdf_link": F"/{Environment.RESULT_FOLDER}{uid}.pdf",
             "name": input_data['name'],
             "description": input_data['description'],
-            "succeeded": sum(c['succeeded'] for c in result_data['data']),
-            "failures": sum(c['failures'] for c in result_data['data']),
-            "errors": sum(c['errors'] for c in result_data['data']),
-            "total": sum(c['total'] for c in result_data['data']),
+            "succeeded": sum(c['succeeded'] for c in plugin_results),
+            "failures": sum(c['failures'] for c in plugin_results),
+            "errors": sum(c['errors'] for c in plugin_results),
+            "total": sum(c['total'] for c in plugin_results),
             "message": "PLEASE IMPLEMENT",
-            "date": "",
-            "data": result_data
+            "plugin_data": plugin_results
         }
         if result["failures"] == 0:
             result["message"] = 'Test complete. No failures.'

@@ -3,6 +3,8 @@ import os
 from fpdf import FPDF
 
 from Environment import Environment
+from infracheck.model.ITestData import ITestData
+from infracheck.model.ITestResult import ITestResult
 
 
 class PdfGenerator(FPDF):
@@ -10,7 +12,6 @@ class PdfGenerator(FPDF):
         super().__init__('P', 'mm', 'A4')
         self.set_font('Arial', '', 16)
         self.set_text_color(0, 0, 0)
-        self.data = {}
         if not os.path.exists(Environment.RESULT_FOLDER):
             os.makedirs(Environment.RESULT_FOLDER)
 
@@ -43,20 +44,19 @@ class PdfGenerator(FPDF):
         self.cell(160, 12, str(value), border=1)
         self.ln(12)
 
-    def generate(self, report):
+    def generate(self, report: ITestResult):
         self.alias_nb_pages()
         self.print_chapter(1, 'General Data')
 
-        self.print_info("name", report['name'])
-        self.print_info("description", report['description'])
-        self.print_info("id", report['id'])
-        self.print_info("date", report['date'])
-        self.print_info("total", report['total'])
-        self.print_info("succeeded", report['succeeded'])
-        self.print_info("errors", report['errors'])
-        self.print_info("failures", report['failures'])
-        self.print_info("message", report['message'])
+        for key in report:
+            if key == 'plugin_data':
+                continue
+            self.print_info(key, report[key])
 
-        self.print_chapter(2, 'Plugin Data')
+        for plugin_data in report['plugin_data']:
+            self.print_chapter(2, 'Plugin Data')
+            for key in plugin_data:
+                self.print_info(key, plugin_data[key])
 
-        self.output(F"{Environment.RESULT_FOLDER}{report['id']}.pdf", 'F')
+        self.output(F"{report['id']}.pdf", 'F')
+        del self

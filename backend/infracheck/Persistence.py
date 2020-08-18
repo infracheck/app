@@ -28,7 +28,7 @@ class Persistence:
             failures    INTEGER NOT NULL,
             errors      INTEGER NOT NULL,
             total       INTEGER NOT NULL,
-            data        BLOB,
+            plugin_data BLOB,
             message     TEXT     DEFAULT 'No response message',
             date        DATETIME DEFAULT CURRENT_TIMESTAMP
         );"""
@@ -83,7 +83,7 @@ class Persistence:
         :return:
         """
         self.db.execute(
-            """INSERT INTO history (name, description, succeeded, failures, errors, total, data, message)
+            """INSERT INTO history (name, description, succeeded, failures, errors, total, plugin_data, message)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (
                 result['name'],
                 result['description'],
@@ -91,7 +91,7 @@ class Persistence:
                 result['failures'],
                 result['errors'],
                 result['total'],
-                json.dumps(result['data']),
+                json.dumps(result['plugin_data']),
                 result['message']
                 ,))
         self.db.commit()

@@ -1,12 +1,11 @@
 import logging
-import subprocess
 from abc import ABCMeta
 from typing import List
 
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.ITestData import IPluginData, IGeneralPluginData
 from infracheck.model.ITestModule import ITestModule
-from infracheck.model.ITestResult import TestResult
+from infracheck.model.ITestResult import IPluginResult
 
 log = logging.getLogger(__name__)
 
@@ -26,8 +25,7 @@ class IPlugin(object):
         return self.id
 
     # noinspection PyTypeChecker
-    def test(self, data: IPluginData) -> TestResult:
-        self.data = data['data']
+    def test(self, data: IPluginData) -> IPluginResult:
         pass
 
     def reload_modules(self):

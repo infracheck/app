@@ -1,8 +1,9 @@
 from typing import List
+
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData, IGeneralPluginData
-from infracheck.model.ITestResult import TestResult
+from infracheck.model.ITestResult import IPluginResult
 
 
 class TestInfraPluginData(IGeneralPluginData):
@@ -66,14 +67,15 @@ Celebrant habetis stabis.
         "port": DataTypes.Number
     }
 
-    def test(self, _data: IPluginData) -> TestResult:
-        return {
-            "name": "Hello World",
-            "description": "TEST",
-            "succeeded": 0,
-            "failures": 0,
-            "errors": 0,
-            "total": 0,
+    def test(self, _data: IPluginData) -> IPluginResult:
+        result: IPluginResult = {
+            "plugin_name": self.id,
+            "plugin_version": self.version,
+            "succeeded": 1,
+            "failures": 2,
+            "errors": 3,
+            "total": 4,
             "message": "Hello World",
-            "data": {}
+            "custom_data": {}
         }
+        return result
