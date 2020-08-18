@@ -1,8 +1,10 @@
 import os
-import subprocess
 from typing import List
 
 import pexpect
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
 
 from plugins.testinfra.Config import Config
 
@@ -20,14 +22,27 @@ class KeyRegistrationHelper:
         :param user:
         :param password:
         """
+        self.user = user
+        self.pw = password
         # Create ssh key
         if not os.path.exists(Config.SSH_FOLDER):
             os.makedirs(Config.SSH_FOLDER)
-        subprocess.run(F"echo -e 'y\n' | ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa",
-                       shell=True,
-                       check=True)
-        self.user = user
-        self.pw = password
+        private_rsa_key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048,
+            backend=default_backend()
+        )
+        with open(F"{Config.SSH_FOLDER}id_rsa", "wb") as f:
+            f.write(private_rsa_key.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.TraditionalOpenSSL,
+                encryption_algorithm=serialization.NoEncryption())
+            )
+        with open(F"{Config.SSH_FOLDER}id_rsa.pub", "wb") as f:
+            f.write(private_rsa_key.public_key().public_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.SubjectPublicKeyInfo)
+            )
 
     def register_ssh_keys(self, hosts: List[str]):
         """
