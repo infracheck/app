@@ -76,6 +76,11 @@ Celebrant habetis stabis.
             "errors": 3,
             "total": 4,
             "message": "Hello World",
-            "custom_data": {}
+            "custom_data": {
+                "name1": "rofl",
+                "name2": "rofl",
+                "name3": "rofl",
+                "name4": "rofl",
+            }
         }
         return result

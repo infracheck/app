@@ -1,3 +1,5 @@
+import collections
+import json
 import os
 
 from fpdf import FPDF
@@ -39,9 +41,14 @@ class PdfGenerator(FPDF):
 
     def print_info(self, name, value):
         self.set_text_color(0, 0, 0)
-        self.cell(45, 12, str(name), border=1)
-        self.cell(145, 12, str(value), border=1)
-        self.ln(12)
+        self.set_font('Arial', 'b', 12)
+        self.multi_cell(190, 4, str(name.title()), 0, 'J', 0, False)
+        self.set_font('Arial', '', 10)
+        if isinstance(value, collections.abc.Mapping):
+            self.multi_cell(190, 4, json.dumps(value, sort_keys=True, indent=4), 0, 'J', 0, False)
+        else:
+            self.multi_cell(190, 4, str(value), 0, 'J', 0, False)
+        self.ln(2)
 
     def generate(self, report: ITestResult):
         self.alias_nb_pages()
@@ -52,8 +59,10 @@ class PdfGenerator(FPDF):
                 continue
             self.print_info(key, report[key])
 
+        i = 1
         for plugin_data in report['plugin_data']:
-            self.print_chapter(2, 'Plugin Data')
+            self.print_chapter(i, F"{plugin_data['plugin_name']}")
+            i = i + 1
             for key in plugin_data:
                 self.print_info(key, plugin_data[key])
 
