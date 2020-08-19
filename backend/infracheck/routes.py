@@ -2,81 +2,111 @@ import hashlib
 
 import flask
 import flask_login
-from flask import jsonify, send_from_directory
-from flask import request
+from flask import jsonify, send_from_directory, request
+from flask_restplus import Resource
 
-from infracheck import app, login_manager, Persistence
+from infracheck import api
+from infracheck import login_manager, Persistence
 from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
+from infracheck.helper.schemes import test_data_scheme
 
 plugin_manager = PluginManager()
 
+operations = api.namespace(
+    'Test',
+    path='/',
+    description='test operation of the checkinfra backend')
 
-@app.route('/results/<path:path>')
-def send_results(path):
-    return send_from_directory('../results/', path)
+plugin = api.namespace(
+    'Plugins',
+    path='/',
+    description='api to get information on plugins')
 
+authentication = api.namespace(
+    'Authentication',
+    path='/',
+    description='all authentication operations of the checkinfra backend')
 
-@app.route('/plugins', methods=['GET'])
-def list_plugins():
-    return jsonify(plugin_manager.list_plugins())
+results = api.namespace(
+    'Result',
+    path='/',
+    description='actions on results and logs')
 
-
-@app.route('/history', methods=['GET'])
-def list_history():
-    limit = request.args.get('limit')
-    offset = request.args.get('offset')
-    if limit and offset:
-        result = jsonify(Persistence().get_log(int(limit), int(offset)))
-    else:
-        result = jsonify(Persistence().get_log())
-    return result
-
-
-@app.route('/test', methods=['POST'])
-def run_test():
-    data = request.get_json()
-    res = plugin_manager.launch_tests(data)
-    return jsonify(res)
+presets = api.namespace(
+    'Preset',
+    path='/',
+    description='actions on presets. currently not implemented')
 
 
-@app.route('/preset', methods=['POST', 'GET'])
-def preset():
-    if request.method == 'GET':
+@results.route('/results/<path:path>')
+class Results(Resource):
+    def get(self, path):
+        return send_from_directory('../results/', path)
+
+
+@plugin.route('/plugins')
+class Plugins(Resource):
+    def get(self):
+        return jsonify(plugin_manager.list_plugins())
+
+
+@results.route('/history')
+class History(Resource):
+    def get(self):
+        limit = request.args.get('limit')
+        offset = request.args.get('offset')
+        if limit and offset:
+            result = jsonify(Persistence().get_log(int(limit), int(offset)))
+        else:
+            result = jsonify(Persistence().get_log())
+        return result
+
+
+@operations.route('/test')
+class TestRunner(Resource):
+    @operations.marshal_with(api.schema_model('TestData',test_data_scheme), envelope='resource')
+    def post(self):
+        data = request.get_json()
+        res = plugin_manager.launch_tests(data)
+        return jsonify(res)
+
+
+@presets.route('/preset')
+class Preset(Resource):
+    def get(self):
         limit = 10
         offset = 0
         return jsonify(Persistence().get_presets(int(limit), int(offset)))
-    if request.method == 'POST':
+
+    def post(self):
         data = request.get_json()
         res = Persistence().insert_preset(data)
         return jsonify(res)
 
 
-@app.route('/login', methods=['POST'])
-def login():
-    credentials = request.get_json()
-    name, password = credentials["user"], credentials["password"]
+@authentication.route('/login')
+class LoginRoute(Resource):
+    def post(self):
+        credentials = request.get_json()
+        name, password = credentials["user"], credentials["password"]
 
-    if hashlib.sha3_512(password.encode('UTF-8')).hexdigest() == users[name]['password']:
-        user = User()
-        user.id = name
-        flask_login.login_user(user)
-        return flask.redirect(flask.url_for('protected'))
-    return 'Bad login'
-
-
-@app.route('/protected')
-@flask_login.login_required
-def protected():
-    return 'Logged in as: ' + flask_login.current_user.id
+        if hashlib.sha3_512(password.encode('UTF-8')).hexdigest() == users[name]['password']:
+            user = User()
+            user.id = name
+            flask_login.login_user(user)
+            return flask.redirect(flask.url_for('protected'))
+        return 'Bad login'
 
 
-@app.route('/logout')
-def logout():
-    flask_login.logout_user()
-    return 'Logged out'
+@authentication.route('/logout')
+class LogoutRoute(Resource):
+    def get(self):
+        flask_login.logout_user()
+        return 'Logged out'
 
 
 @login_manager.unauthorized_handler
-def unauthorized_handler():
-    return 'Unauthorized'
+class UnauhorizedHandler(Resource):
+    def get(self):
+        return 'Unauthorized'
