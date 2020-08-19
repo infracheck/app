@@ -1,6 +1,6 @@
-FROM python:3.9.0b3-buster
+FROM python:3.9-rc-buster
 COPY requirements.txt ./
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 COPY . /app
 WORKDIR /app
-CMD waitress-serve --port=8080 infracheck:app
+CMD ["waitress-serve", "--port=8080", "infracheck:app"]

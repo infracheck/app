@@ -52,7 +52,7 @@ class PluginManager(object):
         """
         # Install requirements for all plugins
         log.info(F"|- INSTALL REQUIREMENTS -|")
-        # self._install_requirements()
+        self._install_requirements()
         # Load all plugins
         log.info(F"|- INSTALL PLUGINS -|")
         self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
