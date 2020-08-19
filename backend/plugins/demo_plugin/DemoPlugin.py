@@ -71,12 +71,12 @@ Celebrant habetis stabis.
         result: IPluginResult = {
             "plugin_name": self.id,
             "plugin_version": self.version,
-            "succeeded": sum(c['success'] for c in module_result),
-            "failures": sum(not c['success'] for c in module_result),
-            "errors": 0,
-            "total": len(module_result),
+            "success_count": sum(c['is_successful'] for c in module_result),
+            "failure_count": sum(not c['is_successful'] for c in module_result),
+            "error_count": 0,
+            "total_count": len(module_result),
             "message": "Hello World",
-            "module_data": module_result,
+            "module_result": module_result,
             "custom_data": {}
         }
         return result

@@ -55,12 +55,12 @@ class PdfGenerator(FPDF):
         self.print_chapter(1, 'General Data')
 
         for key in report:
-            if key == 'plugin_data':
+            if key == 'plugin_result':
                 continue
             self.print_info(key, report[key])
 
         i = 1
-        for plugin_data in report['plugin_data']:
+        for plugin_data in report['plugin_result']:
             self.print_chapter(i, F"{plugin_data['plugin_name']}")
             i = i + 1
             for key in plugin_data:

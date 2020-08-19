@@ -41,10 +41,6 @@ class TestInfraPlugin(IPlugin):
         "password": {
             "type": DataTypes.Password,
             "value": "password"
-        },
-        "port": {
-            "type": DataTypes.Number,
-            "value": 22
         }
     }
 
@@ -53,22 +49,26 @@ class TestInfraPlugin(IPlugin):
         :param plugin_data:
         :return:
         """
-        host_address = plugin_data['params']['hosts']['value']
-        username = plugin_data['params']['username']['value']
-        target_os = plugin_data['params']['target_os']['value']
-        password = plugin_data['params']['password']['value']
-        port = plugin_data['params']['port']['value']
+        # 1. Extract parameters
+        host_address = plugin_data['params']['host']
+        username = plugin_data['params']['username']
+        target_os = plugin_data['params']['target_os']
+        password = plugin_data['params']['password']
 
+        # 2. Generate host-string
         if host_address == 'localhost':
             host = testinfra.get_host("local://")
         else:
             ssh_service = KeyRegistrationHelper(self.params['username'], self.params['password'])
             if self.params["target_os"] == 'linux':
+                # Perform 'ssh-copy-id' to register ssh keys on remote machine
                 ssh_service.register_ssh_keys([self.params['hosts']['value']])
             host = testinfra.get_host(F"paramiko://{username}@{host_address}", ssh_config=F"{Config.SSH_FOLDER}id_rsa")
 
+        # 3. Run Test
         runner = unittest.TextTestRunner()
-        suite = unittest.TestSuite()
+        results: List[unittest.TestResult] = []
+        module_results: List[IModuleResult] = []
         for module in plugin_data['modules']:
             test: [IModule, unittest.TestCase] = self.get_module_by_id(module['id'])('test')
             test.host = host
@@ -78,30 +78,30 @@ class TestInfraPlugin(IPlugin):
                     test.params[param]['value'] = module['params'][param]
                 except KeyError as e:
                     log.info(F"Parameter {e} not set -> using default value: '{test.params[param]['value']}'")
-            suite.addTest(test)
 
-        result: unittest.TestResult = runner.run(suite)
+            test_result = runner.run(test)
+            results.append(test_result)
+            module_results.append({
+                "module_name": module['id'],
+                "module_version": test.version,
+                "params": module['params'],
+                "is_successful": test_result.wasSuccessful(),
+                "message": str(test_result.failures)
+            })
 
-        module_data: List[IModuleResult] = [
-            {
-                "module_name": "str",
-                "module_version": 0.1,
-                "fields": "Any",
-                "success": True,
-                "message": "str"
-            }
-        ]
+        # 4. Create Result
         res: IPluginResult = {
             "plugin_name": self.id,
             "plugin_version": self.version,
-            "succeeded": result.wasSuccessful(),
-            "failures": len(result.failures),
-            "errors": len(result.errors),
-            "total": result.testsRun,
-            "message": str(result.failures),
-            "module_data": module_data,
+            "success_count": sum(c.testsRun for c in results) - sum(not c['is_successful'] for c in module_results),
+            "failure_count": sum(len(c.failures) for c in results),
+            "error_count": sum(len(c.errors) for c in results),
+            "total_count": sum(c.testsRun for c in results),
+            "message": "hello world",
+            "module_result": module_results,
             "custom_data": {}
         }
+        print(res)
         if self.params["target_os"] == 'linux':
             ssh_service.clean_ssh_keys([self.params['hosts']['value']])
         return res

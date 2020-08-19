@@ -22,7 +22,7 @@ The following is a example of a valid <ITestData> object:
       },
       "modules": [{
           "name": "service",
-          "fields": {
+          "params": {
             "service": "nginx",
             "running": 0,
             "enabled": 0

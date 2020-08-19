@@ -136,18 +136,18 @@ class PluginManager(object):
             "pdf_link": F"/{Environment.RESULT_FOLDER}{uid}.pdf",
             "name": input_data['name'],
             "description": input_data['description'],
-            "succeeded": sum(c['succeeded'] for c in plugin_results),
-            "failures": sum(c['failures'] for c in plugin_results),
-            "errors": sum(c['errors'] for c in plugin_results),
-            "total": sum(c['total'] for c in plugin_results),
+            "success_count": sum(c['success_count'] for c in plugin_results),
+            "failure_count": sum(c['failure_count'] for c in plugin_results),
+            "error_count": sum(c['error_count'] for c in plugin_results),
+            "total_count": sum(c['total_count'] for c in plugin_results),
             "message": "PLEASE IMPLEMENT",
             "date": datetime.now(),
-            "plugin_data": plugin_results
+            "plugin_result": plugin_results
         }
-        if result["failures"] == 0:
-            result["message"] = 'Test complete. No failures.'
+        if result["failure_count"] == 0:
+            result["message"] = 'Test complete. No failure_count.'
         else:
-            result["message"] = F"Test complete but {result['failures']} failure detected."
+            result["message"] = F"Test complete but {result['failure_count']} failure detected."
         return result
 
     @staticmethod

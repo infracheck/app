@@ -1,1 +1,2 @@
 testinfra==5.2.2
+paramiko==2.7.1

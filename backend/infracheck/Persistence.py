@@ -27,11 +27,11 @@ class Persistence:
                 id          INTEGER PRIMARY KEY AUTOINCREMENT,
                 name        TEXT      NOT NULL,
                 description TEXT      NOT NULL,
-                succeeded   INTEGER   NOT NULL,
-                failures    INTEGER   NOT NULL,
-                errors      INTEGER   NOT NULL,
-                total       INTEGER   NOT NULL,
-                plugin_data BLOB,
+                success_count   INTEGER   NOT NULL,
+                failure_count    INTEGER   NOT NULL,
+                error_count      INTEGER   NOT NULL,
+                total_count       INTEGER   NOT NULL,
+                plugin_result BLOB,
                 message     TEXT DEFAULT 'No response message',
                 datestamp   TIMESTAMP NOT NULL
             );"""
@@ -60,7 +60,7 @@ class Persistence:
         """, (limit, offset,)).fetchall()
         result = [dict(row) for row in rows]
         for row in result:
-            row['plugin_data'] = json.loads(row['plugin_data'])
+            row['plugin_result'] = json.loads(row['plugin_result'])
         return result
 
     def get_presets(self, limit: int = 10, offset: int = 0):
@@ -76,7 +76,7 @@ class Persistence:
         """, (limit, offset,)).fetchall()
         result = [dict(row) for row in rows]
         for row in result:
-            row['plugin_data'] = json.loads(row['data'])
+            row['plugin_result'] = json.loads(row['data'])
         return result
 
     def insert_test_result(self, result: ITestResult):
@@ -85,15 +85,15 @@ class Persistence:
         :return:
         """
         self.cursor.execute(
-            """INSERT INTO history (name, description, succeeded, failures, errors, total, plugin_data, message, datestamp)
+            """INSERT INTO history (name, description, success_count, failure_count, error_count, total_count, plugin_result, message, datestamp)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""", (
                 result['name'],
                 result['description'],
-                result['succeeded'],
-                result['failures'],
-                result['errors'],
-                result['total'],
-                json.dumps(result['plugin_data']),
+                result['success_count'],
+                result['failure_count'],
+                result['error_count'],
+                result['total_count'],
+                json.dumps(result['plugin_result']),
                 result['message'],
                 result['date']
                 ,))

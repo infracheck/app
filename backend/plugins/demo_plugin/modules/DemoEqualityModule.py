@@ -50,8 +50,8 @@ Martin Welcker <mwelcker@proficom.de>
         result: IModuleResult = {
             "module_name": self.id,
             "module_version": self.version,
-            "fields": self.params,
-            "success": equal,
+            "params": self.params,
+            "is_successful": equal,
             "message": "They are equal" if equal else "They are not equal",
         }
         return result
