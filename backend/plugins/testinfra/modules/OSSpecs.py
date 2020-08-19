@@ -1,10 +1,10 @@
 import pytest
 
 from infracheck.model.DataTypes import DataTypes
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.IModule import IModule
 
 
-class OSSpecs(ITestModule):
+class OSSpecs(IModule):
     id = "os_specs"
     version = 0.1
     documentation = """
@@ -36,17 +36,17 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.system
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    fields = {
+    params = {
         "type": DataTypes.Text,
         "distribution": DataTypes.Text,
         "release": DataTypes.Text,
         "codename": DataTypes.Text
     }
 
-    @pytest.mark.parametrize("os_type", [fields["type"]])
-    @pytest.mark.parametrize("distribution", [fields["distribution"]])
-    @pytest.mark.parametrize("release", [fields["release"]])
-    @pytest.mark.parametrize("codename", [fields["codename"]])
+    @pytest.mark.parametrize("os_type", [params["type"]])
+    @pytest.mark.parametrize("distribution", [params["distribution"]])
+    @pytest.mark.parametrize("release", [params["release"]])
+    @pytest.mark.parametrize("codename", [params["codename"]])
     def test(host, os_type, distribution, release, codename):
         if os_type:
             assert host.system_info.type == os_type

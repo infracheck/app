@@ -1,17 +1,12 @@
 from typing import List
 
 from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData, IGeneralPluginData, IModuleData
+from infracheck.model.ITestData import IPluginData
 from infracheck.model.ITestResult import IPluginResult, IModuleResult
 
 
-class TestInfraPluginData(IGeneralPluginData):
-    hosts: List[str]
-    username: str
-    password: str
-
-
 class DemoPlugin(IPlugin):
+    params = {}
     id = 'demo_plugin'
     version = 0.1
     documentation = """
@@ -58,20 +53,18 @@ Non pectore arserunt, qua solent sanguine
 Celebrant habetis stabis.
 
     """
-    data: IGeneralPluginData = {
-    }
 
-    def test(self, _data: IPluginData) -> IPluginResult:
+    def test(self, plugin_data: IPluginData) -> IPluginResult:
         """
         This is the demo test function
 
-        :param _data:
+        :param plugin_data:
         :return:
         """
         module_result: List[IModuleResult] = []
-        for module_data in _data['modules']:
+        for module_data in plugin_data['modules']:
             module = self.get_module_by_id(module_data['id'])
-            module.fields = module_data['fields']
+            module.set_module_data(module_data['params'])
             module_result.append(module.test())
             del module
 

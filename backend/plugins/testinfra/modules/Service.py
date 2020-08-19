@@ -1,10 +1,10 @@
 import pytest
 
 from infracheck.model.DataTypes import DataTypes
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.IModule import IModule
 
 
-class Service(ITestModule):
+class Service(IModule):
     id = "service"
     version = 0.1
     documentation = """
@@ -33,13 +33,13 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.servic
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    fields = {
+    params = {
         "service": DataTypes.Text,
         "enabled": DataTypes.Number,
         "running": DataTypes.Number,
     }
 
-    @pytest.mark.parametrize("data", [fields])
+    @pytest.mark.parametrize("data", [params])
     def test(host, data):
         service = host.service(data['service'])
         if data['enabled'] == 1:

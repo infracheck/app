@@ -1,9 +1,12 @@
+from typing import Dict
+
 from infracheck.model.DataTypes import DataTypes
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
 from infracheck.model.ITestResult import IModuleResult
 
 
-class DemoEqualityModule(ITestModule):
+class DemoEqualityModule(IModule):
     id = "equality_check"
     version = 0.1
     documentation = """
@@ -31,17 +34,23 @@ Write a short description what your test is doing.
 Write who to blame for bad test (or celebrate for good ones).
 Martin Welcker <mwelcker@proficom.de>
 """
-    fields = {
-        "number1": DataTypes.Number,
-        "number2": DataTypes.Number
+    params: Dict[str, IParam] = {
+        "number1": {
+            "type": DataTypes.Number,
+            "value": ''
+        },
+        "number2": {
+            "type": DataTypes.Password,
+            "value": ''
+        }
     }
 
     def test(self) -> IModuleResult:
-        equal = self.fields['input1'] == self.fields['input2']
+        equal = self.params['number1']['value'] == self.params['number2']['value']
         result: IModuleResult = {
             "module_name": self.id,
             "module_version": self.version,
-            "fields": self.fields,
+            "fields": self.params,
             "success": equal,
             "message": "They are equal" if equal else "They are not equal",
         }

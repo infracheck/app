@@ -35,7 +35,7 @@ class PluginManager(object):
                        "version": x.version,
                        "documentation": x.documentation,
                        "modules": x.list_modules(),
-                       "data": x.data,
+                       "data": x.params,
                        "type": "plugin"
                    } for x in self.plugins)
         return res
@@ -52,7 +52,7 @@ class PluginManager(object):
         """
         # Install requirements for all plugins
         log.info(F"|- INSTALL REQUIREMENTS -|")
-        self._install_requirements()
+        # self._install_requirements()
         # Load all plugins
         log.info(F"|- INSTALL PLUGINS -|")
         self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
@@ -76,6 +76,7 @@ class PluginManager(object):
 
         # Create results
         result = self._serialize_result(uid, data, plugin_results)
+        result = self.remove_passwords(result)
         self.database.insert_test_result(result)
         PdfGenerator().generate(result)
 
@@ -148,3 +149,7 @@ class PluginManager(object):
         else:
             result["message"] = F"Test complete but {result['failures']} failure detected."
         return result
+
+    @staticmethod
+    def remove_passwords(data: ITestResult) -> ITestResult:
+        return data

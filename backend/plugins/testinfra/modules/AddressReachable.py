@@ -1,10 +1,10 @@
 import pytest
 
 from infracheck.model.DataTypes import DataTypes
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.IModule import IModule
 
 
-class AddressReachable(ITestModule):
+class AddressReachable(IModule):
     id = "address"
     version = 0.1
     documentation = """
@@ -37,12 +37,12 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.addr.A
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    fields = {
+    params = {
         "url": DataTypes.Text
     }
 
     # noinspection PyMethodParameters
-    @pytest.mark.parametrize("data", [fields])
+    @pytest.mark.parametrize("data", [params])
     def test(host, data):
         addr = data['url']
         curr_addr = host.addr(addr)

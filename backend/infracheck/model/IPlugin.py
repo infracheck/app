@@ -1,36 +1,45 @@
 import logging
-from abc import ABCMeta
-from typing import List
+from abc import abstractmethod, ABC
+from typing import List, Dict
 
 from infracheck.helper.load_packages import load_packages
-from infracheck.model.ITestData import IPluginData, IGeneralPluginData
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
+from infracheck.model.ITestData import IPluginData
 from infracheck.model.ITestResult import IPluginResult
 
 log = logging.getLogger(__name__)
 
 
-class IPlugin(object):
-    __metaclass__ = ABCMeta
-    modules: List[ITestModule]
-    id: str
-    version: float
-    documentation: str
-    data: IGeneralPluginData = {}
+class IPlugin(ABC):
+    modules: List[IModule] = []
+
+    @property
+    def id(self) -> str:
+        raise NotImplementedError
+
+    @property
+    def version(self) -> float:
+        raise NotImplementedError
+
+    @property
+    def documentation(self) -> str:
+        raise NotImplementedError
+
+    @property
+    def params(self) -> Dict[str, IParam]:
+        raise NotImplementedError
 
     def __init__(self) -> None:
         self.reload_modules()
 
-    def __str__(self) -> str:
-        return self.id
-
-    # noinspection PyTypeChecker
-    def test(self, data: IPluginData) -> IPluginResult:
-        pass
+    @abstractmethod
+    def test(self, plugin_data: IPluginData) -> IPluginResult:
+        raise NotImplementedError
 
     def reload_modules(self):
         """ Reloads all available modules from ./modules folder """
-        self.modules = load_packages(F"plugins.{self.id}.modules", ITestModule)
+        self.modules = load_packages(F"plugins.{self.id}.modules", IModule)
 
     def get_module_by_id(self, module_id: str):
         """
@@ -45,7 +54,7 @@ class IPlugin(object):
             {
                 "id": x.id,
                 "documentation": x.documentation,
-                "fields": x.fields,
+                "params": x.params,
                 "version": x.version,
                 "code": x.code
             }

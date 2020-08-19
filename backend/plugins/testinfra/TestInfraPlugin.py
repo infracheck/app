@@ -1,26 +1,20 @@
 import inspect
-import inspect
 import json
 import os
 import subprocess
 import uuid
-from typing import List
+from typing import Dict
 
 import xml.dom.minidom
 
 from infracheck.model.DataTypes import DataTypes
+from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
 from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData, IModuleData, IGeneralPluginData
-from infracheck.model.ITestModule import ITestModule
+from infracheck.model.ITestData import IPluginData, IModuleData
 from infracheck.model.ITestResult import IPluginResult
 from plugins.testinfra.Config import Config
 from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
-
-
-class TestInfraPluginData(IGeneralPluginData):
-    hosts: List[str]
-    username: str
-    password: str
 
 
 class TestInfraPlugin(IPlugin):
@@ -32,12 +26,27 @@ class TestInfraPlugin(IPlugin):
     **Note:** You can run tests on this machine too. For that, simply enter ['localhost'] to your hosts array. 
     In that case you dont need any username or password at all.
     """
-    data: TestInfraPluginData = {
-        "hosts": DataTypes.TextList,
-        "username": DataTypes.Text,
-        "target_os": DataTypes.Text,
-        "password": DataTypes.Text,
-        "port": DataTypes.Number
+    params: Dict[str, IParam] = {
+        "hosts": {
+            "type": DataTypes.TextList,
+            "value": ['localhost']
+        },
+        "username": {
+            "type": DataTypes.Text,
+            "value": "username"
+        },
+        "target_os": {
+            "type": DataTypes.Text,
+            "value": "linux"
+        },
+        "password": {
+            "type": DataTypes.Password,
+            "value": "password"
+        },
+        "port": {
+            "type": DataTypes.Number,
+            "value": 22
+        }
     }
 
     @staticmethod
@@ -67,20 +76,20 @@ class TestInfraPlugin(IPlugin):
         uid = uuid.uuid4().hex
 
         # Catch special case if tests should be performend on localhost only
-        if self.data['hosts'] == ['localhost']:
+        if self.params['hosts'] == ['localhost']:
             self.generate_test_file(_data, uid)
             self.create_test_command_and_launch_test(uid, localhost_only=True)
             return self.create_result_from_xml_output(uid)
 
-        ssh_service = KeyRegistrationHelper(self.data['username'], self.data['password'])
-        if self.data["target_os"] == 'linux':
-            ssh_service.register_ssh_keys(self.data['hosts'])
+        ssh_service = KeyRegistrationHelper(self.params['username'], self.params['password'])
+        if self.params["target_os"] == 'linux':
+            ssh_service.register_ssh_keys(self.params['hosts']['value'])
 
         self.generate_test_file(_data, uid)
         self.create_test_command_and_launch_test(uid)
 
-        if self.data["target_os"] == 'linux':
-            ssh_service.clean_ssh_keys(self.data['hosts'])
+        if self.params["target_os"] == 'linux':
+            ssh_service.clean_ssh_keys(self.params['hosts']['value'])
 
         return self.create_result_from_xml_output(uid)
 
@@ -94,17 +103,17 @@ class TestInfraPlugin(IPlugin):
         subprocess.call(cmd, shell=True)
 
     def create_hosts_string(self):
-        if self.data['target_os'] == 'linux':
+        if self.params['target_os'] == 'linux':
             hosts_with_auth = list(
-                map(lambda host: F"ssh://{self.data['username']}@{host}", self.data['hosts'])
+                map(lambda host: F"ssh://{self.params['username']}@{host}", self.params['hosts'])
             )
             host_string = ','.join(map(str, hosts_with_auth))
             os_specific_cmd_part = F"--ssh-identity-file='{Config.SSH_FOLDER}id_rsa' --hosts='{host_string}'"
         else:
             hosts_with_auth = list(
                 map(lambda host:
-                    F"winrm://{self.data['username']}:{self.data['password']}@{host}:5985?no_ssl=true&no_verify_ssl=true",
-                    self.data['hosts']
+                    F"winrm://{self.params['username']}:{self.params['password']}@{host}:5985?no_ssl=true&no_verify_ssl=true",
+                    self.params['hosts']
                     )
             )
             host_string = ','.join(map(str, hosts_with_auth))
@@ -135,7 +144,7 @@ class TestInfraPlugin(IPlugin):
         :param data:
         :return:
         """
-        module: ITestModule = \
+        module: IModule = \
             list(filter(lambda x: x.id == data['id'], self.modules))[0]
         code_without_intend = ("\n" + inspect.getsource(module.test)).replace("\n    ", "\n")
         code_with_uuid = code_without_intend \

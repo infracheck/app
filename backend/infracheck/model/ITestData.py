@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import TypedDict, List, Dict, Any
 
+from infracheck.model.IParam import IParam
+
 """
 This file defines input data for tests
 They provide basic interfaces and can be extended by plugins and its modules.
@@ -34,19 +36,7 @@ class IModuleData(TypedDict):
     This interface defines the data send to each module
     """
     id: str
-    fields: Dict[str, Any]
-
-
-@dataclass
-class IGeneralPluginData(TypedDict):
-    """ Plugin specific input data
-    All attributes will be specified by the plugin
-    Example: If you have a plugin that executes code on a remote host, you could add the following attributes:
-        - host
-        - username
-        - password
-    """
-    pass
+    params: Dict[str, Any]
 
 
 @dataclass
@@ -58,7 +48,7 @@ class IPluginData(TypedDict):
         - data for each module of the plugin
     """
     id: str
-    data: IGeneralPluginData
+    params: Dict[str, IParam]
     modules: List[IModuleData]
 
 

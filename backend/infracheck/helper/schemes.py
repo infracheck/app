@@ -12,19 +12,19 @@ test_data_scheme = {
         "plugins": {"type": "array",
                     "items": {
                         "type": "object",
-                        "required": ["id", "data", "modules"],
+                        "required": ["id", "params", "modules"],
                         "additionalProperties": True,
                         "properties": {
                             "id": {"type": "string"},
-                            "data": {"type": "object"},
+                            "params": {"type": "object"},
                             "modules": {"type": "array",
                                         "items": {
                                             "type": "object",
-                                            "required": ["id", "fields"],
+                                            "required": ["id", "params"],
                                             "additionalProperties": False,
                                             "properties": {
                                                 "id": {"type": "string"},
-                                                "fields": {"type": "object"}
+                                                "params": {"type": "object"}
                                             }
                                         }
                                         }
