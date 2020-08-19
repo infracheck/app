@@ -1,10 +1,12 @@
-import pytest
+from typing import Dict
+from unittest import TestCase
 
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
 
 
-class OSSpecs(IModule):
+class OSSpecs(IModule, TestCase):
     id = "os_specs"
     version = 0.1
     documentation = """
@@ -35,24 +37,33 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.system
 ## Author
 Martin Welcker <mwelcker@proficom.de>
 """
+    params: Dict[str, IParam] = {
+        "type": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
+        },
+        "distribution": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
+        },
+        "release": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
+        },
+        "codename": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
+        },
 
-    params = {
-        "type": DataTypes.Text,
-        "distribution": DataTypes.Text,
-        "release": DataTypes.Text,
-        "codename": DataTypes.Text
     }
+    host = None
 
-    @pytest.mark.parametrize("os_type", [params["type"]])
-    @pytest.mark.parametrize("distribution", [params["distribution"]])
-    @pytest.mark.parametrize("release", [params["release"]])
-    @pytest.mark.parametrize("codename", [params["codename"]])
-    def test(host, os_type, distribution, release, codename):
-        if os_type:
-            assert host.system_info.type == os_type
-        if distribution:
-            assert host.system_info.distribution == distribution
-        if release:
-            assert host.system_info.release == release
-        if codename:
-            assert host.system_info.codename == codename
+    def test(self):
+        if self.params['type']['value'] != '':
+            assert self.host.system_info.type == self.params['type']['value']
+        if self.params['distribution']['value'] != '':
+            assert self.host.system_info.distribution == self.params['distribution']['value']
+        if self.params['release']['value'] != '':
+            assert self.host.system_info.release == self.params['release']['value']
+        if self.params['codename']['value'] != '':
+            assert self.host.system_info.codename == self.params['codename']['value']

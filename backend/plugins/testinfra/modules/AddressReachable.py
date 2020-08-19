@@ -1,10 +1,12 @@
-import pytest
+from typing import Dict
+from unittest import TestCase
 
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
 
 
-class AddressReachable(IModule):
+class AddressReachable(IModule, TestCase):
     id = "address"
     version = 0.1
     documentation = """
@@ -37,14 +39,16 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.addr.A
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    params = {
-        "url": DataTypes.Text
+    params: Dict[str, IParam] = {
+        "url": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
+        }
     }
+    host = None
 
-    # noinspection PyMethodParameters
-    @pytest.mark.parametrize("data", [params])
-    def test(host, data):
-        addr = data['url']
-        curr_addr = host.addr(addr)
+    def test(self):
+        addr = self.params['url']
+        curr_addr = self.host.addr(addr)
         assert curr_addr.is_resolvable
         assert curr_addr.is_reachable

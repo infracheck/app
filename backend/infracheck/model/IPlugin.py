@@ -44,10 +44,12 @@ class IPlugin(ABC):
     def get_module_by_id(self, module_id: str):
         """
         Returns the test module based on its id
+        todo: Currently the whole app uses only single instances of modules instead of creating new ones for each test run
         :param module_id:
         :return:
         """
-        return list(filter(lambda module: module.id == module_id, self.modules))[0]
+        res = list(filter(lambda module: module.id == module_id, self.modules))[0].__class__
+        return res
 
     def list_modules(self):
         return list(

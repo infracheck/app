@@ -15,7 +15,7 @@
       "modules": [
         {
           "id": "service",
-          "fields": {
+          "params": {
             "service": "nginx",
             "running": 0,
             "enabled": 0
@@ -23,13 +23,13 @@
         },
         {
           "id": "address",
-          "fields": {
+          "params": {
             "url": "google.de"
           }
         },
         {
           "id": "os_specs",
-          "fields": {
+          "params": {
             "type": "linux",
             "distribution": "ubuntu",
             "release": "14.04",

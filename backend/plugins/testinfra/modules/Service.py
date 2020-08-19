@@ -1,10 +1,12 @@
-import pytest
+from typing import Dict
+from unittest import TestCase
 
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
+from infracheck.model.IParam import IParam
 
 
-class Service(IModule):
+class Service(IModule, TestCase):
     id = "service"
     version = 0.1
     documentation = """
@@ -33,21 +35,30 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.servic
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    params = {
-        "service": DataTypes.Text,
-        "enabled": DataTypes.Number,
-        "running": DataTypes.Number,
+    params: Dict[str, IParam] = {
+        "service": {
+            "type": DataTypes.Text,
+            "value": ''
+        },
+        "enabled": {
+            "type": DataTypes.Number,
+            "value": -1
+        },
+        "running": {
+            "type": DataTypes.Number,
+            "value": -1
+        }
     }
+    host = None
 
-    @pytest.mark.parametrize("data", [params])
-    def test(host, data):
-        service = host.service(data['service'])
-        if data['enabled'] == 1:
+    def test(self):
+        service = self.host.service(self.params['service']['value'])
+        if self.params['enabled']['value'] == 1:
             assert service.is_enabled
         else:
             assert not service.is_enabled
 
-        if data['running'] == 1:
+        if self.params['running']['value'] == 1:
             assert service.is_running
         else:
             assert not service.is_running
