@@ -1,6 +1,6 @@
 import logging
 import unittest
-from typing import Dict
+from typing import Dict, List
 
 import testinfra
 
@@ -9,7 +9,9 @@ from infracheck.model.IModule import IModule
 from infracheck.model.IParam import IParam
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData
-from infracheck.model.ITestResult import IPluginResult
+from infracheck.model.ITestResult import IPluginResult, IModuleResult
+from plugins.testinfra.Config import Config
+from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
 
 log = logging.getLogger()
 
@@ -24,9 +26,9 @@ class TestInfraPlugin(IPlugin):
     In that case you dont need any username or password at all.
     """
     params: Dict[str, IParam] = {
-        "hosts": {
-            "type": DataTypes.TextList,
-            "value": ['localhost']
+        "host": {
+            "type": DataTypes.Text,
+            "value": 'localhost'
         },
         "username": {
             "type": DataTypes.Text,
@@ -51,7 +53,20 @@ class TestInfraPlugin(IPlugin):
         :param plugin_data:
         :return:
         """
-        host = testinfra.get_host("local://")
+        host_address = plugin_data['params']['hosts']['value']
+        username = plugin_data['params']['username']['value']
+        target_os = plugin_data['params']['target_os']['value']
+        password = plugin_data['params']['password']['value']
+        port = plugin_data['params']['port']['value']
+
+        if host_address == 'localhost':
+            host = testinfra.get_host("local://")
+        else:
+            ssh_service = KeyRegistrationHelper(self.params['username'], self.params['password'])
+            if self.params["target_os"] == 'linux':
+                ssh_service.register_ssh_keys([self.params['hosts']['value']])
+            host = testinfra.get_host(F"paramiko://{username}@{host_address}", ssh_config=F"{Config.SSH_FOLDER}id_rsa")
+
         runner = unittest.TextTestRunner()
         suite = unittest.TestSuite()
         for module in plugin_data['modules']:
@@ -66,11 +81,16 @@ class TestInfraPlugin(IPlugin):
             suite.addTest(test)
 
         result: unittest.TestResult = runner.run(suite)
-        # ssh_service = KeyRegistrationHelper(self.params['username'], self.params['password'])
-        # if self.params["target_os"] == 'linux':
-        #     ssh_service.register_ssh_keys(self.params['hosts']['value'])
-        # if self.params["target_os"] == 'linux':
-        #     ssh_service.clean_ssh_keys(self.params['hosts']['value'])
+
+        module_data: List[IModuleResult] = [
+            {
+                "module_name": "str",
+                "module_version": 0.1,
+                "fields": "Any",
+                "success": True,
+                "message": "str"
+            }
+        ]
         res: IPluginResult = {
             "plugin_name": self.id,
             "plugin_version": self.version,
@@ -79,7 +99,9 @@ class TestInfraPlugin(IPlugin):
             "errors": len(result.errors),
             "total": result.testsRun,
             "message": str(result.failures),
-            "module_data": [],
+            "module_data": module_data,
             "custom_data": {}
         }
+        if self.params["target_os"] == 'linux':
+            ssh_service.clean_ssh_keys([self.params['hosts']['value']])
         return res
