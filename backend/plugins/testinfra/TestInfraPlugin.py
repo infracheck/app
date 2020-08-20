@@ -101,7 +101,7 @@ class TestInfraPlugin(IPlugin):
             "module_result": module_results,
             "custom_data": {}
         }
-        print(res)
         if self.params["target_os"] == 'linux':
             ssh_service.clean_ssh_keys([self.params['hosts']['value']])
+            del ssh_service
         return res

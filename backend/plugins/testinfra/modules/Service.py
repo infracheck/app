@@ -41,12 +41,12 @@ Martin Welcker <mwelcker@proficom.de>
             "value": ''
         },
         "enabled": {
-            "type": DataTypes.Number,
-            "value": -1
+            "type": DataTypes.Boolean,
+            "value": True
         },
         "running": {
-            "type": DataTypes.Number,
-            "value": -1
+            "type": DataTypes.Boolean,
+            "value": True
         }
     }
     host = None
