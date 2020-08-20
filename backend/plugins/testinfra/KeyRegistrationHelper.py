@@ -6,6 +6,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
+from Environment import Environment
 from plugins.testinfra.Config import Config
 
 
@@ -26,7 +27,7 @@ class KeyRegistrationHelper:
         self.pw = password
         # Create ssh key
         if not os.path.exists(Config.SSH_FOLDER):
-            os.makedirs(Config.SSH_FOLDER)
+            os.makedirs(F"{Environment.ROOT_DIR}/{Config.SSH_FOLDER}")
         private_rsa_key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048,

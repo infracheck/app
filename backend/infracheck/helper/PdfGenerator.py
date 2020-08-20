@@ -10,16 +10,19 @@ from infracheck.model.ITestResult import ITestResult
 
 class PdfGenerator(FPDF):
     def __init__(self):
+        if not os.path.exists(F"{Environment.ROOT_DIR}/{Environment.RESULT_FOLDER}"):
+            os.makedirs(F"{Environment.ROOT_DIR}/{Environment.RESULT_FOLDER}")
         super().__init__('P', 'mm', 'A4')
         self.set_font('Arial', '', 16)
         self.set_text_color(0, 0, 0)
-        if not os.path.exists(Environment.RESULT_FOLDER):
-            os.makedirs(Environment.RESULT_FOLDER)
+        if not os.path.exists(F"{Environment.ROOT_DIR}/{Environment.RESULT_FOLDER}"):
+            os.makedirs(F"{Environment.ROOT_DIR}/{Environment.RESULT_FOLDER}")
 
     def header(self):
         self.set_font_size(24)
         self.cell(0, 15, 'InfraCheck - Report', 0, 0, 'L', 0)
-        self.image('assets/proficomlogo.png', 140, 10, 60)
+        image = os.path.join(Environment.ROOT_DIR, 'assets/proficomlogo.png')
+        self.image(image, 140, 10, 60)
         self.ln(20)
 
     def chapter_title(self, num, label):
@@ -66,5 +69,5 @@ class PdfGenerator(FPDF):
             for key in plugin_data:
                 self.print_info(key, plugin_data[key])
 
-        self.output(F"{Environment.RESULT_FOLDER}{report['id']}.pdf", 'F')
+        self.output(F"{Environment.ROOT_DIR}/{Environment.RESULT_FOLDER}{report['id']}.pdf", 'F')
         del self

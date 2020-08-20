@@ -55,5 +55,6 @@ class IModule(ABC):
         :param data:
         :return:
         """
+        print(self.params.keys())
         for key in self.params.keys():
             self.params[key]['value'] = data[key]

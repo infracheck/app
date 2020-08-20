@@ -1,6 +1,7 @@
 import json
 import sqlite3
 
+from Environment import Environment
 from infracheck.model.ITestResult import ITestResult
 
 
@@ -17,7 +18,7 @@ def singleton(class_):
 
 @singleton
 class Persistence:
-    db = sqlite3.connect('infracheck.db', check_same_thread=False)
+    db = sqlite3.connect(F'infracheck.db', check_same_thread=False)
     cursor = db.cursor()
 
     def __init__(self) -> None:

@@ -18,12 +18,6 @@ stream_handler.setFormatter(formatter)
 log.setLevel(Environment.LOG_LEVEL)
 log.addHandler(stream_handler)
 
-# File Log
-file_handler = logging.FileHandler('debug.log')
-file_handler.setFormatter(formatter)
-file_handler.setLevel(logging.DEBUG)
-log.addHandler(file_handler)
-
 # Init Flask
 app = Flask(__name__, static_url_path='')
 app.secret_key = 'secret'

@@ -63,10 +63,10 @@ Celebrant habetis stabis.
         """
         module_result: List[IModuleResult] = []
         for module_data in plugin_data['modules']:
-            module = self.get_module_by_id(module_data['id'])
-            module.set_module_data(module_data['params'])
+            module = self.get_module_by_id(module_data['id'])()
+            for param in module.params.keys():
+                module.params[param]['value'] = module_data['params'][param]
             module_result.append(module.test())
-            del module
 
         result: IPluginResult = {
             "plugin_name": self.id,

@@ -2,7 +2,7 @@ import datetime
 
 from infracheck.model.ITestResult import ITestResult
 
-result: ITestResult = {
+result_mock: ITestResult = {
     "id": "",
     "pdf_link": "",
     "name": "",

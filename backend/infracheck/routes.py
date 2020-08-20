@@ -9,7 +9,6 @@ from infracheck import api
 from infracheck import login_manager, Persistence
 from infracheck.Authentication import users, User
 from infracheck.PluginManager import PluginManager
-from infracheck.helper.schemes import test_data_scheme
 
 plugin_manager = PluginManager()
 
@@ -65,7 +64,6 @@ class History(Resource):
 
 @operations.route('/test')
 class TestRunner(Resource):
-    @operations.marshal_with(api.schema_model('TestData',test_data_scheme), envelope='resource')
     def post(self):
         data = request.get_json()
         res = plugin_manager.launch_tests(data)
