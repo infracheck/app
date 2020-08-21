@@ -8,3 +8,4 @@ cryptography==3.0
 fpdf==1.7.2
 flask_restplus==0.13.0
 Werkzeug==0.16.1
+Flask-BasicAuth==0.2.0

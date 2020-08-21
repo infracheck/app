@@ -4,8 +4,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Environment(object):
-    ENV_VAR = os.environ.get('ENV_VAR') or 'DEFAULT'
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+    # Those can be changed
     LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'DEBUG'
     RESULT_FOLDER = os.environ.get('RESULT_FOLDER') or 'results/'
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     DATABASE = F"{ROOT_DIR}/database.db"
+    PRODUCTION = bool(os.environ.get('PRODUCTION')) or True
+    USERNAME = os.environ.get('USER') or "user"
+    PASSWORD = os.environ.get('PASSWORD') or "password"

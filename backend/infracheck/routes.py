@@ -1,17 +1,16 @@
-import hashlib
+import logging
 
-import flask
-import flask_login
 from flask import jsonify, send_from_directory, request
 from flask_restplus import Resource
 
+from infracheck import Persistence
 from infracheck import api
-from infracheck import login_manager, Persistence
-from infracheck.Authentication import users, User
+from infracheck.AuthenticationService import setup_basic_auth
 from infracheck.PluginManager import PluginManager
 
+log = logging.getLogger()
+setup_basic_auth()
 plugin_manager = PluginManager()
-
 operations = api.namespace(
     'Test',
     path='/',
@@ -81,30 +80,3 @@ class Preset(Resource):
         data = request.get_json()
         res = Persistence().insert_preset(data)
         return jsonify(res)
-
-
-@authentication.route('/login')
-class LoginRoute(Resource):
-    def post(self):
-        credentials = request.get_json()
-        name, password = credentials["user"], credentials["password"]
-
-        if hashlib.sha3_512(password.encode('UTF-8')).hexdigest() == users[name]['password']:
-            user = User()
-            user.id = name
-            flask_login.login_user(user)
-            return flask.redirect(flask.url_for('protected'))
-        return 'Bad login'
-
-
-@authentication.route('/logout')
-class LogoutRoute(Resource):
-    def get(self):
-        flask_login.logout_user()
-        return 'Logged out'
-
-
-@login_manager.unauthorized_handler
-class UnauhorizedHandler(Resource):
-    def get(self):
-        return 'Unauthorized'
