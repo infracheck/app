@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 
 from Environment import Environment
@@ -18,7 +19,7 @@ def singleton(class_):
 
 @singleton
 class Persistence:
-    db = sqlite3.connect(F'infracheck.db', check_same_thread=False)
+    db = sqlite3.connect(Environment.DATABASE, check_same_thread=False)
     cursor = db.cursor()
 
     def __init__(self) -> None:
@@ -47,6 +48,10 @@ class Persistence:
         );"""
         self.cursor.execute(create_history_sql)
         self.cursor.execute(create_presets_sql)
+
+    def remove_db(self):
+        self.db.close()
+        os.remove(Environment.DATABASE)
 
     def get_log(self, limit: int = 10, offset: int = 0):
         conn = self.db

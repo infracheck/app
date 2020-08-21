@@ -1,6 +1,7 @@
 import os
 import unittest
 
+from Environment import Environment
 from infracheck import Persistence
 from test import mock_data
 
@@ -11,7 +12,7 @@ class DatabaseTest(unittest.TestCase):
 
     def test_log_table(self):
         with self.subTest("database was created"):
-            self.assertTrue(os.path.isfile('infracheck.db'))
+            self.assertTrue(os.path.isfile(Environment.DATABASE))
 
         with self.subTest("'Logs' table exists"):
             self.assertTrue(self.db.get_log() == [])
@@ -21,4 +22,4 @@ class DatabaseTest(unittest.TestCase):
             self.assertTrue(len(self.db.get_log()) > 0)
 
     def tearDown(self) -> None:
-        os.remove(F'infracheck.db')
+        self.db.remove_db()

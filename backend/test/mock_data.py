@@ -15,3 +15,23 @@ result_mock: ITestResult = {
     "date": datetime.datetime.now(),
     "plugin_result": []
 }
+
+test_data = {
+    "name": "Just another test",
+    "description": "Hey there its me",
+    "plugins": [
+        {
+            "id": "demo_plugin",
+            "params": {},
+            "modules": [
+                {
+                    "id": "equality_check",
+                    "params": {
+                        "number1": 1,
+                        "number2": 1
+                    }
+                }
+            ]
+        }
+    ]
+}
