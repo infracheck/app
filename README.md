@@ -122,6 +122,12 @@ flask run --host='0.0.0.0' --port=5000 --debugger
 The backend should now be reachable on http://localhost:5000/plugins.
 
 ## Testing
+You can launch tests for the backend with:
+```
+cd backend
+python -m unittest discover test "*Test.py"
+```
+
 ## Known Issues
 Things that we want to add later:
 

@@ -1,6 +1,8 @@
 from typing import Dict
 from unittest import TestCase
 
+import testinfra
+
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
 from infracheck.model.IParam import IParam
@@ -56,18 +58,38 @@ Martin Welcker <mwelcker@proficom.de>
         },
 
     }
-    host = None
+    host = testinfra.get_host("local://")
 
     def test(self):
-        if self.params['type']['value'] != '':
-            self.assertTrue(self.host.system_info.type == self.params['type']['value'],
-                            F"{self.host.system_info.type} is not {self.params['type']['value']}")
-        if self.params['distribution']['value'] != '':
-            self.assertTrue(self.host.system_info.distribution == self.params['distribution']['value'],
-                            F"{self.host.system_info.distribution} is not {self.params['distribution']['value']}")
-        if self.params['release']['value'] != '':
-            self.assertTrue(self.host.system_info.release == self.params['release']['value'],
-                            F"{self.host.system_info.release} is not {self.params['release']['value']}")
-        if self.params['codename']['value'] != '':
-            self.assertTrue(self.host.system_info.codename == self.params['codename']['value'],
-                            F"{self.host.system_info.codename} is not {self.params['codename']['value']}")
+        os_type = self.params['type']['value']
+        distribution = self.params['distribution']['value']
+        release = self.params['release']['value']
+        codename = self.params['codename']['value']
+
+        with self.subTest("Type"):
+            if os_type != '':
+                self.assertTrue(
+                    self.host.system_info.type == os_type,
+                    F"{self.host.system_info.type} != {os_type}"
+                )
+
+        with self.subTest("Distribution"):
+            if distribution != '':
+                self.assertTrue(
+                    self.host.system_info.distribution == distribution,
+                    F"{self.host.system_info.distribution} != {distribution}"
+                )
+
+        with self.subTest("Release"):
+            if release != '':
+                self.assertTrue(
+                    self.host.system_info.release == release,
+                    F"{self.host.system_info.release} != {release}"
+                )
+
+        with self.subTest("Codename"):
+            if codename != '':
+                self.assertTrue(
+                    self.host.system_info.codename == codename,
+                    F"{self.host.system_info.codename} != {codename}"
+                )

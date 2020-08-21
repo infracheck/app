@@ -1,6 +1,8 @@
 from typing import Dict
 from unittest import TestCase
 
+import testinfra
+
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
 from infracheck.model.IParam import IParam
@@ -49,16 +51,20 @@ Martin Welcker <mwelcker@proficom.de>
             "value": True
         }
     }
-    host = None
+    host = testinfra.get_host("local://")
 
     def test(self):
         service = self.host.service(self.params['service']['value'])
-        if self.params['enabled']['value'] == 1:
-            assert service.is_enabled
-        else:
-            assert not service.is_enabled
+        should_be_enabled = self.params['enabled']['value']
+        should_be_running = self.params['running']['value']
 
-        if self.params['running']['value'] == 1:
-            assert service.is_running
-        else:
-            assert not service.is_running
+        with self.subTest(F"{service} enabled?"):
+            self.assertTrue(
+                should_be_enabled == service.is_enabled,
+                F"Service {service} is {'enabled' if service.is_enabled else 'disabled'}"
+            )
+        with self.subTest(F"{service} running?"):
+            self.assertTrue(
+                should_be_running == service.is_running,
+                F"Service {service} is {'running' if service.is_running else 'not running'}"
+            )

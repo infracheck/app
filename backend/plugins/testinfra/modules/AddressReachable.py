@@ -1,6 +1,8 @@
 from typing import Dict
 from unittest import TestCase
 
+import testinfra
+
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
 from infracheck.model.IParam import IParam
@@ -45,10 +47,19 @@ Martin Welcker <mwelcker@proficom.de>
             "value": 'localhost'
         }
     }
-    host = None
+    host = testinfra.get_host("local://")
 
     def test(self):
-        addr = self.params['url']
-        curr_addr = self.host.addr(addr)
-        assert curr_addr.is_resolvable
-        assert curr_addr.is_reachable
+        addr = self.params['url']['value']
+
+        with self.subTest("Resolvable"):
+            self.assertTrue(
+                self.host.addr(addr).is_resolvable,
+                F"Address {addr} is not resolvable"
+            )
+
+        with self.subTest("Reachable"):
+            self.assertTrue(
+                self.host.addr(addr).is_reachable,
+                F"Address {addr} is not resolvable"
+            )

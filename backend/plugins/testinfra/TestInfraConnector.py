@@ -20,7 +20,7 @@ class TestInfraConnector(ABC):
 class LocalhostConnector(TestInfraConnector):
 
     def __init__(self) -> None:
-        pass
+        super().__init__()
 
     def get_host(self):
         return testinfra.get_host("local://")
@@ -29,7 +29,7 @@ class LocalhostConnector(TestInfraConnector):
 class WinRmConnector(TestInfraConnector):
 
     def __init__(self) -> None:
-        pass
+        super().__init__()
 
     def get_host(self):
         return testinfra.get_host(F"winrm://{self.username}@{self.host}:{self.password}?no_ssl=true&no_verify_ssl=true")
@@ -37,6 +37,7 @@ class WinRmConnector(TestInfraConnector):
 
 class ParamikoConnector(TestInfraConnector):
     def __init__(self, username, host, password, port) -> None:
+        super().__init__(username, host, password, port)
         self.username = username
         self.host = host
         self.password = password

@@ -1,6 +1,8 @@
 from typing import Any, Dict
 from unittest import TestCase
 
+import testinfra
+
 from infracheck.model.DataTypes import DataTypes
 from infracheck.model.IModule import IModule
 from infracheck.model.IParam import IParam
@@ -16,6 +18,7 @@ class Example(IModule, TestCase):
             "type": DataTypes.Number
         }
     }
+    host = testinfra.get_host("local://")
 
     def test(self) -> Any:
         with self.subTest('Is smaller then 2'):
