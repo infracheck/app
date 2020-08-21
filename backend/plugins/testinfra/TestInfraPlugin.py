@@ -10,8 +10,8 @@ from infracheck.model.IParam import IParam
 from infracheck.model.IPlugin import IPlugin
 from infracheck.model.ITestData import IPluginData
 from infracheck.model.ITestResult import IPluginResult, IModuleResult
-from plugins.testinfra.Config import Config
 from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
+from plugins.testinfra.TestInfraConnector import ParamikoConnector, WinRmConnector
 
 log = logging.getLogger()
 
@@ -41,6 +41,10 @@ class TestInfraPlugin(IPlugin):
         "password": {
             "type": DataTypes.Password,
             "value": "password"
+        },
+        "port": {
+            "type": DataTypes.Number,
+            "value": 22
         }
     }
 
@@ -54,16 +58,26 @@ class TestInfraPlugin(IPlugin):
         username = plugin_data['params']['username']
         target_os = plugin_data['params']['target_os']
         password = plugin_data['params']['password']
+        port = plugin_data['params']['port']
 
-        # 2. Generate host-string
+        # 2. Get host
         if host_address == 'localhost':
             host = testinfra.get_host("local://")
-        else:
-            ssh_service = KeyRegistrationHelper(self.params['username'], self.params['password'])
-            if self.params["target_os"] == 'linux':
-                # Perform 'ssh-copy-id' to register ssh keys on remote machine
-                ssh_service.register_ssh_keys([self.params['hosts']['value']])
-            host = testinfra.get_host(F"paramiko://{username}@{host_address}", ssh_config=F"{Config.SSH_FOLDER}id_rsa")
+        elif target_os == 'linux':
+            ssh_service = KeyRegistrationHelper(
+                user=username,
+                password=password,
+                port=port
+            )
+            ssh_service.register_ssh_keys([host_address])
+            host = ParamikoConnector(
+                username=username,
+                password=password,
+                host=host_address,
+                port=port
+            ).get_host()
+        elif target_os == 'windows':
+            host = WinRmConnector().get_host()
 
         # 3. Run Test
         runner = unittest.TextTestRunner()

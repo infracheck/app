@@ -60,10 +60,14 @@ Martin Welcker <mwelcker@proficom.de>
 
     def test(self):
         if self.params['type']['value'] != '':
-            assert self.host.system_info.type == self.params['type']['value']
+            self.assertTrue(self.host.system_info.type == self.params['type']['value'],
+                            F"{self.host.system_info.type} is not {self.params['type']['value']}")
         if self.params['distribution']['value'] != '':
-            assert self.host.system_info.distribution == self.params['distribution']['value']
+            self.assertTrue(self.host.system_info.distribution == self.params['distribution']['value'],
+                            F"{self.host.system_info.distribution} is not {self.params['distribution']['value']}")
         if self.params['release']['value'] != '':
-            assert self.host.system_info.release == self.params['release']['value']
+            self.assertTrue(self.host.system_info.release == self.params['release']['value'],
+                            F"{self.host.system_info.release} is not {self.params['release']['value']}")
         if self.params['codename']['value'] != '':
-            assert self.host.system_info.codename == self.params['codename']['value']
+            self.assertTrue(self.host.system_info.codename == self.params['codename']['value'],
+                            F"{self.host.system_info.codename} is not {self.params['codename']['value']}")

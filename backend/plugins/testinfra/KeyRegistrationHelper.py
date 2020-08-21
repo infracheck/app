@@ -2,11 +2,7 @@ import os
 from typing import List
 
 import pexpect
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
 
-from Environment import Environment
 from plugins.testinfra.Config import Config
 
 
@@ -17,7 +13,7 @@ class KeyRegistrationHelper:
     To test linux machines via ssh testinfra only supports key based authentication.
     """
 
-    def __init__(self, user, password):
+    def __init__(self, user, password, port=22):
         """
         Create new ssh key every launch
         :param user:
@@ -25,25 +21,16 @@ class KeyRegistrationHelper:
         """
         self.user = user
         self.pw = password
+        self.port = port
         # Create ssh key
         if not os.path.exists(Config.SSH_FOLDER):
-            os.makedirs(F"{Environment.ROOT_DIR}/{Config.SSH_FOLDER}")
-        private_rsa_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048,
-            backend=default_backend()
-        )
-        with open(F"{Config.SSH_FOLDER}id_rsa", "wb") as f:
-            f.write(private_rsa_key.private_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption())
-            )
-        with open(F"{Config.SSH_FOLDER}id_rsa.pub", "wb") as f:
-            f.write(private_rsa_key.public_key().public_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo)
-            )
+            os.makedirs(F"{Config.SSH_FOLDER}")
+        if os.path.isfile(F"{Config.SSH_FOLDER}id_rsa"):
+            os.remove(F"{Config.SSH_FOLDER}id_rsa")
+            os.remove(F"{Config.SSH_FOLDER}id_rsa.pub")
+        os.system(F"ssh-keygen -m pem -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa")
+
+    # subprocess.run(F"ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa <<< y", shell=True, check=True)
 
     def register_ssh_keys(self, hosts: List[str]):
         """
@@ -80,6 +67,7 @@ class KeyRegistrationHelper:
         """
         child = pexpect.spawn(
             F'ssh-copy-id'
+            F' -p {self.port}'
             F' -i {Config.SSH_FOLDER}id_rsa'
             F' {self.user}@{ip}'
             F' -o StrictHostKeyChecking=no -f')
@@ -116,8 +104,10 @@ class KeyRegistrationHelper:
             F"ssh -i"
             F" {Config.SSH_FOLDER}id_rsa"
             F" -o 'StrictHostKeyChecking=no'"
-            F" {self.user}@{ip}")
-        child.logfile_read = open(F'{Config.OUTPUT_FOLDER}register-ssh-logs.txt', 'wb')
+            F" {self.user}@{ip}"
+            F" -p {self.port}"
+        )
+        child.logfile_read = open(F'{Config.SSH_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
@@ -139,9 +129,10 @@ class KeyRegistrationHelper:
         """
         child = pexpect.spawn(
             F"ssh -i {Config.SSH_FOLDER}id_rsa"
+            F" -p {self.port}"
             F" -o 'StrictHostKeyChecking=no'"
             F"  {self.user}@{ip}")
-        child.logfile_read = open(F'{Config.OUTPUT_FOLDER}register-ssh-logs.txt', 'wb')
+        child.logfile_read = open(F'{Config.SSH_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
