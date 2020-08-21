@@ -10,6 +10,6 @@ class Environment(object):
     LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'DEBUG'
     RESULT_FOLDER = os.environ.get('RESULT_FOLDER') or 'results/'
     DATABASE = F"{ROOT_DIR}/database.db"
-    PRODUCTION = bool(os.environ.get('PRODUCTION')) or True
+    PRODUCTION = bool(os.environ.get('PRODUCTION')) or False
     USERNAME = os.environ.get('USER') or "user"
     PASSWORD = os.environ.get('PASSWORD') or "password"

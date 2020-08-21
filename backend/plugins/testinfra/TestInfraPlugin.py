@@ -77,7 +77,12 @@ class TestInfraPlugin(IPlugin):
                 port=port
             ).get_host()
         elif target_os == 'windows':
-            host = WinRmConnector().get_host()
+            host = WinRmConnector(
+                username=username,
+                password=password,
+                host=host_address,
+                port=port
+            ).get_host()
 
         # 3. Run Test
         runner = unittest.TextTestRunner()

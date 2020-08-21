@@ -25,11 +25,11 @@ Vagrantfile launches windows server 2016 vm with winrm.
 - Virtualbox
 
 **Credentials**
-- username: root
-- password: password
+- username: vagrant
+- password: vagrant
 
 **Deployment:**
 ```
-docker build -t ubuntu-sshd .
-docker run -d -p 8899:20 --name ubuntu-sshd ubuntu-sshd
+vagrant up
+connect to winrm://vagrant:vagrant@192.168.99.103:5985?no_ssl=true&no_verify_ssl=true
 ```
