@@ -77,9 +77,8 @@ class PluginManager(object):
         # Create results
         result = self._serialize_result(uid, data, plugin_results)
         result = self.remove_passwords(result)
-        self.database.insert_test_result(result)
         PdfGenerator().generate(result)
-
+        self.database.add_result(result)
         return result
 
     def _get_test_plugin(self, plugin_name: str) -> IPlugin:

@@ -3,9 +3,9 @@ import logging
 from flask import jsonify, send_from_directory, request
 from flask_restplus import Resource
 
-from infracheck import Persistence
 from infracheck import api
 from infracheck.AuthenticationService import setup_basic_auth
+from infracheck.Persistence import Persistence
 from infracheck.PluginManager import PluginManager
 
 log = logging.getLogger()
@@ -31,11 +31,6 @@ results = api.namespace(
     path='/',
     description='actions on results and logs')
 
-presets = api.namespace(
-    'Preset',
-    path='/',
-    description='actions on presets. currently not implemented')
-
 
 @results.route('/results/<path:path>')
 class Results(Resource):
@@ -49,16 +44,13 @@ class Plugins(Resource):
         return jsonify(plugin_manager.list_plugins())
 
 
-@results.route('/history')
+@results.route('/results')
 class History(Resource):
     def get(self):
         limit = request.args.get('limit')
         offset = request.args.get('offset')
-        if limit and offset:
-            result = jsonify(Persistence().get_log(int(limit), int(offset)))
-        else:
-            result = jsonify(Persistence().get_log())
-        return result
+        res = Persistence().Result.query.all()[offset:limit]
+        return jsonify(res)
 
 
 @operations.route('/test')
@@ -66,17 +58,4 @@ class TestRunner(Resource):
     def post(self):
         data = request.get_json()
         res = plugin_manager.launch_tests(data)
-        return jsonify(res)
-
-
-@presets.route('/preset')
-class Preset(Resource):
-    def get(self):
-        limit = 10
-        offset = 0
-        return jsonify(Persistence().get_presets(int(limit), int(offset)))
-
-    def post(self):
-        data = request.get_json()
-        res = Persistence().insert_preset(data)
         return jsonify(res)

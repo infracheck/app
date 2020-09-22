@@ -1,5 +1,5 @@
 .*
 results
-database.db
 testing.py
 *.log
+infracheck.db

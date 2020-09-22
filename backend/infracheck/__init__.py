@@ -4,9 +4,9 @@ import flask_login
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
+from flask_sqlalchemy import SQLAlchemy
 
 from Environment import Environment
-from infracheck.Persistence import Persistence
 
 # Log
 log = logging.getLogger()
@@ -20,8 +20,13 @@ log.addHandler(stream_handler)
 
 # Init Flask
 app = Flask(__name__, static_url_path='')
+
 app.secret_key = 'secret'
 CORS(app)
+app.config["SQLALCHEMY_DATABASE_URI"] = F"sqlite:///{Environment.DATABASE}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+
 api = Api(app,
           title='InfraCheck - Backend',
           description="""
@@ -33,6 +38,5 @@ api = Api(app,
 login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
-persistence_service = Persistence()
 
 import infracheck.routes
