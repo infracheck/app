@@ -3,3 +3,4 @@ results
 testing.py
 *.log
 infracheck.db
+.tmp

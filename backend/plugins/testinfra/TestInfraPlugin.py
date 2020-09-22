@@ -113,7 +113,7 @@ class TestInfraPlugin(IPlugin):
             "plugin_name": self.id,
             "plugin_version": self.version,
             "success_count": sum(c.testsRun for c in results) - sum(not c['is_successful'] for c in module_results),
-            "failure_count": sum(len(c.failures) for c in results),
+            "failure_count": sum(not c['is_successful'] for c in module_results),
             "error_count": sum(len(c.errors) for c in results),
             "total_count": sum(c.testsRun for c in results),
             "message": "hello world",
