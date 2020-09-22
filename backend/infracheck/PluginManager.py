@@ -7,7 +7,7 @@ from typing import List
 
 from jsonschema import validate
 
-from Environment import Environment
+from infracheck import app
 from infracheck.Persistence import Persistence
 from infracheck.helper.PdfGenerator import PdfGenerator
 from infracheck.helper.load_packages import load_packages
@@ -132,7 +132,7 @@ class PluginManager(object):
         """
         result: ITestResult = {
             "id": uid,
-            "pdf_link": F"/{Environment.RESULT_FOLDER}{uid}.pdf",
+            "pdf_link": F"/{app.config['RESULT_FOLDER']}{uid}.pdf",
             "name": input_data['name'],
             "description": input_data['description'],
             "success_count": sum(c['success_count'] for c in plugin_results),

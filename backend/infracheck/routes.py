@@ -4,13 +4,12 @@ from flask import jsonify, send_from_directory, request
 from flask_restplus import Resource
 
 from infracheck import api
-from infracheck.AuthenticationService import setup_basic_auth
 from infracheck.Persistence import Persistence
 from infracheck.PluginManager import PluginManager
 
 log = logging.getLogger()
-setup_basic_auth()
 plugin_manager = PluginManager()
+
 operations = api.namespace(
     'Test',
     path='/',
