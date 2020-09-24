@@ -4,19 +4,25 @@ from typing import Dict, List
 
 import testinfra
 
-from infracheck.model.DataTypes import DataTypes
-from infracheck.model.IModule import IModule
-from infracheck.model.IParam import IParam
-from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import IPluginData
-from infracheck.model.ITestResult import IPluginResult, IModuleResult
-from plugins.testinfra.KeyRegistrationHelper import KeyRegistrationHelper
-from plugins.testinfra.TestInfraConnector import ParamikoConnector, WinRmConnector
+from infracheck.model.Types import Types
+from infracheck.model.Module import Module
+from infracheck.model.Property import Property
+from infracheck.model.Plugin import Plugin
+from infracheck.model.TestInput import PluginInput
+from infracheck.model.TestResult import PluginResult, ModuleResult
+from plugins.TestinfraPlugin.KeyRegistrationHelper import KeyRegistrationHelper
+from plugins.TestinfraPlugin.TestInfraConnector import ParamikoConnector, WinRmConnector
 
 log = logging.getLogger()
 
 
-class TestInfraPlugin(IPlugin):
+class TestInfraPlugin(Plugin):
+    def tear_down(self):
+        pass
+
+    def setup(self):
+        pass
+
     id = 'testinfra'
     version = 0.1
     documentation = """
@@ -25,30 +31,36 @@ class TestInfraPlugin(IPlugin):
     **Note:** You can run tests on this machine too. For that, simply enter ['localhost'] to your hosts array. 
     In that case you dont need any username or password at all.
     """
-    params: Dict[str, IParam] = {
+    params: Dict[str, Property] = {
         "host": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         },
         "username": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": "username"
         },
         "target_os": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": "linux"
         },
         "password": {
-            "type": DataTypes.Password,
+            "type": Types.Password,
             "value": "password"
         },
         "port": {
-            "type": DataTypes.Number,
+            "type": Types.Number,
             "value": 22
         }
     }
 
-    def test(self, plugin_data: IPluginData) -> IPluginResult:
+    def before(self):
+        pass
+
+    def after(self):
+        pass
+
+    def test(self, plugin_data: PluginInput) -> PluginResult:
         """
         :param plugin_data:
         :return:
@@ -87,16 +99,16 @@ class TestInfraPlugin(IPlugin):
         # 3. Run Test
         runner = unittest.TextTestRunner()
         results: List[unittest.TestResult] = []
-        module_results: List[IModuleResult] = []
+        module_results: List[ModuleResult] = []
         for module in plugin_data['modules']:
-            test: [IModule, unittest.TestCase] = self.get_module_by_id(module['id'])('test')
+            test: [Module, unittest.TestCase] = self.get_module_by_id(module['id'])('test')
             test.host = host
             # Set parameters and replace default values
-            for param in test.params.keys():
+            for param in test.props.keys():
                 try:
-                    test.params[param]['value'] = module['params'][param]
+                    test.props[param]['value'] = module['params'][param]
                 except KeyError as e:
-                    log.info(F"Parameter {e} not set -> using default value: '{test.params[param]['value']}'")
+                    log.info(F"Parameter {e} not set -> using default value: '{test.props[param]['value']}'")
 
             test_result = runner.run(test)
             results.append(test_result)
@@ -109,7 +121,7 @@ class TestInfraPlugin(IPlugin):
             })
 
         # 4. Create Result
-        res: IPluginResult = {
+        res: PluginResult = {
             "plugin_name": self.id,
             "plugin_version": self.version,
             "success_count": sum(c.testsRun for c in results) - sum(not c['is_successful'] for c in module_results),

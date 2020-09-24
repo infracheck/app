@@ -1,20 +1,17 @@
+import json
 import logging
 import subprocess
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import List
-
-from jsonschema import validate
+from typing import List, Dict
 
 from infracheck import app
 from infracheck.Persistence import Persistence
-from infracheck.helper.PdfGenerator import PdfGenerator
 from infracheck.helper.load_packages import load_packages
-from infracheck.helper.schemes import test_data_scheme
-from infracheck.model.IPlugin import IPlugin
-from infracheck.model.ITestData import ITestData
-from infracheck.model.ITestResult import ITestResult, IPluginResult
+from infracheck.model.Plugin import Plugin
+from infracheck.model.TestInput import TestInput
+from infracheck.model.TestResult import TestResult, PluginResult
 
 log = logging.getLogger()
 
@@ -24,27 +21,61 @@ class PluginManager(object):
     that contain a class definition that is inheriting from the Plugin class
     """
 
-    plugins: List[IPlugin] = []
-    database = Persistence()
-
-    def list_plugins(self):
-        """Returns a list of plugins that are available
-        """
-        res = list({
-                       "id": x.id,
-                       "version": x.version,
-                       "documentation": x.documentation,
-                       "modules": x.list_modules(),
-                       "data": x.params,
-                       "type": "plugin"
-                   } for x in self.plugins)
-        return res
-
     def __init__(self):
         """Constructor that initiates the reading of all available plugins
         when an instance of the PluginCollection object is created
         """
-        self._reload_plugins()
+        self.database = Persistence()
+
+    @property
+    def _plugins(self) -> Dict[str, Plugin]:
+        plugins: List[Plugin] = load_packages("plugins", Plugin)
+        return {
+            plugin.__id__: plugin
+            for plugin in plugins
+        }
+
+    @property
+    def json(self) -> json:
+        """
+        A JSON format that is displayed by the api
+        :return:
+        """
+        return {
+            plugin_id: plugin_class.json
+            for plugin_id, plugin_class
+            in self._plugins.items()
+        }
+
+    def _get_plugin_instance(self, plugin_id):
+        """
+        Creates a fresh instance of a plugin by its plugin id
+
+        :param plugin_id:
+        :return:
+        """
+        return self._plugins[plugin_id].__class__()
+
+    def launch_tests(self, test_input: TestInput) -> TestResult:
+        """ Run all tests defined in the json
+
+        :param test_input:
+        :return:
+        """
+        uid = uuid.uuid4().hex
+        plugin_results: List[PluginResult] = []
+
+        for plugin_input in test_input.plugins:
+            plugin: Plugin = self._get_plugin_instance(plugin_input.id)
+            plugin._set_props(plugin_input.props)
+            plugin_results.append(plugin.test(plugin_input))
+
+        # Create results
+        result = self._serialize_result(uid, test_input, plugin_results)
+        result = self.remove_passwords(result)
+        # PdfGenerator().generate(result)
+        self.database.add_result(result)
+        return result
 
     def _reload_plugins(self):
         """Reset the list of all plugins and initiate the walk over the main
@@ -55,39 +86,7 @@ class PluginManager(object):
         self._install_requirements()
         # Load all plugins
         log.info(F"|- INSTALL PLUGINS -|")
-        self.plugins: List[IPlugin] = load_packages('plugins', IPlugin)
-
-    def launch_tests(self, data: ITestData) -> ITestResult:
-        """ Run all tests defined in the json
-
-        :param data:
-        :return:
-        """
-        uid = uuid.uuid4().hex
-        is_not_valid = validate(instance=data, schema=test_data_scheme)
-        if is_not_valid:
-            raise TypeError(is_not_valid)
-
-        plugin_results: List[IPluginResult] = []
-        log.info(F"Launching the test with name: {data['name']}")
-        for plugin_test_data in data['plugins']:
-            plugin_result: IPluginResult = self._get_test_plugin(plugin_test_data['id']).test(plugin_test_data)
-            plugin_results.append(plugin_result)
-
-        # Create results
-        result = self._serialize_result(uid, data, plugin_results)
-        result = self.remove_passwords(result)
-        PdfGenerator().generate(result)
-        self.database.add_result(result)
-        return result
-
-    def _get_test_plugin(self, plugin_name: str) -> IPlugin:
-        """ Returns the right plugin object, receiving id and version
-
-        :param plugin_name:
-        :return:
-        """
-        return list(filter(lambda plugin: plugin.id == plugin_name, self.plugins))[0]
+        self.plugins: List[Plugin] = load_packages('plugins', Plugin)
 
     @staticmethod
     def _install_requirements():
@@ -127,28 +126,27 @@ class PluginManager(object):
                 log.error(e)
 
     @staticmethod
-    def _serialize_result(uid: str, input_data: ITestData, plugin_results: List[IPluginResult]) -> ITestResult:
+    def _serialize_result(uid: str, input_data: TestInput, plugin_results: List[PluginResult]) -> TestResult:
         """ Takes multiple plugin results and serialize them to one response
         """
-        result: ITestResult = {
-            "id": uid,
-            "pdf_link": F"/{app.config['RESULT_FOLDER']}{uid}.pdf",
-            "name": input_data['name'],
-            "description": input_data['description'],
-            "success_count": sum(c['success_count'] for c in plugin_results),
-            "failure_count": sum(c['failure_count'] for c in plugin_results),
-            "error_count": sum(c['error_count'] for c in plugin_results),
-            "total_count": sum(c['total_count'] for c in plugin_results),
-            "message": "PLEASE IMPLEMENT",
-            "date": datetime.now(),
-            "plugin_result": plugin_results
-        }
-        if result["failure_count"] == 0:
-            result["message"] = 'Test complete. No failure_count.'
+        result = TestResult(
+            id=uid,
+            pdf_link=F"/{app.config['RESULT_FOLDER']}{uid}.pdf",
+            name=input_data.name,
+            description=input_data.description,
+            success_count=sum(c.success_count for c in plugin_results),
+            failure_count=sum(c.failure_count for c in plugin_results),
+            total_count=sum(c.total_count for c in plugin_results),
+            message="PLEASE IMPLEMENT",
+            date=datetime.now(),
+            plugin_result=plugin_results
+        )
+        if result.failure_count == 0:
+            result.message = 'Test complete. No failure_count.'
         else:
-            result["message"] = F"Test complete but {result['failure_count']} failure detected."
+            result.message = F"Test complete but {result.failure_count} failure detected."
         return result
 
     @staticmethod
-    def remove_passwords(data: ITestResult) -> ITestResult:
+    def remove_passwords(data: TestResult) -> TestResult:
         return data

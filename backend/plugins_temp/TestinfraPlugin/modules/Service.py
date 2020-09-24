@@ -3,12 +3,12 @@ from unittest import TestCase
 
 import testinfra
 
-from infracheck.model.DataTypes import DataTypes
-from infracheck.model.IModule import IModule
-from infracheck.model.IParam import IParam
+from infracheck.model.Types import Types
+from infracheck.model.Module import Module
+from infracheck.model.Property import Property
 
 
-class Service(IModule, TestCase):
+class Service(Module, TestCase):
     id = "service"
     version = 0.1
     documentation = """
@@ -37,17 +37,17 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.servic
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    params: Dict[str, IParam] = {
+    params: Dict[str, Property] = {
         "service": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": ''
         },
         "enabled": {
-            "type": DataTypes.Boolean,
+            "type": Types.Boolean,
             "value": True
         },
         "running": {
-            "type": DataTypes.Boolean,
+            "type": Types.Boolean,
             "value": True
         }
     }

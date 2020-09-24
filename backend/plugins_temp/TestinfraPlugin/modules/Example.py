@@ -3,19 +3,19 @@ from unittest import TestCase
 
 import testinfra
 
-from infracheck.model.DataTypes import DataTypes
-from infracheck.model.IModule import IModule
-from infracheck.model.IParam import IParam
+from infracheck.model.Types import Types
+from infracheck.model.Module import Module
+from infracheck.model.Property import Property
 
 
-class Example(IModule, TestCase):
+class Example(Module, TestCase):
     id = 'hello_world'
     version = 0.1
     documentation = 'ROFL'
-    params: Dict[str, IParam] = {
+    params: Dict[str, Property] = {
         "number": {
             "value": 0,
-            "type": DataTypes.Number
+            "type": Types.Number
         }
     }
     host = testinfra.get_host("local://")

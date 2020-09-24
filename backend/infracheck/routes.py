@@ -1,4 +1,6 @@
+import json
 import logging
+from typing import List
 
 from flask import jsonify, send_from_directory, request
 from flask_restplus import Resource
@@ -6,6 +8,7 @@ from flask_restplus import Resource
 from infracheck import api
 from infracheck.Persistence import Persistence
 from infracheck.PluginManager import PluginManager
+from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 
 log = logging.getLogger()
 plugin_manager = PluginManager()
@@ -40,7 +43,7 @@ class Results(Resource):
 @plugin.route('/plugins')
 class Plugins(Resource):
     def get(self):
-        return jsonify(plugin_manager.list_plugins())
+        return jsonify(plugin_manager.json)
 
 
 @results.route('/results')
@@ -55,6 +58,24 @@ class History(Resource):
 @operations.route('/test')
 class TestRunner(Resource):
     def post(self):
-        data = request.get_json()
+        data = convert_test_input_json_to_dataclasses(request.get_json())
         res = plugin_manager.launch_tests(data)
         return jsonify(res)
+
+
+def convert_test_input_json_to_dataclasses(data: json):
+    """
+    Converts the test input from a dictionary to a data class
+    This makes it easier to use and read it afterwards
+    e.g.: data['plugins']['modules'] -> data.plugins.modules
+
+    :param data:
+    :return:
+    """
+    data = TestInput(**data)
+    plugins: List[PluginInput] = list(PluginInput(**plugin_data) for plugin_data in data.plugins)
+    for plugin in plugins:
+        modules: List[ModuleInput] = list(ModuleInput(**module_data) for module_data in plugin.modules)
+        plugin.modules = modules
+    data.plugins = plugins
+    return data

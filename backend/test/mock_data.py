@@ -1,8 +1,8 @@
 import datetime
 
-from infracheck.model.ITestResult import ITestResult
+from infracheck.model.TestResult import TestResult
 
-result_mock: ITestResult = {
+result_mock: TestResult = {
     "id": "",
     "pdf_link": "",
     "name": "",

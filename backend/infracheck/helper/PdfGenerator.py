@@ -6,7 +6,7 @@ from fpdf import FPDF
 
 import Configuration
 from infracheck import app
-from infracheck.model.ITestResult import ITestResult
+from infracheck.model.TestResult import TestResult
 
 ROOT_DIR = Configuration.ROOT_DIR
 RESULT_FOLDER = app.config['RESULT_FOLDER']
@@ -55,7 +55,7 @@ class PdfGenerator(FPDF):
             self.multi_cell(190, 4, str(value), 0, 'J', 0, False)
         self.ln(2)
 
-    def generate(self, report: ITestResult):
+    def generate(self, report: TestResult):
         self.alias_nb_pages()
         self.print_chapter(1, 'General Data')
 

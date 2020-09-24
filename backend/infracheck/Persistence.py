@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 
 from infracheck import db, app
-from infracheck.model.ITestResult import ITestResult
+from infracheck.model.TestResult import TestResult
 
 
 def singleton(class_):
@@ -42,28 +42,27 @@ class Persistence:
         description: str = db.Column(db.String(120), nullable=False)
         success_count: int = db.Column(db.String(120), nullable=False)
         failure_count: int = db.Column(db.String(120), nullable=False)
-        error_count: int = db.Column(db.Integer, nullable=False)
         total_count: int = db.Column(db.Integer, nullable=False)
         plugin_result: json = db.Column(db.JSON)
         message: str = db.Column(db.String(80), nullable=False)
         date: datetime = db.Column(db.DateTime, server_default=func.now())
 
-    def add_result(self, result: ITestResult):
+    def add_result(self, result: TestResult):
         """
         Adds a rest result to the database
+        TODO: FIx plugin result writing
         :param result:
         :return:
         """
         db.session.add(self.Result(
-            id=result['id'],
-            name=result['name'],
-            description=result['description'],
-            success_count=result['success_count'],
-            failure_count=result['failure_count'],
-            error_count=result['error_count'],
-            total_count=result['total_count'],
-            plugin_result=result['plugin_result'],
-            message=result['message'],
-            date=result['date']
+            id=result.id,
+            name=result.name,
+            description=result.description,
+            success_count=result.success_count,
+            failure_count=result.failure_count,
+            total_count=result.total_count,
+            plugin_result={},
+            message=result.message,
+            date=result.date
         ))
         db.session.commit()

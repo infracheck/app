@@ -3,7 +3,7 @@ from typing import List
 
 import pexpect
 
-from plugins.testinfra.Config import Config
+from plugins.TestinfraPlugin.Config import Config
 
 
 class KeyRegistrationHelper:

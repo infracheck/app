@@ -3,16 +3,16 @@ from unittest import TestCase
 
 import testinfra
 
-from infracheck.model.DataTypes import DataTypes
-from infracheck.model.IModule import IModule
-from infracheck.model.IParam import IParam
+from infracheck.model.Types import Types
+from infracheck.model.Module import Module
+from infracheck.model.Property import Property
 
 
-class AddressReachable(IModule, TestCase):
+class AddressReachable(Module, TestCase):
     id = "address"
     version = 0.1
     documentation = """
-    # Is adress reachable [Linux]
+    # Is address reachable [Linux]
 ---
 
 ## Description:
@@ -41,9 +41,9 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.addr.A
 Martin Welcker <mwelcker@proficom.de>
 """
 
-    params: Dict[str, IParam] = {
+    params: Dict[str, Property] = {
         "url": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         }
     }

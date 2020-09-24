@@ -1,7 +1,7 @@
 from typing import Dict
 
 
-class DataTypes(Dict):
+class Types(Dict):
     """
     Defines all data types that are supported as inputs to tests
     """

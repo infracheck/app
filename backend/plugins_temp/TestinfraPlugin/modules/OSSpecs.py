@@ -3,12 +3,12 @@ from unittest import TestCase
 
 import testinfra
 
-from infracheck.model.DataTypes import DataTypes
-from infracheck.model.IModule import IModule
-from infracheck.model.IParam import IParam
+from infracheck.model.Types import Types
+from infracheck.model.Module import Module
+from infracheck.model.Property import Property
 
 
-class OSSpecs(IModule, TestCase):
+class OSSpecs(Module, TestCase):
     id = "os_specs"
     version = 0.1
     documentation = """
@@ -39,21 +39,21 @@ https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.system
 ## Author
 Martin Welcker <mwelcker@proficom.de>
 """
-    params: Dict[str, IParam] = {
+    params: Dict[str, Property] = {
         "type": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         },
         "distribution": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         },
         "release": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         },
         "codename": {
-            "type": DataTypes.Text,
+            "type": Types.Text,
             "value": 'localhost'
         },
 
