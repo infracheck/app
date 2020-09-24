@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from infracheck.model.Module import Module
+from infracheck.Module import Module
 from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
 

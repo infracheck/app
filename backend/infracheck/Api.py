@@ -7,10 +7,10 @@ from flask_restplus import Resource
 from jsonschema import validate
 
 from infracheck import api
-from infracheck.Persistence import Persistence
 from infracheck.PluginManager import PluginManager
 from infracheck.helper.schemes import test_data_scheme
 from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
+from infracheck.services.Persistence import Persistence
 
 log = logging.getLogger()
 plugin_manager = PluginManager()

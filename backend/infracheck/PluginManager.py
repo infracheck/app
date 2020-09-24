@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import List
 
 from infracheck import app
-from infracheck.Persistence import Persistence
+from infracheck.Plugin import Plugin
 from infracheck.helper.load_packages import load_packages
-from infracheck.model.Plugin import Plugin
 from infracheck.model.TestInput import TestInput
 from infracheck.model.TestResult import TestResult, PluginResult
+from infracheck.services.Persistence import Persistence
 
 log = logging.getLogger()
 

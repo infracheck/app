@@ -1,7 +1,7 @@
 import unittest
 
+from infracheck.Plugin import Plugin
 from infracheck.PluginManager import PluginManager
-from infracheck.model.Plugin import Plugin
 from plugins.DemoPlugin.DemoPlugin import DemoPlugin
 
 

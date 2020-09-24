@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from infracheck.model.Plugin import Plugin
+from infracheck.Plugin import Plugin
 from infracheck.model.Types import Types
 
 

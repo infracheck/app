@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Dict, Any
 
+from infracheck.Module import Module
 from infracheck.helper.load_packages import load_packages
-from infracheck.model.Module import Module
 from infracheck.model.TestInput import PluginInput
 from infracheck.model.TestResult import PluginResult, ModuleResult, ModulePostResult
 from infracheck.model.Types import Types

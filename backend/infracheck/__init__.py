@@ -20,7 +20,6 @@ elif app.env == "development":
 else:
     app.config.from_object('Configuration.Config')
 
-
 CORS(app)
 basic_auth = BasicAuth(app)
 
@@ -39,4 +38,4 @@ stream_handler.setFormatter(formatter)
 log.setLevel(app.config['LOG_LEVEL'])
 log.addHandler(stream_handler)
 
-import infracheck.routes
+import infracheck.Api
