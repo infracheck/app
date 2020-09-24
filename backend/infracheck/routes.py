@@ -60,6 +60,7 @@ class TestRunner(Resource):
     def post(self):
         data = convert_test_input_json_to_dataclasses(request.get_json())
         res = plugin_manager.launch_tests(data)
+        print(type(res))
         return jsonify(res)
 
 

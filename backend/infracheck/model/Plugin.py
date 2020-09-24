@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.Module import Module
 from infracheck.model.TestInput import PluginInput
-from infracheck.model.TestResult import PluginResult, ModuleResult
+from infracheck.model.TestResult import PluginResult, ModuleResult, ModulePostResult
 from infracheck.model.Types import Types
 
 log = logging.getLogger(__name__)
@@ -162,7 +162,7 @@ class Plugin(ABC):
         for module_data in plugin_input.modules:
             module = self._get_module_instance(module_data.id)
             module._set_props(module_data.props, self.props)
-            module_result = module.test()
+            module_result: ModulePostResult = module.execute_test()
             module_result.props = self._get_result_props_of(module)
             results.append(module_result)
 

@@ -1,6 +1,6 @@
 import datetime
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
@@ -61,7 +61,7 @@ class Persistence:
             success_count=result.success_count,
             failure_count=result.failure_count,
             total_count=result.total_count,
-            plugin_result={},
+            plugin_result=[asdict(plugin_data) for plugin_data in result.plugin_result],
             message=result.message,
             date=result.date
         ))

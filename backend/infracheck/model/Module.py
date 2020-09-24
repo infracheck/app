@@ -5,13 +5,13 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict
 
-from infracheck.model.TestResult import ModuleResult
+from infracheck.model.TestResult import ModuleResult, ModulePostResult
 
 
 class Module(ABC):
     """ A Test module is a single test inside a test set """
 
-    __version__: str
+    __version__: float
 
     @dataclass
     class props:
@@ -66,6 +66,20 @@ class Module(ABC):
 
         if not self.__documentation__:
             raise NotImplementedError("documentation must be set")
+
+    def execute_test(self) -> ModulePostResult:
+        """
+
+        :return:
+        """
+        pre_result: ModuleResult = self.test()
+        return ModulePostResult(
+            message=pre_result.message,
+            is_successful=pre_result.is_successful,
+            custom_data=pre_result.custom_data,
+            module_name=self.__id__,
+            module_version=self.__version__
+        )
 
     @abstractmethod
     def test(self) -> ModuleResult:

@@ -4,7 +4,7 @@ import subprocess
 import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict
+from typing import List
 
 from infracheck import app
 from infracheck.Persistence import Persistence
@@ -16,7 +16,7 @@ from infracheck.model.TestResult import TestResult, PluginResult
 log = logging.getLogger()
 
 
-class PluginManager(object):
+class PluginManager:
     """Upon creation, this class will read the plugins package for modules
     that contain a class definition that is inheriting from the Plugin class
     """
@@ -26,13 +26,10 @@ class PluginManager(object):
         when an instance of the PluginCollection object is created
         """
         self.database = Persistence()
-
-    @property
-    def _plugins(self) -> Dict[str, Plugin]:
-        plugins: List[Plugin] = load_packages("plugins", Plugin)
-        return {
+        self._install_requirements()
+        self._plugins = {
             plugin.__id__: plugin
-            for plugin in plugins
+            for plugin in load_packages("plugins", Plugin)
         }
 
     @property
@@ -72,21 +69,9 @@ class PluginManager(object):
 
         # Create results
         result = self._serialize_result(uid, test_input, plugin_results)
-        result = self.remove_passwords(result)
         # PdfGenerator().generate(result)
         self.database.add_result(result)
         return result
-
-    def _reload_plugins(self):
-        """Reset the list of all plugins and initiate the walk over the main
-        provided plugin package to load all available plugins
-        """
-        # Install requirements for all plugins
-        log.info(F"|- INSTALL REQUIREMENTS -|")
-        self._install_requirements()
-        # Load all plugins
-        log.info(F"|- INSTALL PLUGINS -|")
-        self.plugins: List[Plugin] = load_packages('plugins', Plugin)
 
     @staticmethod
     def _install_requirements():
@@ -146,7 +131,3 @@ class PluginManager(object):
         else:
             result.message = F"Test complete but {result.failure_count} failure detected."
         return result
-
-    @staticmethod
-    def remove_passwords(data: TestResult) -> TestResult:
-        return data

@@ -26,7 +26,7 @@ class DemoModule(Module):
         """
         :return:
         """
-        print(F"Access global plugin parameters: {self.plugin_props.rofl}")
+        print(F"Access global plugin parameters: {self.plugin_props.new_global_variable}")
         print(F"Access module parameters: {self.props.input1}")
 
         equal = self.props.input1 == self.props.input2

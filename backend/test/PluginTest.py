@@ -10,12 +10,12 @@ class PluginsTest(unittest.TestCase):
 
     def test_plugins(self):
         with self.subTest("'testinfra' exists"):
-            self.assertTrue(any(x.id == "testinfra" for x in self.plugin_manager._plugins))
+            self.assertTrue(any(x.id == "testinfra" for x in self.plugin_manager._load_plugins))
 
         with self.subTest("'demo_plugin' exists"):
-            self.assertTrue(any(x.id == "demo_plugin" for x in self.plugin_manager._plugins))
+            self.assertTrue(any(x.id == "demo_plugin" for x in self.plugin_manager._load_plugins))
 
-        for plugin in self.plugin_manager._plugins:
+        for plugin in self.plugin_manager._load_plugins:
             with self.subTest(F"test() is implemented in {plugin.id}"):
                 methods = inspect.getmembers(plugin, inspect.ismethod)
                 self.assertTrue(any(x[0] == "test" for x in methods))

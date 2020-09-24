@@ -7,11 +7,19 @@ from typing import List, Dict
 class ModuleResult:
     """
     Interface of the result that comes from any module
-
     """
     is_successful: bool
-    message: str = ""
-    custom_data: Dict = field(default_factory=dict)
+    message: str
+    custom_data: Dict
+
+
+@dataclass
+class ModulePostResult(ModuleResult):
+    """
+
+    """
+    module_name: str
+    module_version: float
     props: Dict = field(default_factory=dict)
 
 
@@ -23,7 +31,7 @@ class PluginResult:
     failure_count: int
     total_count: int
     message: str
-    module_result: List[ModuleResult]
+    module_result: List[ModulePostResult]
     props: Dict = field(default_factory=dict)
 
 
