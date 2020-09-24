@@ -2,6 +2,13 @@
 This file contains all JSON schemes that can be send to the backend
 """
 
+# Scheme for /plugins route
+# TODO: Implement properly
+plugin_scheme = {
+    "type": "object",
+    "additionalProperties": True
+}
+
 # This is how the input data, to launch a test, should look like
 test_data_scheme = {
     "type": "object",
@@ -9,28 +16,30 @@ test_data_scheme = {
     "properties": {
         "name": {"type": "string"},
         "description": {"type": "string"},
-        "plugins": {"type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": ["id", "params", "modules"],
-                        "additionalProperties": True,
-                        "properties": {
-                            "id": {"type": "string"},
-                            "params": {"type": "object"},
-                            "modules": {"type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "required": ["id", "params"],
-                                            "additionalProperties": False,
-                                            "properties": {
-                                                "id": {"type": "string"},
-                                                "params": {"type": "object"}
-                                            }
-                                        }
-                                        }
+        "plugins": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["id", "props", "modules"],
+                "additionalProperties": True,
+                "properties": {
+                    "id": {"type": "string"},
+                    "props": {"type": "object"},
+                    "modules": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["id", "props"],
+                            "additionalProperties": False,
+                            "properties": {
+                                "id": {"type": "string"},
+                                "props": {"type": "object"}
+                            }
                         }
                     }
-                    }
+                }
+            }
+        }
     },
     "additionalProperties": False
 }

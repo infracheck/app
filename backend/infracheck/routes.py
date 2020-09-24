@@ -4,10 +4,12 @@ from typing import List
 
 from flask import jsonify, send_from_directory, request
 from flask_restplus import Resource
+from jsonschema import validate
 
 from infracheck import api
 from infracheck.Persistence import Persistence
 from infracheck.PluginManager import PluginManager
+from infracheck.helper.schemes import test_data_scheme
 from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 
 log = logging.getLogger()
@@ -58,9 +60,10 @@ class History(Resource):
 @operations.route('/test')
 class TestRunner(Resource):
     def post(self):
-        data = convert_test_input_json_to_dataclasses(request.get_json())
+        json = request.get_json()
+        validate(json, schema=test_data_scheme)
+        data = convert_test_input_json_to_dataclasses(json)
         res = plugin_manager.launch_tests(data)
-        print(type(res))
         return jsonify(res)
 
 
