@@ -1,34 +1,45 @@
-import datetime
-
-from infracheck.model.TestResult import TestResult
-
-result_mock: TestResult = {
-    "id": "",
-    "pdf_link": "",
-    "name": "",
-    "description": "",
-    "success_count": 0,
-    "failure_count": 0,
-    "error_count": 0,
-    "total_count": 0,
-    "message": "",
-    "date": datetime.datetime.now(),
-    "plugin_result": []
-}
-
-test_data = {
+localhost_test_data = {
     "name": "Just another test",
     "description": "Hey there its me",
     "plugins": [
         {
-            "id": "demo_plugin",
-            "params": {},
+            "id": "TestInfraPlugin",
+            "props": {
+                "host_address": "localhost",
+                "username": "",
+                "password": "",
+                "os": "linux",
+                "port": 22
+            },
             "modules": [
                 {
-                    "id": "equality_check",
-                    "params": {
-                        "number1": 1,
-                        "number2": 1
+                    "id": "AddressReachable",
+                    "props": {
+                        "url": "google.de"
+                    }
+                },
+                {
+                    "id": "OSSpecs",
+                    "props": {
+                        "type": "linux",
+                        "distribution": "",
+                        "release": "",
+                        "codename": ""
+                    }
+                },
+                {
+                    "id": "CompareCmds",
+                    "props": {
+                        "command1": "echo LOL",
+                        "command2": "echo LOL"
+                    }
+                },
+                {
+                    "id": "Service",
+                    "props": {
+                        "service": "docker",
+                        "enabled": True,
+                        "running": True
                     }
                 }
             ]

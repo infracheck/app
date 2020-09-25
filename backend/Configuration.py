@@ -5,6 +5,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Config(object):
     """Basic configuration"""
+    ROOT_DIR = ROOT_DIR
     DEBUG = False
     TESTING = False
 
@@ -12,7 +13,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     BASIC_AUTH_FORCE = False
-    RESULT_FOLDER = 'results/'
+    RESULT_FOLDER = F'{ROOT_DIR}/results/'
     SECRET_KEY = "secret"
 
 

@@ -11,6 +11,7 @@ from infracheck.Plugin import Plugin
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.TestInput import TestInput
 from infracheck.model.TestResult import TestResult, PluginResult
+from infracheck.services.PdfGenerator import PdfGenerator
 from infracheck.services.Persistence import Persistence
 
 log = logging.getLogger()
@@ -72,7 +73,7 @@ class PluginManager:
 
         # Create results
         result = self._serialize_result(uid, test_input, plugin_results)
-        # PdfGenerator().generate(result)
+        PdfGenerator().generate(result)
         self.database.add_result(result)
         return result
 
@@ -119,7 +120,7 @@ class PluginManager:
         """
         result = TestResult(
             id=uid,
-            pdf_link=F"/{app.config['RESULT_FOLDER']}{uid}.pdf",
+            pdf_link=F"/results/{uid}.pdf",
             name=input_data.name,
             description=input_data.description,
             success_count=sum(c.success_count for c in plugin_results),

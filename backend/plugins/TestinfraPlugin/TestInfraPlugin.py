@@ -30,7 +30,7 @@ class TestInfraPlugin(Plugin):
             os=self.props.os,
         ).get_host()
 
-        if self.props.os == 'linux':
+        if self.props.os == 'linux' and self.props.host_address != 'localhost':
             self.ssh_service = KeyRegistration(
                 user=self.props.username,
                 password=self.props.password,
@@ -39,5 +39,5 @@ class TestInfraPlugin(Plugin):
             self.ssh_service.register_ssh_keys([self.props.host_address])
 
     def tear_down(self):
-        if self.props.os == 'linux':
+        if self.props.os == 'linux' and self.props.host_address != 'localhost':
             self.ssh_service.clean_ssh_keys([self.props.host_address])

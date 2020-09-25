@@ -23,7 +23,6 @@ class ApiTest(unittest.TestCase):
 
     def test_plugins(self):
         response = self.client.get('/plugins')
-        print(response.get_json())
         with self.subTest("'/plugins' exists"):
             self.assertTrue(response.status_code == 200)
         with self.subTest("data is of type list"):
