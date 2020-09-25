@@ -14,7 +14,9 @@ Dockerfile launches an ubuntu container with ssh enabled.
 **Deployment:**
 ```
 docker build -t ubuntu-sshd .
-docker run -d -p 8899:20 --name ubuntu-sshd ubuntu-sshd
+docker run -dt -p 8899:22 --name ubuntu-sshd ubuntu-sshd
+# Get IP adress
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ubuntu-sshd
 ```
 
 ### Windows Server 2016:
@@ -27,9 +29,11 @@ Vagrantfile launches windows server 2016 vm with winrm.
 **Credentials**
 - username: vagrant
 - password: vagrant
+- address: 192.168.200.200
+- port: 5985
 
 **Deployment:**
 ```
 vagrant up
-connect to winrm://vagrant:vagrant@192.168.99.103:5985?no_ssl=true&no_verify_ssl=true
+connect to winrm://vagrant:vagrant@192.168.200.200:5985?no_ssl=true&no_verify_ssl=true
 ```

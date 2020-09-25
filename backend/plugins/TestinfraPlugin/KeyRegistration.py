@@ -3,10 +3,11 @@ from typing import List
 
 import pexpect
 
-from plugins.TestinfraPlugin.Config import Config
+from infracheck import log
+from plugins.TestinfraPlugin.Configuration import Configuration
 
 
-class KeyRegistrationHelper:
+class KeyRegistration:
     """
     This class can be used to register your ssh key at the remote host
     This is needed by the testinfra plugin.
@@ -23,14 +24,14 @@ class KeyRegistrationHelper:
         self.pw = password
         self.port = port
         # Create ssh key
-        if not os.path.exists(Config.SSH_FOLDER):
-            os.makedirs(F"{Config.SSH_FOLDER}")
-        if os.path.isfile(F"{Config.SSH_FOLDER}id_rsa"):
-            os.remove(F"{Config.SSH_FOLDER}id_rsa")
-            os.remove(F"{Config.SSH_FOLDER}id_rsa.pub")
-        os.system(F"ssh-keygen -m pem -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa")
+        if not os.path.exists(Configuration.SSH_FOLDER):
+            os.makedirs(F"{Configuration.SSH_FOLDER}")
+        if os.path.isfile(F"{Configuration.SSH_FOLDER}id_rsa"):
+            os.remove(F"{Configuration.SSH_FOLDER}id_rsa")
+            os.remove(F"{Configuration.SSH_FOLDER}id_rsa.pub")
+        os.system(F"ssh-keygen -m pem -q -t rsa -N '' -f {Configuration.SSH_FOLDER}id_rsa")
 
-    # subprocess.run(F"ssh-keygen -q -t rsa -N '' -f {Config.SSH_FOLDER}id_rsa <<< y", shell=True, check=True)
+    # subprocess.run(F"ssh-keygen -q -t rsa -N '' -f {Configuration.SSH_FOLDER}id_rsa <<< y", shell=True, check=True)
 
     def register_ssh_keys(self, hosts: List[str]):
         """
@@ -68,7 +69,7 @@ class KeyRegistrationHelper:
         child = pexpect.spawn(
             F'ssh-copy-id'
             F' -p {self.port}'
-            F' -i {Config.SSH_FOLDER}id_rsa'
+            F' -i {Configuration.SSH_FOLDER}id_rsa'
             F' {self.user}@{ip}'
             F' -o StrictHostKeyChecking=no -f')
 
@@ -86,7 +87,7 @@ class KeyRegistrationHelper:
             i = child.expect(['added:', 'denied'])
             if i == 0:  # Key successfully added
                 added_key = True
-                print("Key successfully added")
+                log.info("Key successfully added")
 
             if i == 1:  # Permission denied
                 child.close()
@@ -102,19 +103,19 @@ class KeyRegistrationHelper:
         """
         child = pexpect.spawn(
             F"ssh -i"
-            F" {Config.SSH_FOLDER}id_rsa"
+            F" {Configuration.SSH_FOLDER}id_rsa"
             F" -o 'StrictHostKeyChecking=no'"
             F" {self.user}@{ip}"
             F" -p {self.port}"
         )
-        child.logfile_read = open(F'{Config.SSH_FOLDER}register-ssh-logs.txt', 'wb')
+        child.logfile_read = open(F'{Configuration.SSH_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
             child.sendline('exit')
             i = child.expect(['closed'])
             if i == 0:
-                print("Logout successful")
+                log.info("Logout successful")
             else:
                 raise ConnectionError('Logout after ssh failed')
         else:
@@ -128,18 +129,18 @@ class KeyRegistrationHelper:
         :return:
         """
         child = pexpect.spawn(
-            F"ssh -i {Config.SSH_FOLDER}id_rsa"
+            F"ssh -i {Configuration.SSH_FOLDER}id_rsa"
             F" -p {self.port}"
             F" -o 'StrictHostKeyChecking=no'"
             F"  {self.user}@{ip}")
-        child.logfile_read = open(F'{Config.SSH_FOLDER}register-ssh-logs.txt', 'wb')
+        child.logfile_read = open(F'{Configuration.SSH_FOLDER}register-ssh-logs.txt', 'wb')
 
         i = child.expect(['login:'])
         if i == 0:
             child.sendline(self.ssh_key_delete_cmd())
             i = child.expect(['closed'])
             if i == 0:
-                print("Logout successful")
+                log.info("Logout successful")
             else:
                 raise ConnectionError('Problem overwriting authorized keys')
         else:
@@ -152,7 +153,7 @@ class KeyRegistrationHelper:
         Create command to remove the ssh_key from remote host
         :return:
         """
-        key = open(F"{Config.SSH_FOLDER}id_rsa.pub", "r").read().rstrip()
+        key = open(F"{Configuration.SSH_FOLDER}id_rsa.pub", "r").read().rstrip()
 
         # split the key in its three parts (ssh-rsa, content, name)
         key_parts = key.split(' ')

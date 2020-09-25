@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from infracheck.Plugin import Plugin
 from infracheck.model.Types import Types
+from plugins.TestinfraPlugin.KeyRegistration import KeyRegistration
 from plugins.TestinfraPlugin.TestInfraConnector import Connection
 
 
@@ -18,6 +19,8 @@ class TestInfraPlugin(Plugin):
         password: Types.Password = ""
         port: Types.Number = 22
 
+    ssh_service: KeyRegistration
+
     def setup(self):
         self.props.host = Connection(
             password=self.props.password,
@@ -27,5 +30,14 @@ class TestInfraPlugin(Plugin):
             os=self.props.os,
         ).get_host()
 
+        if self.props.os == 'linux':
+            self.ssh_service = KeyRegistration(
+                user=self.props.username,
+                password=self.props.password,
+                port=self.props.port
+            )
+            self.ssh_service.register_ssh_keys([self.props.host_address])
+
     def tear_down(self):
-        print("no before action")
+        if self.props.os == 'linux':
+            self.ssh_service.clean_ssh_keys([self.props.host_address])

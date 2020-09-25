@@ -25,9 +25,11 @@ class Connection:
             raise ValueError
 
     def _get_localhost(self):
+        print("LOCAL HOST")
         return testinfra.get_host("local://")
 
     def _get_windows_host(self):
+        print("WINDOWS HOST")
         return testinfra.get_host(
             F"winrm://{self.user}:{self.password}@{self.host}:{self.port}?no_ssl=true&no_verify_ssl=true")
 
