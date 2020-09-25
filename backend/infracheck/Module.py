@@ -74,9 +74,9 @@ class Module(ABC):
         """
         pre_result: ModuleResult = self.test()
         return ModulePostResult(
-            message=pre_result.message,
-            is_successful=pre_result.is_successful,
-            custom_data=pre_result.custom_data,
+            result_message=pre_result.result_message,
+            result_successful=pre_result.result_successful,
+            result_data=pre_result.result_data,
             module_name=self.__id__,
             module_version=self.__version__
         )

@@ -1,14 +1,11 @@
 from dataclasses import dataclass
-from unittest import TestCase
-
-import testinfra
 
 from infracheck.Module import Module
 from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
 
 
-class AddressReachable(Module, TestCase):
+class AddressReachable(Module):
     """
     # Is address reachable [Linux]
     ---
@@ -45,19 +42,16 @@ class AddressReachable(Module, TestCase):
     class props:
         url: Types.Text = "google.de"
 
-
     def test(self) -> ModuleResult:
-        addr = self.props.url
+        is_resolvable = self.plugin_props.host.addr(self.props.url).is_resolvable
+        is_reachable = self.plugin_props.host.addr(self.props.url).is_reachable
 
-        with self.subTest("Resolvable"):
-            self.assertTrue(
-                self.plugin_props.host.addr(addr).is_resolvable,
-                F"Address {addr} is not resolvable"
-            )
-
-        with self.subTest("Reachable"):
-            self.assertTrue(
-                self.plugin_props.host.addr(addr).is_reachable,
-                F"Address {addr} is not resolvable"
-            )
-        return ModuleResult()
+        return ModuleResult(
+            result_successful=is_reachable and is_reachable,
+            result_data={
+                "resolvable": is_resolvable,
+                "is_reachable": is_reachable
+            },
+            result_message=F"Address is {'resolvable' if is_resolvable else 'not resolvable'}. "
+                           F"Address is {'reachable' if is_reachable else 'not reachable'}."
+        )

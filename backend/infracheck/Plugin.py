@@ -106,15 +106,18 @@ class Plugin(ABC):
             for module in modules
         }
 
-    def _get_module_instance(self, plugin_id):
+    def _get_module_instance(self, module_id):
         """
         Creates a fresh instance of a plugin by its plugin id
 
-        :param plugin_id:
+        :param module_id:
         :return:
         """
-        module_instance = self._modules[plugin_id].__class__()
-        return module_instance
+        try:
+            module_instance = self._modules[module_id].__class__()
+            return module_instance
+        except KeyError:
+            raise KeyError(F"Module with id '{module_id}' does not exist in plugin '{self.__id__}'")
 
     @abstractmethod
     def tear_down(self):
@@ -205,9 +208,9 @@ class Plugin(ABC):
         """
         return PluginResult(
             message=F"{self.__id__}@{self.__version__} complete with failure_count: "
-                    F"{sum(not c.is_successful for c in module_results)}",
-            success_count=sum(c.is_successful for c in module_results),
-            failure_count=sum(not c.is_successful for c in module_results),
+                    F"{sum(not module.result_successful for module in module_results)}",
+            success_count=sum(module.result_successful for module in module_results),
+            failure_count=sum(not module.result_successful for module in module_results),
             total_count=len(module_results),
             plugin_name=self.__id__,
             module_result=[result for result in module_results],

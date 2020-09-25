@@ -8,9 +8,9 @@ class ModuleResult:
     """
     Interface of the result that comes from any module
     """
-    is_successful: bool
-    message: str
-    custom_data: Dict
+    result_successful: bool
+    result_message: str
+    result_data: Dict
 
 
 @dataclass

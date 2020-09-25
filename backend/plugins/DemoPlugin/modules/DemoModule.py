@@ -31,7 +31,7 @@ class DemoModule(Module):
 
         equal = self.props.input1 == self.props.input2
         return ModuleResult(
-            is_successful=equal,
-            message="They are equal" if equal else "They are not equal",
-            custom_data={"difference_between_numbers": self.props.input2 - self.props.input1}
+            result_successful=equal,
+            result_message="They are equal" if equal else "They are not equal",
+            result_data={"difference_between_numbers": self.props.input2 - self.props.input1}
         )

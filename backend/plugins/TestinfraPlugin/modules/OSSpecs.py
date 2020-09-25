@@ -1,14 +1,11 @@
 from dataclasses import dataclass
-from unittest import TestCase
-
-import testinfra
 
 from infracheck.Module import Module
 from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
 
 
-class OSSpecs(Module, TestCase):
+class OSSpecs(Module):
     """
     # Checks specs of operating system [Linux]
     ---
@@ -31,39 +28,41 @@ class OSSpecs(Module, TestCase):
         release: Types.Text = ""
         codename: Types.Text = ""
 
-
     def test(self) -> ModuleResult:
-        os_type = self.props.type
-        distribution = self.props.distribution
-        release = self.props.release
-        codename = self.props.codename
+        host = self.plugin_props.host
 
-        with self.subTest("Type"):
-            if os_type != '':
-                self.assertTrue(
-                    self.plugin_props.host.system_info.type == os_type,
-                    F"{self.plugin_props.host.system_info.type} != {os_type}"
-                )
+        result = {}
+        is_successful = True
+        if self.props.type != "":
+            equal_type = host.system_info.type == self.props.type
+            result["equal_type"] = F"'{host.system_info.type}'" \
+                                   F"{'==' if equal_type else '!='}" \
+                                   F"'{self.props.type}'"
+            is_successful = equal_type
 
-        with self.subTest("Distribution"):
-            if distribution != '':
-                self.assertTrue(
-                    self.plugin_props.host.system_info.distribution == distribution,
-                    F"{self.plugin_props.host.system_info.distribution} != {distribution}"
-                )
+        if self.props.distribution != "":
+            equal_distribution = host.system_info.distribution == self.props.distribution
+            result["equal_distribution"] = F"'{host.system_info.distribution}'" \
+                                           F"{'==' if equal_distribution else '!='}" \
+                                           F"'{self.props.distribution}'"
+            is_successful = equal_distribution
 
-        with self.subTest("Release"):
-            if release != '':
-                self.assertTrue(
-                    self.plugin_props.host.system_info.release == release,
-                    F"{self.plugin_props.host.system_info.release} != {release}"
-                )
+        if self.props.release != "":
+            equal_release = host.system_info.release == self.props.release
+            result["equal_release"] = F"'{host.system_info.release}'" \
+                                      F"{'==' if equal_release else '!='}" \
+                                      F"'{self.props.release}'"
+            is_successful = equal_release
 
-        with self.subTest("Codename"):
-            if codename != '':
-                self.assertTrue(
-                    self.plugin_props.host.system_info.codename == codename,
-                    F"{self.plugin_props.host.system_info.codename} != {codename}"
-                )
+        if self.props.codename != "":
+            equal_codename = host.system_info.codename == self.props.codename
+            result["equal_codename"] = F"'{host.system_info.codename}'" \
+                                       F"{'==' if equal_codename else '!='}" \
+                                       F"'{self.props.codename}'"
+            is_successful = equal_codename
 
-        return ModuleResult()
+        return ModuleResult(
+            result_successful=is_successful,
+            result_message="System information are correct" if is_successful else "System information are incorrect",
+            result_data=result
+        )

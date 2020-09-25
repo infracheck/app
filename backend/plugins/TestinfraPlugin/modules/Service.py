@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from unittest import TestCase
 
 from infracheck.Module import Module
+from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
 
 
-class Service(Module, TestCase):
+class Service(Module):
     """
     # Check for running services
     ---
@@ -27,18 +27,20 @@ class Service(Module, TestCase):
         enabled: Types.Boolean = True
         running: Types.Boolean = True
 
-    def test(self):
+    def test(self) -> ModuleResult:
         service = self.plugin_props.host.service(self.props.service)
-        should_be_enabled = self.props.enabled
-        should_be_running = self.props.running
 
-        with self.subTest(F"{service} enabled?"):
-            self.assertTrue(
-                should_be_enabled == service.is_enabled,
-                F"Service {service} is {'enabled' if service.is_enabled else 'disabled'}"
-            )
-        with self.subTest(F"{service} running?"):
-            self.assertTrue(
-                should_be_running == service.is_running,
-                F"Service {service} is {'running' if service.is_running else 'not running'}"
-            )
+        equal_enabled = self.props.enabled == service.is_enabled
+        equal_running = self.props.running == service.is_running
+
+        return ModuleResult(
+            result_successful=equal_enabled and equal_running,
+            result_message=
+            "Service works as expected"
+            if equal_running and equal_enabled else
+            "Service not as expected",
+            result_data={
+                "service_is_enabled": service.is_enabled,
+                "service_is_running": service.is_running
+            },
+        )

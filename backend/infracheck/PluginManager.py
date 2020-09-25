@@ -51,7 +51,10 @@ class PluginManager:
         :param plugin_id:
         :return:
         """
-        return self._plugins[plugin_id].__class__()
+        try:
+            return self._plugins[plugin_id].__class__()
+        except KeyError:
+            raise KeyError(F"Plugin with id '{plugin_id}' does not exist")
 
     def launch_tests(self, test_input: TestInput) -> TestResult:
         """ Run all tests defined in the json
