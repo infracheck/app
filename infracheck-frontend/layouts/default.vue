@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app light>
     <v-navigation-drawer
       v-model="drawer"
       app
@@ -19,7 +19,7 @@
     <v-app-bar
       app
       clipped-left
-      color="blue"
+      color="light-blue lighten-3"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
 
