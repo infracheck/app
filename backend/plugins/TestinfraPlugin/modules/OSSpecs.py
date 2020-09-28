@@ -6,18 +6,11 @@ from infracheck.model.Types import Types
 
 
 class OSSpecs(Module):
-    """
-    # Checks specs of operating system [Linux]
-    ---
-    ## Description:
-    This test can check for various specs of the operating system. It can be used to check the `type`,
+    """This test can check for various specs of the operating system. It can be used to check the `type`,
     `distribution`, `release` and `codename` of the hosts os.
 
     [Testinfra Docs](
     https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.systeminfo.SystemInfo)
-
-    ## Author
-    Martin Welcker <mwelcker@proficom.de>
     """
     __version__ = 0.1
 

@@ -7,13 +7,7 @@ from infracheck.model.Types import Types
 
 class DemoModule(Module):
     """
-    #Check equality of two inputs
-    ============
-    ## Description
     Write a short description what your test is doing.
-
-    ## Author
-    Martin Welcker <mwelcker@proficom.de>
     """
     __version__ = 0.1
 

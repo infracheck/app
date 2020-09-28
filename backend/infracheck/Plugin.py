@@ -57,6 +57,7 @@ class Plugin(ABC):
             setattr(self.props, key, value)
 
     __version__: float = 0.0
+    __author__: str = ""
 
     @property
     def __id__(self):
@@ -79,6 +80,9 @@ class Plugin(ABC):
             in self._modules.items()
         }
         return {
+            "id": self.__id__,
+            "author": self.__author__,
+            "type": "plugin",
             "documentation": self.__documentation__,
             "version": self.__version__,
             "props": self._props_as_json,

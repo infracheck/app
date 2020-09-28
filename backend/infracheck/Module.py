@@ -11,7 +11,8 @@ from infracheck.model.TestResult import ModuleResult, ModulePostResult
 class Module(ABC):
     """ A Test module is a single test inside a test set """
 
-    __version__: float
+    __version__: float = 0.0
+    __author__: str = ""
 
     @dataclass
     class props:
@@ -54,6 +55,9 @@ class Module(ABC):
     @property
     def json(self) -> json:
         return {
+            "id": self.__id__,
+            "author": self.__author__,
+            "type": "module",
             "documentation": self.__documentation__,
             "version": self.__version__,
             "props": self._props_as_json

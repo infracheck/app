@@ -6,18 +6,10 @@ from infracheck.model.Types import Types
 
 
 class Service(Module):
-    """
-    # Check for running services
-    ---
-
-    ## Description:
-    Check for running services.
+    """Check for running services.
 
     [Testinfra Docs](
     https://testinfra.readthedocs.io/en/latest/modules.html#testinfra.modules.service.Service)
-
-    ## Author
-    Martin Welcker <mwelcker@proficom.de>
     """
     __version__ = 0.1
 

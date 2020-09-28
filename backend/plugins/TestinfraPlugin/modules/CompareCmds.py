@@ -7,7 +7,6 @@ from infracheck.model.Types import Types
 
 class OSSpecs(Module):
     """
-    ## Author
     Martin Welcker <mwelcker@proficom.de>
     """
     __version__ = 0.1

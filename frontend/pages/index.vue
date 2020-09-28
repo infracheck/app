@@ -9,16 +9,16 @@
       sm8
       md6
     >
-      <div class="text-center" />
-      <v-card>
+      <div class="text-center"/>
+      <v-card outlined>
         <v-card-title class="headline">
           <img src="~assets/logo_white.png" alt="infracheck icon">
         </v-card-title>
+        <v-card-subtitle>
+          Infrastructure Testing - Plug in system - REST API
+        </v-card-subtitle>
         <v-card-text>
           <h1>Welcome</h1>
-          <p class="font-weight-light">
-            Infrastructure Testing - Plug in system - REST API
-          </p>
           <p>
             This tool gives you a universal codeless test server. <br>
             Send simple json files to InfraCheck and start complex test flows. <br>
@@ -45,7 +45,7 @@
           </ul>
         </v-card-text>
         <v-card-actions>
-          <v-spacer />
+          <v-spacer/>
           <v-btn
             color="primary"
             nuxt
@@ -62,6 +62,10 @@
 <script>
 
 export default {
-  components: {}
+  components: {
+  },
+  created () {
+    console.log(process.env.baseUrl)
+  }
 }
 </script>

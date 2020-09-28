@@ -19,26 +19,27 @@
     <v-app-bar
       app
       clipped-left
-      color="light-blue lighten-3"
+      color="blue-grey darken-4"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
 
       <v-toolbar-title class="mr-12 align-center">
         <nuxt-link
-        to="/">
+          to="/"
+        >
           <img
-            src="~/assets/logo_horizontal.png"
+            src="~/assets/logo_white.png"
             alt=""
-            height="70px"
+            height="60px"
             class="mt-2"
           >
         </nuxt-link>
       </v-toolbar-title>
-      <v-spacer/>
+      <v-spacer />
     </v-app-bar>
     <v-main>
       <v-container fluid class="fill-height pa-0">
-        <nuxt/>
+        <nuxt />
       </v-container>
     </v-main>
     <v-navigation-drawer
@@ -58,14 +59,15 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
 <script>
+import Footer from '@/components/Footer'
+
 export default {
+  components: { Footer },
   data () {
     return {
       clipped: false,

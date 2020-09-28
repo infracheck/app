@@ -39,6 +39,12 @@ results = api.namespace(
 @results.route('/results/<path:path>')
 class Results(Resource):
     def get(self, path):
+        return jsonify(Persistence().Result.query.filter_by(id=path).first())
+
+
+@results.route('/results/pdf/<path:path>')
+class Results(Resource):
+    def get(self, path):
         return send_from_directory('../results/', path)
 
 
@@ -49,7 +55,7 @@ class Plugins(Resource):
 
 
 @results.route('/results')
-class History(Resource):
+class Results(Resource):
     def get(self):
         limit = request.args.get('limit')
         offset = request.args.get('offset')

@@ -32,7 +32,7 @@ class PdfGenerator(FPDF):
         """
         self.set_font_size(18)
         self.cell(0, 15, 'InfraCheck - Report', 0, 0, 'L', 0)
-        image = os.path.join(ROOT_DIR, 'assets/proficomlogo.png')
+        image = os.path.join(ROOT_DIR, 'infracheck/assets/proficomlogo.png')
         self.image(image, 140, 10, 60)
         self.ln(18)
 

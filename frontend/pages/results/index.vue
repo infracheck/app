@@ -47,7 +47,7 @@
 export default {
   name: 'Results',
   async asyncData ({ $axios }) {
-    const results = await $axios.$get(process.env.baseUrl + '/results')
+    const results = await $axios.$get('/api/results')
     return { results }
   },
   data () {

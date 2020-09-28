@@ -4,9 +4,12 @@
     class="fill-height"
   >
     <v-col
-      cols="12"
+      offset-lg="2"
+      offset-md="0"
+      lg="8"
+      md="12"
     >
-      <ResultTable :result="result" />
+      <ResultTable :result="result"/>
     </v-col>
   </v-row>
 </template>
@@ -18,11 +21,11 @@ export default {
   name: 'Result',
   components: { ResultTable },
   async asyncData ({ $axios, params }) {
-    const result = await $axios.$get(process.env.baseUrl + '/results/' + params.id)
+    const result = await $axios.$get('/api/results/' + params.id)
     return { result }
   },
   async validate ({ params, $axios }) {
-    const result = await $axios.$get(process.env.baseUrl + '/results/' + params.id)
+    const result = await $axios.$get('/api/results/' + params.id)
     return result
   }
 }

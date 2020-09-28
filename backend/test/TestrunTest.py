@@ -25,7 +25,7 @@ class TestrunTest(unittest.TestCase):
             self.assertIsNotNone(json['id'])
 
         with self.subTest(F"generated a pdf document"):
-            response = self.client.get(F"/results/{id}.pdf")
+            response = self.client.get(F"/results/pdf/{id}.pdf")
             self.assertTrue(response.status_code == 200)
             self.assertEqual(response.headers.get('Content-Type'), "application/pdf")
 

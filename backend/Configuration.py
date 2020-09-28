@@ -30,7 +30,7 @@ class ProductionConfig(Config):
     LOG_LEVEL = 'WARN'
     SECRET_KEY = os.environ.get('SECRET_KEY') or "secret"
 
-    BASIC_AUTH_FORCE = True
+    BASIC_AUTH_FORCE = False
     BASIC_AUTH_REALM = """Access to InfraCheck only allowed via BasicAuth. Please contact your system administrator """
     BASIC_AUTH_USERNAME = os.environ.get('AUTH_USERNAME') or "user"
     BASIC_AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD') or "password"

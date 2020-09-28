@@ -1,14 +1,22 @@
 version: '3'
 services:
-  infracheck:
+  frontend:
     container_name: infra-frontend
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./frontend
+      dockerfile: build/Dockerfile
     ports:
-      - 80:80
+      - 3000:3000
   backend:
     container_name: infra-backend
     build:
       context: ./backend
       dockerfile: build/Dockerfile
+  reverse:
+    container_name: infra-reverse
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+      - 443:443
