@@ -10,7 +10,7 @@ class ApiTest(unittest.TestCase):
     def setUp(self) -> None:
         self.client = app.test_client()
         # Disable Authentication
-        app.config['BASIC_AUTH_FORCE'] = False
+        app.config['SECURE_API'] = False
 
     def test_swagger(self):
         response = self.client.get('/swagger.json')

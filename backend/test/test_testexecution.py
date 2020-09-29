@@ -8,7 +8,7 @@ from test import mock_data
 class TestrunTest(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client()
-        app.config['BASIC_AUTH_FORCE'] = False
+        app.config['SECURE_API'] = False
 
     def test_run(self):
         response = self.client.post('/test', json=mock_data.localhost_test_data)
