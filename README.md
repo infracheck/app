@@ -1,3 +1,4 @@
+![infracheck logo](docs/logo_dark.png)
 # InfraCheck 
 > This tool delivers you a universal codeless test server. Send simple ``json`` files to **InfraCheck** and start complex test flows.
 > Custom _plugins_ and _modules_ extend the functionality of this tool. 
