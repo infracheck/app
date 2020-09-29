@@ -35,13 +35,17 @@
         </nuxt-link>
       </v-toolbar-title>
       <v-spacer/>
+      <LogoutButton/>
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import LogoutButton from '~/components/LogoutButton'
+
 export default {
-  name: "Appbar",
+  name: 'Appbar',
+  components: { LogoutButton },
   data () {
     return {
       clipped: false,
@@ -74,7 +78,7 @@ export default {
       rightDrawer: false,
       title: 'InfraCheck'
     }
-  },
+  }
 }
 </script>
 

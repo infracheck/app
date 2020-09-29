@@ -15,7 +15,7 @@ class Service(Module):
 
     @dataclass
     class props:
-        service: Types.Text = ""
+        service: Types.Text = "docker"
         enabled: Types.Boolean = True
         running: Types.Boolean = True
 

@@ -1,0 +1,48 @@
+{
+  "name": "Just another test",
+  "description": "Hey there its me",
+  "plugins": [
+    {
+      "id": "TestInfraPlugin",
+      "props": {
+        "host_address": "localhost",
+        "username": "",
+        "password": "",
+        "os": "linux",
+        "port": 22
+      },
+      "modules": [
+        {
+          "id": "AddressReachable",
+          "props": {
+            "url": "google.de"
+          }
+        },
+        {
+          "id": "OSSpecs",
+          "props": {
+            "type": "linux",
+            "distribution": "",
+            "release": "",
+            "codename": ""
+          }
+        },
+        {
+          "id": "CompareCmds",
+          "props": {
+            "command1": "echo LOL",
+            "command2": "echo LOL"
+          }
+        },
+        {
+          "id": "Service",
+          "props": {
+            "service": "docker",
+            "enabled": true,
+            "running": true
+          }
+        }
+      ]
+    }
+  ]
+}

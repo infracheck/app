@@ -12,9 +12,13 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = F"sqlite:///{ROOT_DIR}/infracheck.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    BASIC_AUTH_FORCE = False
     RESULT_FOLDER = F'{ROOT_DIR}/results/'
     SECRET_KEY = "secret"
+
+    SECURE_API = True
+    JWT_SECRET_KEY = "ROFL"
+    AUTH_USERNAME = os.environ.get('AUTH_USERNAME') or "user"
+    AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD') or "password"
 
 
 class DevelopmentConfig(Config):
@@ -29,8 +33,4 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     LOG_LEVEL = 'WARN'
     SECRET_KEY = os.environ.get('SECRET_KEY') or "secret"
-
-    BASIC_AUTH_FORCE = False
-    BASIC_AUTH_REALM = """Access to InfraCheck only allowed via BasicAuth. Please contact your system administrator """
-    BASIC_AUTH_USERNAME = os.environ.get('AUTH_USERNAME') or "user"
-    BASIC_AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD') or "password"
+    SECURE_API = True

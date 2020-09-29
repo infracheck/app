@@ -22,7 +22,7 @@ export default {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: 'InfraCheck',
     meta: [
-      {charset: 'utf-8'},
+      { charset: 'utf-8' },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
@@ -70,8 +70,34 @@ export default {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
+  /*
+  ** Authentication
+  ** https://auth.nuxtjs.org/guide/middleware.html
+  */
+  router: {
+    middleware: ['auth']
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/login',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: {
+            url: '/logout',
+            method: 'post'
+          },
+          user: false
+        }
+      }
+    }
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -79,7 +105,7 @@ export default {
   * browserBaseURL => URL for clients
   */
   axios: {
-    retry: {retries: 3},
+    retry: { retries: 3 },
     baseURL: PRODUCTION ? 'http://backend:8080' : 'http://localhost:5000',
     browserBaseURL: PRODUCTION ? '/api/' : 'http://localhost:5000'
   },
@@ -116,5 +142,7 @@ export default {
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
-  build: {}
+  build: {
+    transpile: ['@nuxtjs/auth']
+  }
 }

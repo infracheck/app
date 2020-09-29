@@ -20,8 +20,8 @@
 
 <script>
 export default {
-  name: "Navigation",
-  data() {
+  name: 'Navigation',
+  data () {
     return {
       right: true,
       rightDrawer: false,

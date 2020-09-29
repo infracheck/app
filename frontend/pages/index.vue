@@ -62,10 +62,8 @@
 <script>
 
 export default {
-  components: {
-  },
+  components: {},
   created () {
-    console.log(process.env.baseUrl)
   }
 }
 </script>

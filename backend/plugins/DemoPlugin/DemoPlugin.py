@@ -7,6 +7,7 @@ from infracheck.model.Types import Types
 class DemoPlugin(Plugin):
     """These docs will be parsed and used by the API and the frontend"""
     __version__ = 0.5
+    __author__ = "Martin Welcker"
 
     @dataclass
     class props:
@@ -24,6 +25,7 @@ class DemoPlugin(Plugin):
     Define as many private attributes as you need.
     They don't get exposed
     """
+
     private_value: str = "I am a private attribute"
 
     def setup(self):
