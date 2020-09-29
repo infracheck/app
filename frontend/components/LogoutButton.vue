@@ -15,7 +15,7 @@ export default {
       try {
         await this.$auth.logout()
         await this.$router.push({
-          path: '/'
+          path: '/login'
         })
       } catch (err) {
         console.log(err)
