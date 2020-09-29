@@ -5,8 +5,6 @@ services:
     build:
       context: ./frontend
       dockerfile: build/Dockerfile
-    ports:
-      - 3000:3000
   backend:
     container_name: infra-backend
     build:
