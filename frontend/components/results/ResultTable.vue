@@ -67,7 +67,7 @@
               lg="6"
               md="12"
             >
-              <v-card outlined color="blue-grey darken-4">
+              <v-card outlined>
                 <v-card-title>
                   <h3>{{ module.module_name }}</h3>
                 </v-card-title>

@@ -12,7 +12,6 @@
           <v-btn
             rounded
             color="primary"
-            dark
             :disabled="!Object.keys(docs).includes(selectedPlugin)"
             @click="addPlugin"
           >

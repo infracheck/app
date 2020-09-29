@@ -23,15 +23,13 @@
             <template v-slot:item.result="{ item }">
               <v-chip
                 v-if="item.failure_count > 0"
-                color="red"
-                dark
+                color="error"
               >
                 FAILED
               </v-chip>
               <v-chip
                 v-else
-                color="green"
-                dark
+                color="success"
               >
                 SUCCESS
               </v-chip>
@@ -46,11 +44,11 @@
 <script>
 export default {
   name: 'Results',
-  async asyncData ({ $axios }) {
-    const results = await $axios.$get('/api/results')
-    return { results }
+  async asyncData({$axios}) {
+    const results = await $axios.$get('/results')
+    return {results}
   },
-  data () {
+  data() {
     return {
       headers: [
         {

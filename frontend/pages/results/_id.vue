@@ -21,11 +21,11 @@ export default {
   name: 'Result',
   components: { ResultTable },
   async asyncData ({ $axios, params }) {
-    const result = await $axios.$get('/api/results/' + params.id)
+    const result = await $axios.$get('/results/' + params.id)
     return { result }
   },
   async validate ({ params, $axios }) {
-    const result = await $axios.$get('/api/results/' + params.id)
+    const result = await $axios.$get('/results/' + params.id)
     return result
   }
 }

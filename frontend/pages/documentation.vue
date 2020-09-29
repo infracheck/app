@@ -38,7 +38,7 @@ export default {
     DocMenu
   },
   async asyncData ({ $axios }) {
-    const pluginDocs = await $axios.$get('/api/plugins')
+    const pluginDocs = await $axios.$get('/plugins')
     return { pluginDocs }
   },
   data () {

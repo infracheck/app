@@ -12,7 +12,6 @@
         :key="link"
         :to="link"
         nuxt
-        color="white"
         text
         rounded
         class="my-2"
@@ -20,7 +19,7 @@
         {{ key }}
       </v-btn>
       <v-col
-        class="blue-grey darken-4 py-4 text-center white--text"
+        class=" py-4 text-center accent"
         cols="12"
       >
         {{ new Date().getFullYear() }} — <strong>InfraCheck</strong>

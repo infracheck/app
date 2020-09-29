@@ -109,7 +109,7 @@ export default {
     ResultTable
   },
   async asyncData ({ $axios }) {
-    const docs = await $axios.$get('/api/plugins')
+    const docs = await $axios.$get('/plugins')
     return { docs }
   },
   data () {
@@ -127,7 +127,7 @@ export default {
   methods: {
     async launchTest () {
       this.loading = true
-      const result = await this.$axios.post('/api/test', this.data)
+      const result = await this.$axios.post('/test', this.data)
       this.result = result.data
       this.loading = false
     }

@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+const PRODUCTION = process.env.NODE_ENV === 'production'
+
 export default {
   /*
   ** Nuxt rendering mode
@@ -11,13 +13,14 @@ export default {
   ** See https://nuxtjs.org/api/configuration-target
   */
   target: 'server',
+  debug: false,
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'InfraCheck',
     meta: [
       {charset: 'utf-8'},
       {
@@ -47,7 +50,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/Markdown.js'
+    '@/plugins/Markdown.js',
+    '~/plugins/axios'
   ],
   /*
   ** Auto import components
@@ -71,19 +75,31 @@ export default {
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
+  * baseURL => URL for server
+  * browserBaseURL => URL for clients
   */
   axios: {
-    baseURL: '/'
+    retry: {retries: 3},
+    baseURL: PRODUCTION ? 'http://backend:8080' : 'http://localhost:5000',
+    browserBaseURL: PRODUCTION ? '/api/' : 'http://localhost:5000'
   },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
+        light: {
+          primary: colors.blue.lighten2,
+          secondary: colors.red.lighten4,
+          accent: colors.grey.lighten3,
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FFC107'
+        },
         dark: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,

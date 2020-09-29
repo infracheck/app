@@ -66,11 +66,12 @@
                 <v-expansion-panel
                   v-for="(module, i) in selectedPlugin.modules"
                   :key="i"
+                  class="mb-1"
                 >
-                  <v-expansion-panel-header color="blue-grey darken-4">
+                  <v-expansion-panel-header color="accent">
                     {{ module.id }}
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content>
+                  <v-expansion-panel-content color="lighten-3">
                     <v-row>
                       <v-col cols="12">
                         <vue-simple-markdown
@@ -111,7 +112,7 @@
 
               <v-list>
                 <v-list-item
-                  class="blue-grey darken-4 mb-1"
+                  class="mb-1 accent"
                   v-for="(module, moduleName) in docs[selectedPlugin.id].modules"
                   :key="moduleName"
                 >
