@@ -19,7 +19,7 @@ class DemoPlugin(Plugin):
         Please define the input type, using the Types available.
          -> Type.Text, Type.Pass
         """
-        global_var: Types.Password = "I'm just a default value"
+        global_var: Types.TextList = "['Im just a default value', 'in', 'a', 'list']"
 
     """
     Define as many private attributes as you need.

@@ -8,6 +8,6 @@ class Types(Dict):
     Text = "Type.String"
     Number = "Type.Number"
     Boolean = "Type.Boolean"
-    TextList = "Type.Array<string>"
-    NumberList = "Type.Array<number>"
+    TextList = "Type.StringArray"
+    NumberList = "Type.NumberArray"
     Password = "Type.Password"

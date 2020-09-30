@@ -1,7 +1,6 @@
 import logging
 
 from flask import Flask
-from flask_basicauth import BasicAuth
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restplus import Api
@@ -22,7 +21,6 @@ else:
     app.config.from_object('Configuration.Config')
 
 CORS(app)
-basic_auth = BasicAuth(app)
 jwt = JWTManager(app)
 
 db = SQLAlchemy(app)

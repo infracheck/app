@@ -3,6 +3,7 @@
     <v-text-field
       v-if="field_documentation.type ==='Type.String'"
       v-model="props[field_label]"
+      type="text"
       :label="field_label"
     />
     <v-text-field
@@ -15,6 +16,12 @@
       v-else-if="field_documentation.type ==='Type.Number'"
       v-model="props[field_label]"
       type="number"
+      :label="field_label"
+    />
+    <v-text-field
+      v-else-if="field_documentation.type ==='Type.StringArray'"
+      v-model="props[field_label]"
+      type="text"
       :label="field_label"
     />
     <v-switch
