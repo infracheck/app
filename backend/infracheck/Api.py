@@ -77,7 +77,7 @@ class Results(Resource):
         return send_from_directory('../results/', path)
 
 
-@plugin.route('/plugins/flat/')
+@plugin.route('/plugins/flat')
 class FlattenPlugins(Resource):
     @auth_required
     def get(self):
@@ -98,7 +98,7 @@ class FlattenPlugins(Resource):
         }
 
 
-@plugin.route('/plugins/')
+@plugin.route('/plugins')
 class Plugins(Resource):
     @auth_required
     def get(self):
@@ -109,7 +109,7 @@ class Plugins(Resource):
         return jsonify(plugin_manager.json)
 
 
-@plugin.route('/plugins/<plugin_id>/')
+@plugin.route('/plugins/<plugin_id>')
 class SinglePlugin(Resource):
     @auth_required
     def get(self, plugin_id):

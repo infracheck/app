@@ -169,7 +169,7 @@ export default {
     ResultTable
   },
   async asyncData ({ $axios }) {
-    const docs = await $axios.$get('/plugins/')
+    const docs = await $axios.$get('/plugins')
     return { docs }
   },
   data () {

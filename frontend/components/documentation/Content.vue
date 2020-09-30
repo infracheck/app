@@ -17,6 +17,7 @@
                 </div>
 
                 <vue-simple-markdown
+                  highlight
                   class="white--text"
                   :horizontal-line="false"
                   :source="documentation.documentation"
@@ -103,4 +104,28 @@ export default {
   color: #35b1b4;
 }
 
+.markdown-body * {
+  border: 0 !important;
+}
+
+.markdown-body code {
+  color: #00c3ff !important;
+}
+
+.markdown-body pre {
+  background: #1e1e1e;
+  color: aliceblue;
+}
+
+.markdown-body span {
+  color: white;
+}
+
+.markdown-body table tr {
+  background-color: #1e1e1e;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #363636;
+}
 </style>

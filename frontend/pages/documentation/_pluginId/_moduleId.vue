@@ -51,14 +51,14 @@ export default {
     DocMenu
   },
   async asyncData ({ $axios, params }) {
-    const plugins = await $axios.$get('/plugins/flat/')
+    const plugins = await $axios.$get('/plugins/flat')
     const pluginId = params.pluginId
     const moduleId = params.moduleId
     let activeDoc = null
     if (pluginId && moduleId) {
       activeDoc = await $axios.$get(`/plugins/${pluginId}/${moduleId}`)
     } else if (pluginId) {
-      activeDoc = await $axios.$get(`/plugins/${pluginId}/`)
+      activeDoc = await $axios.$get(`/plugins/${pluginId}`)
     }
 
     return {
