@@ -17,6 +17,12 @@
       type="number"
       :label="field_label"
     />
+    <v-switch
+      v-else-if="field_documentation.type ==='Type.Boolean'"
+      v-model="props[field_label]"
+      inset
+      :label="field_label"
+    ></v-switch>
   </div>
 </template>
 

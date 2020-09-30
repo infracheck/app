@@ -3,7 +3,10 @@
     <v-col cols="12">
       <v-card outlined>
         <v-card-text>
-          <p>Choose plugins from the list. Click on them after they are added to show their documentation.</p>
+          <p>
+            Choose plugins from the list. Click on them to show their documentation.
+            Then, click 'Add plugin' to add it to your testset.
+          </p>
           <v-select
             v-model="selectedPlugin"
             :items="Object.keys(docs)"
@@ -43,7 +46,7 @@
               :horizontal-line="false"
               :source="docs[selectedPlugin].documentation"
             />
-            <prop-table :props="docs[selectedPlugin].props"></prop-table>
+            <prop-table :props="docs[selectedPlugin].props" />
           </div>
         </v-card-text>
       </v-card>
@@ -53,6 +56,7 @@
 
 <script>
 import PropTable from '@/components/documentation/PropTable'
+
 export default {
   name: 'WizardPlugin',
   components: { PropTable },

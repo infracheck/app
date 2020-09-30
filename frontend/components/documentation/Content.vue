@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-card outlined class="mb-3">
+        <v-card outlined class="mb-3" color="accent">
           <v-card-text class="white--text">
             <v-row>
               <v-col xl="8" lg="6" md="12">
@@ -48,7 +48,13 @@
           md="6"
           sm="12"
         >
-          <v-card outlined class="mb-3">
+          <v-card
+            color="accent"
+            outlined
+            class="mb-3"
+            nuxt
+            hover
+            :to="`/documentation/${documentation.id}/${moduleId}`">
             <v-card-text>
               <div class="overline mb-1">
                 {{ module.type }}
@@ -56,12 +62,14 @@
               <div class="headline mb-0">
                 {{ moduleId }}
               </div>
-              <div v-if="documentation.author" class="subtitle-2">
-                Author: {{ documentation.author }}
-              </div>
-              <div v-if="documentation.author" class="subtitle-2">
-                Author: {{ documentation.author }}
-              </div>
+              <v-row>
+                <v-col>Author</v-col>
+                <v-col>{{ documentation.author }}</v-col>
+              </v-row>
+              <v-row>
+                <v-col>Version</v-col>
+                <v-col>{{ documentation.version }}</v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>

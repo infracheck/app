@@ -29,7 +29,7 @@
               </v-chip>
               <v-chip
                 v-else
-                color="success"
+                color="primary"
               >
                 SUCCESS
               </v-chip>

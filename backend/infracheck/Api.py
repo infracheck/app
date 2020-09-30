@@ -4,7 +4,7 @@ from functools import wraps
 from typing import List
 
 from flask import jsonify, send_from_directory, request
-from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt, jwt_refresh_token_required
+from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt
 from flask_restplus import Resource
 from jsonschema import validate
 
@@ -77,11 +77,61 @@ class Results(Resource):
         return send_from_directory('../results/', path)
 
 
-@plugin.route('/plugins')
+@plugin.route('/plugins/flat/')
+class FlattenPlugins(Resource):
+    @auth_required
+    def get(self):
+        """
+        Returns available plugins in a smaller list
+        containing only PluginIds and their ModuleIds
+        :return:
+        """
+        return {
+            plugin_id: {
+                "modules": [
+                    module_id
+                    for module_id, module_data in plugin_data["modules"].items()],
+                "author": plugin_data['author'],
+                "version": plugin_data['version']
+            }
+            for plugin_id, plugin_data in plugin_manager.json.items()
+        }
+
+
+@plugin.route('/plugins/')
 class Plugins(Resource):
     @auth_required
     def get(self):
+        """
+        Returns all available plugins.
+        :return:
+        """
         return jsonify(plugin_manager.json)
+
+
+@plugin.route('/plugins/<plugin_id>/')
+class SinglePlugin(Resource):
+    @auth_required
+    def get(self, plugin_id):
+        """
+        Returns the documentation and props of a single plugin
+        :param plugin_id:
+        :return:
+        """
+        return plugin_manager.json[plugin_id]
+
+
+@plugin.route('/plugins/<plugin_id>/<module_id>')
+class SingleModule(Resource):
+    @auth_required
+    def get(self, plugin_id, module_id):
+        """
+        Returns the documentation and props of a single module
+        :param plugin_id:
+        :param module_id:
+        :return:
+        """
+        return plugin_manager.json[plugin_id]['modules'][module_id]
 
 
 @results.route('/results')
@@ -106,7 +156,7 @@ class TestRunner(Resource):
 
 
 @authentication.route('/login')
-class Authentication(Resource):
+class Login(Resource):
     def post(self):
         data = request.get_json()
         username = data['username']
@@ -119,13 +169,12 @@ class Authentication(Resource):
         if username != app.config["AUTH_USERNAME"] or app.config["AUTH_PASSWORD"] != password:
             return {"msg": "Bad username or password"}, 401
 
-        # Identity can be any data that is json serializable
         access_token = create_access_token(identity=username)
         return {"access_token": access_token}, 200
 
 
 @authentication.route('/logout')
-class ExitAuthentication(Resource):
+class Logout(Resource):
     @auth_required
     def post(self):
         jti = get_raw_jwt()['jti']
@@ -143,6 +192,7 @@ def convert_test_input_json_to_dataclasses(data: json):
     :return:
     """
     data = TestInput(**data)
+    # PluginInput(**pluin_data)) generates a dataclass from a dict
     plugins: List[PluginInput] = list(PluginInput(**plugin_data) for plugin_data in data.plugins)
     for plugin in plugins:
         modules: List[ModuleInput] = list(ModuleInput(**module_data) for module_data in plugin.modules)

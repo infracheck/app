@@ -13,7 +13,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-target
   */
   target: 'server',
-  debug: false,
+  debug: !PRODUCTION,
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
@@ -44,7 +44,8 @@ export default {
   /*
   ** Global CSS
   */
-  css: [],
+  css: [
+  ],
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
@@ -77,10 +78,10 @@ export default {
   ** Authentication
   ** https://auth.nuxtjs.org/guide/middleware.html
   */
-  router: {
+  router: PRODUCTION ? {
     middleware: ['auth']
-  },
-  auth: {
+  } : {},
+  auth: PRODUCTION ? {
     strategies: {
       local: {
         endpoints: {
@@ -97,7 +98,7 @@ export default {
         }
       }
     }
-  },
+  } : {},
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -114,6 +115,7 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
+    customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
@@ -123,7 +125,7 @@ export default {
           accent: colors.grey.lighten3,
           error: '#FF5252',
           info: '#2196F3',
-          success: '#4CAF50',
+          success: '#18821c',
           warning: '#FFC107'
         },
         dark: {

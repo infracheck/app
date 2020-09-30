@@ -1,6 +1,66 @@
 <template>
   <v-container fluid>
     <v-row>
+      <v-col>
+        <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
+          {{ alert.text }}
+        </v-alert>
+        <v-btn
+          color="accent"
+          @click="dialog=true;exportData=true;importData=false;"
+        >
+          Export JSON...
+        </v-btn>
+        <v-dialog
+          v-model="dialog"
+          max-width="290"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="accent"
+              v-bind="attrs"
+              @click="exportData=false;importData=true"
+              v-on="on"
+            >
+              Import JSON...
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="headline">
+              Import from JSON...
+            </v-card-title>
+            <v-textarea
+              v-if="importData"
+              v-model="insertJSON"
+              filled
+              label="JSON"
+            />
+            <v-textarea
+              v-if="exportData"
+              label="JSON"
+              :value="JSON.stringify(data)"
+            />
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="green darken-1"
+                text
+                @click="dialog = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                v-if="importData"
+                color="green darken-1"
+                text
+                @click="loadJson"
+              >
+                Import
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
       <v-col offset-md="0" offset-xl="1" xl="10" md="12">
         <v-stepper
           v-model="step"
@@ -109,7 +169,7 @@ export default {
     ResultTable
   },
   async asyncData ({ $axios }) {
-    const docs = await $axios.$get('/plugins')
+    const docs = await $axios.$get('/plugins/')
     return { docs }
   },
   data () {
@@ -117,6 +177,11 @@ export default {
       step: 1,
       result: null,
       loading: false,
+      dialog: false,
+      insertJSON: '',
+      alert: null,
+      exportData: true,
+      importData: true,
       data: {
         name: '',
         description: '',
@@ -130,6 +195,23 @@ export default {
       const result = await this.$axios.post('/test', this.data)
       this.result = result.data
       this.loading = false
+    },
+    loadJson () {
+      try {
+        this.data = JSON.parse(this.insertJSON)
+        this.alert = {
+          text: 'JSON import was successful.',
+          type: 'success'
+        }
+      } catch (e) {
+        this.alert = {
+          text: 'Your JSON is malformed.',
+          type: 'error'
+        }
+      } finally {
+        this.insertJSON = ''
+        this.dialog = false
+      }
     }
   }
 }

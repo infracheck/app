@@ -15,7 +15,7 @@ class Config(object):
     RESULT_FOLDER = F'{ROOT_DIR}/results/'
     SECRET_KEY = "secret"
 
-    SECURE_API = True
+    SECURE_API = False
     JWT_SECRET_KEY = "ROFL"
     AUTH_USERNAME = os.environ.get('AUTH_USERNAME') or "user"
     AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD') or "password"
@@ -28,6 +28,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = True
     LOG_LEVEL = 'DEBUG'
+    SECURE_API = False
 
 
 class ProductionConfig(Config):

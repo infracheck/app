@@ -6,8 +6,13 @@
         tile
         outlined
       >
+        <v-card-title>PLUGINS</v-card-title>
+        <v-card-text>
+          <p class="pl-2 pr-2 mb-0">
+            Select the plugin from the list to edit its test cases.
+          </p>
+        </v-card-text>
         <v-list shaped>
-          <v-subheader>PLUGINS</v-subheader>
           <v-list-item-group
             color="primary"
           >
@@ -33,8 +38,12 @@
         tile
         flat
       >
-        <v-subheader>PROPERTIES</v-subheader>
+        <v-card-title>PROPERTIES</v-card-title>
         <v-card-text>
+          <p>
+            Properties contain global plugin information. They are plugin specific.
+            For more information, read the plugin documentation page.
+          </p>
           <v-row>
             <v-col
               v-for="(fieldDoc, fieldKey) in docs[selectedPlugin.id].props"
@@ -112,9 +121,9 @@
 
               <v-list>
                 <v-list-item
-                  class="mb-1 accent"
                   v-for="(module, moduleName) in docs[selectedPlugin.id].modules"
                   :key="moduleName"
+                  class="mb-1 accent"
                 >
                   <v-list-item-content>
                     <v-list-item-title v-text="moduleName"/>

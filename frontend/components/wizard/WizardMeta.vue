@@ -4,6 +4,10 @@
       Meta data
     </v-card-title>
     <v-card-text>
+      <p>
+        Define meta data to identify or categorize your test afterwards.
+        Both, the name and the description have no impact on the actual test.
+      </p>
       <v-text-field
         v-model="data.name"
         :rules="[() => !!data.name || 'This field is required']"

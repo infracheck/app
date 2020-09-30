@@ -4,18 +4,20 @@
       dense
     >
       <v-list-group
-        v-for="(value, key) in docs"
-        :key="key"
+        v-for="(pluginData, plugin_id) in docs"
+        :key="plugin_id"
       >
         <template v-slot:activator>
           <v-list-item-content>
-            <v-list-item-title v-text="key" />
+            <v-list-item-title v-text="plugin_id"/>
           </v-list-item-content>
         </template>
 
         <v-list-item
           class="ml-3"
-          @click="$emit('active', value)"
+          exact
+          :to="`/documentation/${plugin_id}/`"
+          nuxt
         >
           <v-list-item-icon>
             <v-icon>mdi-toy-brick</v-icon>
@@ -26,16 +28,18 @@
         </v-list-item>
 
         <v-list-item
-          v-for="(subValue, subKey) in value.modules"
-          :key="subKey"
+          exact
+          v-for="module_id in pluginData.modules"
+          :key="module_id"
           class="ml-3"
-          @click="$emit('active', subValue)"
+          :to="`/documentation/${plugin_id}/${module_id}`"
+          nuxt
         >
           <v-list-item-icon>
             <v-icon>mdi-view-module-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="subKey" />
+            <v-list-item-title v-text="module_id"/>
           </v-list-item-content>
         </v-list-item>
       </v-list-group>
