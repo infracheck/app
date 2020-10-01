@@ -14,7 +14,6 @@ class OSSpecs(Module):
     """
     __version__ = 0.1
 
-    @dataclass
     class props:
         type: Types.Text = ""
         distribution: Types.Text = ""

@@ -3,7 +3,6 @@ import json
 import logging
 import os
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import List, Dict, Any
 
 from infracheck.Module import Module
@@ -20,7 +19,6 @@ class Plugin(ABC):
     Plugin
     """
 
-    @dataclass
     class props:
         """
         Used to as an interface for plugin properties
@@ -35,12 +33,12 @@ class Plugin(ABC):
         about the plugin properties he can configure
         :return:
         """
-        attributes = self.props.__dataclass_fields__
+        attributes = self.props.__annotations__
         res = {}
         for key, value in attributes.items():
             res[key] = {
-                "type": str(value.type),
-                "default": value.default
+                "type": value,
+                "default": getattr(self.props, key)
             }
         return res
 
@@ -186,10 +184,10 @@ class Plugin(ABC):
         :param obj: This can be either a module or plugin object
         :return:
         """
-        prop_attributes = obj.props.__dataclass_fields__
+        prop_attributes = obj.props.__annotations__
         result = {}
         for key, value in prop_attributes.items():
-            prop_type = str(value.type)
+            prop_type = str(value)
             prop_value = getattr(obj.props, key)
 
             # If the input is a password -> Hide it's value

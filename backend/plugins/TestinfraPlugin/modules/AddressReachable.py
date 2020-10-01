@@ -14,7 +14,6 @@ class AddressReachable(Module):
 
     __version__ = 0.1
 
-    @dataclass
     class props:
         url: Types.Text = "google.de"
 

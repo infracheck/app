@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from infracheck.Plugin import Plugin
 from infracheck.model.Types import Types
 
@@ -35,17 +33,16 @@ __documentation__="This can contain markdown as well"
 ```
 
 ## Input props
-Each plugin should contain a inner data class, called `props`.
+Each plugin should contain a inner class, called `props`.
 It deals as an interface for possible plugin input.
 Those can be used inside each module of the plugin, or inside the plugin itself.
 For example, the **TestInfraPlugin** runs tests on remote hosts.
 It needs a host and its credentials as input.
 Example:
 ```
-@dataclass
-    class props:
-        host: Types.Text = "localhost"
-        port: Types.Number = 22
+class props:
+    host: Types.Text = "localhost"
+    port: Types.Number = 22
 ```
 
 ### Input types
@@ -117,7 +114,6 @@ def tear_down(self):
     __version__ = 0.5
     __author__ = "Martin Welcker"
 
-    @dataclass
     class props:
         """
         Definition of Plugin input
@@ -127,13 +123,12 @@ def tear_down(self):
         Please define the input type, using the Types available.
          -> Type.Text, Type.Pass
         """
-        global_text_list: Types.TextList = "['some','list']"
-        global_number_list: Types.NumberList = "[1,2,3]"
+        global_text_list: Types.TextList = ['some', 'list']
+        global_number_list: Types.NumberList = [1, 2, 3]
         global_number: Types.Number = 200
         global_text: Types.Text = 'Hello World'
         global_secret: Types.Password = 'Start123'
         global_boolean: Types.Boolean = True
-
 
     """
     Define as many private attributes as you need.

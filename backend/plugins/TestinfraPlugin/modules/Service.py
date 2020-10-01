@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from infracheck.Module import Module
 from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
@@ -13,7 +11,6 @@ class Service(Module):
     """
     __version__ = 0.1
 
-    @dataclass
     class props:
         service: Types.Text = "docker"
         enabled: Types.Boolean = True

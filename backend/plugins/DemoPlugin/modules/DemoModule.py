@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-
 from infracheck.Module import Module
 from infracheck.model.TestResult import ModuleResult
 from infracheck.model.Types import Types
@@ -11,7 +9,6 @@ class DemoModule(Module):
     """
     __version__ = 0.1
 
-    @dataclass
     class props:
         input1: Types.Number = -1
         input2: Types.Number = -1

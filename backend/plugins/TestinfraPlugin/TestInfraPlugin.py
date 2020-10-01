@@ -12,7 +12,6 @@ class TestInfraPlugin(Plugin):
     """
     __version__ = 0.5
 
-    @dataclass
     class props:
         host_address: Types.Text = "localhost"
         username: Types.Text = ""

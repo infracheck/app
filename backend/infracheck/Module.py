@@ -2,7 +2,6 @@ import inspect
 import json
 import os
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import Any, Dict
 
 from infracheck.model.TestResult import ModuleResult, ModulePostResult
@@ -14,14 +13,12 @@ class Module(ABC):
     __version__: float = 0.0
     __author__: str = ""
 
-    @dataclass
     class props:
         """
         Used to as an interface for module properties
         """
         pass
 
-    @dataclass
     class plugin_props:
         """
         Used to as an interface for plugin properties
@@ -35,12 +32,12 @@ class Module(ABC):
         This is used by the API
         :return:
         """
-        attributes = self.props.__dataclass_fields__
+        attributes = self.props.__annotations__
         res = {}
         for key, value in attributes.items():
             res[key] = {
-                "type": str(value.type),
-                "default": value.default
+                "type": value,
+                "default": getattr(self.props, key)
             }
         return res
 
