@@ -56,7 +56,7 @@
 
           <v-subheader>
             <h1>Module results</h1>
-            <v-divider></v-divider>
+            <v-divider/>
           </v-subheader>
 
           <v-row>
@@ -79,6 +79,16 @@
                     <ListItem label="Plugin name" :value="module.module_name"/>
                     <ListItem label="Plugin version" :value="module.module_version"/>
                   </v-list>
+                  <v-expansion-panels flat tile v-if="module.result_data !== {}">
+                    <v-expansion-panel>
+                      <v-expansion-panel-header class="pl-4 mb-2 accent">
+                        Custom results
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content class="p-0">
+                        <pre class="accent pa-2 rounded">{{ module.result_data }}</pre>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                   <v-alert
                     dense
                     :type="module.result_successful ? 'success' : 'error'"
@@ -96,7 +106,6 @@
       </v-card>
     </v-col>
   </v-row>
-
 </template>
 
 <script>

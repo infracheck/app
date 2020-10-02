@@ -3,14 +3,18 @@ from datetime import datetime
 from typing import List, Dict
 
 
-@dataclass
 class ModuleResult:
     """
     Interface of the result that comes from any module
     """
-    result_successful: bool
-    result_message: str
-    result_data: Dict
+    result_successful: bool = False
+    result_message: str = ''
+    result_data: Dict = {}
+
+    def __init__(self, result_successful, result_message, result_data) -> None:
+        self.result_successful = result_successful
+        self.result_message = result_message
+        self.result_data = result_data
 
 
 @dataclass

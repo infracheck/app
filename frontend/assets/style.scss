@@ -1,0 +1,54 @@
+
+.markdown-body {
+  border: 0 !important;
+
+  .hljs {
+    color: #e2e2e2 !important;
+  }
+
+  .hljs-comment {
+    color: #8ebdd9 !important;
+  }
+
+  .hljs-string {
+    color: #ffda47 !important;
+  }
+
+  .hljs-keyword {
+    color: #77a51d !important;
+  }
+
+  .hljs-literal {
+    color: #b9baff !important;
+  }
+
+  span {
+    color: white;
+  }
+
+  table {
+    tr {
+      border: 0 !important;
+      background-color: #1e1e1e !important;
+    }
+
+    tr:nth-child(2n) {
+      background-color: #363636 !important;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    color: #2884a5;
+  }
+
+  pre {
+    background: #5e5e5e !important;
+    color: aliceblue;
+  }
+
+}
