@@ -13,13 +13,13 @@ localhost_test_data = {
             },
             "modules": [
                 {
-                    "id": "AddressReachable",
+                    "id": "CheckTargetAddress",
                     "props": {
                         "url": "google.de"
                     }
                 },
                 {
-                    "id": "OSSpecs",
+                    "id": "CheckServiceSpecs",
                     "props": {
                         "type": "linux",
                         "distribution": "",
@@ -28,14 +28,14 @@ localhost_test_data = {
                     }
                 },
                 {
-                    "id": "CompareCmds",
+                    "id": "CompareCommandOutput",
                     "props": {
                         "command1": "echo LOL",
                         "command2": "echo LOL"
                     }
                 },
                 {
-                    "id": "Service",
+                    "id": "CheckServiceSpecs",
                     "props": {
                         "service": "docker",
                         "enabled": True,
