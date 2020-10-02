@@ -56,6 +56,7 @@ class Plugin(ABC):
 
     __version__: float = 0.0
     __author__: str = ""
+    __compatibility__: str = ""
 
     @property
     def __id__(self):
@@ -84,6 +85,7 @@ class Plugin(ABC):
             "documentation": self.__documentation__,
             "version": self.__version__,
             "props": self._props_as_json,
+            "compatibility": self.__compatibility__,
             "modules": modules
         }
 

@@ -11,3 +11,4 @@ class Types(Dict):
     TextList = "Type.StringArray"
     NumberList = "Type.NumberArray"
     Password = "Type.Password"
+    TextArea = "Type.TextArea"  # use to store a lot of text.

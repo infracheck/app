@@ -5,8 +5,24 @@
   >
     <v-col
       cols="12"
-      md="9"
-      sm="7"
+      xl="2"
+      lg="3"
+      sm="4"
+    >
+      <v-card
+        class="pa-2 fill-height"
+        outlined
+        tile
+      >
+        <v-card-title>Browse Plugins</v-card-title>
+        <DocMenu :docs="plugins" @active="onChildClick"/>
+      </v-card>
+    </v-col>
+    <v-col
+      cols="12"
+      xl="10"
+      lg="9"
+      sm="8"
     >
       <v-breadcrumbs :items="breads">
         <template v-slot:item="{ item }">
@@ -22,20 +38,7 @@
       <PluginCards v-if="!activeDoc" :plugins="plugins"></PluginCards>
       <DocContent v-else :documentation="activeDoc"/>
     </v-col>
-    <v-col
-      cols="12"
-      md="3"
-      sm="5"
-    >
-      <v-card
-        class="pa-2 fill-height"
-        outlined
-        tile
-      >
-        <v-card-title>Browse Plugins</v-card-title>
-        <DocMenu :docs="plugins" @active="onChildClick"/>
-      </v-card>
-    </v-col>
+
   </v-row>
 </template>
 <script>

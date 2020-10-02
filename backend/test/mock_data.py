@@ -5,7 +5,7 @@ localhost_test_data = {
         {
             "id": "TestInfraPlugin",
             "props": {
-                "host_address": "localhost",
+                "host_address": ["localhost"],
                 "username": "",
                 "password": "",
                 "os": "linux",

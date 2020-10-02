@@ -4,7 +4,6 @@ import os
 
 from fpdf import FPDF
 
-import Configuration
 from infracheck import app
 from infracheck.model.TestResult import TestResult
 
@@ -132,4 +131,3 @@ class PdfGenerator(FPDF):
                 self.print_info("result data", module_data.result_data)
 
         self.output(F"{RESULT_FOLDER}{report.id}.pdf", 'F')
-        del self

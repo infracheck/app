@@ -19,6 +19,7 @@
             <v-list-item
               v-for="(item, key) in data.plugins"
               :key="key"
+              class="accent"
               @click="selectedPlugin=data.plugins.find(x => x === item)"
             >
               <v-list-item-icon>
@@ -44,6 +45,9 @@
             Properties contain global plugin information. They are plugin specific.
             For more information, read the plugin documentation page.
           </p>
+          <a target="_blank" :href="`/documentation/${selectedPlugin.id}`">
+            show description
+          </a>
           <v-row>
             <v-col
               v-for="(fieldDoc, fieldKey) in docs[selectedPlugin.id].props"
@@ -157,6 +161,9 @@ export default {
     return {
       selectedPlugin: ''
     }
+  },
+  created () {
+    this.selectedPlugin = this.data.plugins[0]
   },
   methods: {
     addModule (moduleName) {

@@ -22,6 +22,14 @@
       v-else-if="field_documentation.type ==='Type.StringArray'"
       v-model="props[field_label]"
       type="text"
+      hint="use commas separated notation e.q.: hello,my,name,is "
+      :label="field_label"
+    />
+    <v-text-field
+      v-else-if="field_documentation.type ==='Type.NumberArray'"
+      v-model="props[field_label]"
+      type="text"
+      hint="use commas separated notation e.q.: 1,2,3 "
       :label="field_label"
     />
     <v-switch

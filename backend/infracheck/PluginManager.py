@@ -6,7 +6,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
-from infracheck import app
 from infracheck.Plugin import Plugin
 from infracheck.helper.load_packages import load_packages
 from infracheck.model.TestInput import TestInput
@@ -73,8 +72,17 @@ class PluginManager:
 
         # Create results
         result = self._serialize_result(uid, test_input, plugin_results)
-        PdfGenerator().generate(result)
-        self.database.add_result(result)
+        try:
+            PdfGenerator().generate(result)
+        except Exception as e:
+            message = "\nWARN: Pdf was not created successfully."
+            result.message += message
+
+        try:
+            self.database.add_result(result)
+        except Exception as e:
+            message = "\nWARN: Result was malformed and not entered into the database."
+            result.message += message
         return result
 
     @staticmethod

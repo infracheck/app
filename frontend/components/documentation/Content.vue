@@ -100,21 +100,48 @@ export default {
 </script>
 
 <style>
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+  padding: 0;
+  margin: 0;
+}
+
 .markdown-body a {
-  color: #35b1b4;
+  color: #2884a5;
 }
 
 .markdown-body * {
   border: 0 !important;
 }
 
-.markdown-body code {
-  color: #00c3ff !important;
+.markdown-body pre {
+  background: #5e5e5e;
+  color: aliceblue;
 }
 
-.markdown-body pre {
-  background: #1e1e1e;
-  color: aliceblue;
+.v-application code {
+  color: #2884a5;
+  background: #2f2e2e;
+}
+
+.hljs {
+  color: #e2e2e2 !important;
+}
+
+.hljs-comment {
+  color: #8ebdd9 !important;
+}
+
+.hljs-string {
+  color: #ffda47 !important;
+}
+
+.hljs-keyword {
+  color: #77a51d !important;
+}
+
+.hljs-literal {
+  color: #b9baff !important;
 }
 
 .markdown-body span {

@@ -41,7 +41,7 @@
               :value="JSON.stringify(data)"
             />
             <v-card-actions>
-              <v-spacer />
+              <v-spacer/>
               <v-btn
                 color="green darken-1"
                 text
@@ -74,7 +74,7 @@
             Define Meta data
           </v-stepper-step>
           <v-stepper-content step="1">
-            <WizardMeta :data="data" />
+            <WizardMeta :data="data"/>
             <v-btn
               color="primary"
               :disabled="!data.description && data.description"
@@ -93,7 +93,7 @@
           </v-stepper-step>
 
           <v-stepper-content step="2">
-            <wizard-plugin :data="data" :docs="docs" />
+            <wizard-plugin :data="data" :docs="docs"/>
             <v-btn
               color="primary"
               :disabled="!data.plugins.length>0"
@@ -115,7 +115,7 @@
           </v-stepper-step>
 
           <v-stepper-content step="3">
-            <wizard-test :data="data" :docs="docs" />
+            <wizard-test :data="data" :docs="docs"/>
             <v-btn
               color="primary"
               @click="step=4"
@@ -146,7 +146,7 @@
               indeterminate
               color="primary"
             />
-            <ResultTable v-if="result" :result="result" />
+            <ResultTable v-if="result" :result="result"/>
           </v-stepper-content>
         </v-stepper>
       </v-col>
@@ -185,7 +185,8 @@ export default {
       data: {
         name: '',
         description: '',
-        plugins: []
+        plugins: [
+        ]
       }
     }
   },

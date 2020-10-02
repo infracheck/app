@@ -12,6 +12,7 @@ class Module(ABC):
 
     __version__: float = 0.0
     __author__: str = ""
+    __compatibility__: str = ""
 
     class props:
         """
@@ -57,6 +58,7 @@ class Module(ABC):
             "type": "module",
             "documentation": self.__documentation__,
             "version": self.__version__,
+            "compatibility": self.__compatibility__,
             "props": self._props_as_json
         }
 

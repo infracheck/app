@@ -92,7 +92,8 @@ class FlattenPlugins(Resource):
                     module_id
                     for module_id, module_data in plugin_data["modules"].items()],
                 "author": plugin_data['author'],
-                "version": plugin_data['version']
+                "version": plugin_data['version'],
+                "compatibility": plugin_data['compatibility']
             }
             for plugin_id, plugin_data in plugin_manager.json.items()
         }
