@@ -1,15 +1,37 @@
 <template>
-  <v-app>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
-  </v-app>
+  <v-container fluid fill-height>
+    <v-layout align-center justify-center>
+      <v-flex xs12 sm8 md4>
+        <v-card class="elevation-12" flat outlined>
+          <v-card-title class="headline">
+            <img src="~assets/logo_white.png" alt="infracheck icon">
+          </v-card-title>
+          <v-card-subtitle>
+            <h1>Error occured</h1>
+          </v-card-subtitle>
+          <v-card-text>
+            <pre>{{error}}</pre>
+            <v-alert color="error">
+              Error {{ error.statusCode }}: {{ error.message }}
+            </v-alert>
+            <v-btn
+              block
+              color="primary"
+              nuxt
+              to="/"
+            >
+              <v-icon
+                left
+              >
+                mdi-arrow-left-circle
+              </v-icon>
+              Go back
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

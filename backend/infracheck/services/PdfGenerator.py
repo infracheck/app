@@ -122,12 +122,12 @@ class PdfGenerator(FPDF):
             self.print_info("failed tests", plugin_data.failure_count)
 
             for module_data in plugin_data.module_result:
-                self.print_module_chapter(module_data.module_name)
-                self.print_info("name", module_data.module_name)
-                self.print_info("version", module_data.module_version)
-                self.print_info("properties", module_data.props)
-                self.print_info("successful", module_data.result_successful)
-                self.print_info("message", module_data.result_message)
-                self.print_info("result data", module_data.result_data)
+                self.print_module_chapter(module_data["module_name"])
+                self.print_info("name", module_data["module_name"])
+                self.print_info("version", module_data["module_version"])
+                self.print_info("properties", module_data["props"])
+                self.print_info("successful", module_data["result_successful"])
+                self.print_info("message", module_data["result_message"])
+                self.print_info("result data", module_data["result_data"])
 
         self.output(F"{RESULT_FOLDER}{report.id}.pdf", 'F')

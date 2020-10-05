@@ -49,9 +49,21 @@
           <v-btn
             color="primary"
             nuxt
+            to="/wizard"
+          >
+            Launch you first test ...
+          </v-btn>
+          <v-btn
+            nuxt
+            to="/results"
+          >
+            Results ...
+          </v-btn>
+          <v-btn
+            nuxt
             to="/documentation"
           >
-            Documentation
+            Documentation ...
           </v-btn>
         </v-card-actions>
       </v-card>

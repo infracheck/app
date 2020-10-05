@@ -7,8 +7,8 @@ services:
       dockerfile: build/Dockerfile
     ports:
       - 9000:8080
-     environment:
-         - PRODUCTION=True
-         - USERNAME="user"
-         - PASSWORD="password"
+    environment:
+      - PRODUCTION=True
+      - USERNAME="user"
+      - PASSWORD="password"
 

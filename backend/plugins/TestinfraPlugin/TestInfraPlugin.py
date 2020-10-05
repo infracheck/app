@@ -1,3 +1,5 @@
+import pexpect
+
 from infracheck.Plugin import Plugin
 from infracheck.model.Types import Types
 from plugins.TestinfraPlugin.KeyRegistration import KeyRegistration
@@ -96,6 +98,7 @@ and compare it to the `infracheck` input:
                     self.props.os)
             )
 
+        try:
             if self.props.os == 'linux' and address not in ['localhost', '127.0.0.1']:
                 self.ssh_service = KeyRegistration(
                     user=self.props.username,
@@ -103,6 +106,8 @@ and compare it to the `infracheck` input:
                     port=self.props.port
                 )
                 self.ssh_service.register_ssh_keys([address])
+        except pexpect.exceptions.EOF as err:
+            raise ConnectionError(F"Connection to target host {address} was not established")
 
     def tear_down(self):
         for address in self.props.host_address:

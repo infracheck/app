@@ -3,6 +3,7 @@ import logging
 from functools import wraps
 from typing import List
 
+import jsonschema
 from flask import jsonify, send_from_directory, request
 from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt
 from flask_restplus import Resource
@@ -149,28 +150,35 @@ class Results(Resource):
 class TestRunner(Resource):
     @auth_required
     def post(self):
-        json = request.get_json()
-        validate(json, schema=test_data_scheme)
-        data = convert_test_input_json_to_dataclasses(json)
-        res = plugin_manager.launch_tests(data)
-        return jsonify(res)
+        try:
+            json = request.get_json()
+            validate(json, schema=test_data_scheme)
+            data = convert_test_input_json_to_dataclasses(json)
+            res = plugin_manager.launch_tests(data)
+            return jsonify(res)
+        except jsonschema.exceptions.ValidationError as err:
+            return repr(err), 400
+        except ConnectionError as err:
+            return repr(err), 408
+        except PermissionError as err:
+            return repr(err), 401
 
 
 @authentication.route('/login')
 class Login(Resource):
     def post(self):
+        if not app.config['SECURE_API']:
+            return repr(NotImplementedError("Login is not enabled. Restart server and set 'SECURE_API'=true.")), 501
+
         data = request.get_json()
-        username = data['username']
         password = data['password']
-        if not username:
-            return {"msg": "Missing username parameter"}, 400
         if not password:
             return {"msg": "Missing password parameter"}, 400
 
-        if username != app.config["AUTH_USERNAME"] or app.config["AUTH_PASSWORD"] != password:
-            return {"msg": "Bad username or password"}, 401
+        if app.config["AUTH_PASSWORD"] != password:
+            return {"msg": "Wrong password"}, 401
 
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity='user')
         return {"access_token": access_token}, 200
 
 

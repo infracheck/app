@@ -75,6 +75,7 @@ class PluginManager:
         try:
             PdfGenerator().generate(result)
         except Exception as e:
+            log.error(e)
             message = "\nWARN: Pdf was not created successfully."
             result.message += message
 

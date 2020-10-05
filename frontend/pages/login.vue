@@ -12,11 +12,6 @@
               lazy-validation
             >
               <v-text-field
-                v-model="login.username"
-                label="Username"
-                type="text"
-              />
-              <v-text-field
                 v-model="login.password"
                 label="Password"
                 type="password"
@@ -52,7 +47,6 @@ export default {
     failed: false,
     failText: '',
     login: {
-      username: '',
       password: ''
     }
   }),
