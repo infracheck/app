@@ -10,7 +10,6 @@
             <h1>Error occured</h1>
           </v-card-subtitle>
           <v-card-text>
-            <pre>{{error}}</pre>
             <v-alert color="error">
               Error {{ error.statusCode }}: {{ error.message }}
             </v-alert>

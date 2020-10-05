@@ -1,65 +1,61 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col>
+      <v-dialog
+        v-model="dialog"
+        max-width="290"
+      >
+        <v-card>
+          <v-card-title class="headline">
+            Import from JSON...
+          </v-card-title>
+          <v-textarea
+            v-if="importData"
+            v-model="insertJSON"
+            filled
+            label="JSON"
+          />
+          <v-textarea
+            v-if="exportData"
+            label="JSON"
+            :value="JSON.stringify(data)"
+          />
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="dialog = false"
+            >
+              Cancel
+            </v-btn>
+            <v-btn
+              v-if="importData"
+              color="green darken-1"
+              text
+              @click="loadJson"
+            >
+              Import
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-col offset-md="0" offset-xl="1" xl="10" md="12">
         <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
           {{ alert.text }}
         </v-alert>
+        <v-btn
+          color="accent"
+          @click="dialog=true;exportData=false;importData=true"
+        >
+          Import JSON...
+        </v-btn>
         <v-btn
           color="accent"
           @click="dialog=true;exportData=true;importData=false;"
         >
           Export JSON...
         </v-btn>
-        <v-dialog
-          v-model="dialog"
-          max-width="290"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="accent"
-              v-bind="attrs"
-              @click="exportData=false;importData=true"
-              v-on="on"
-            >
-              Import JSON...
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title class="headline">
-              Import from JSON...
-            </v-card-title>
-            <v-textarea
-              v-if="importData"
-              v-model="insertJSON"
-              filled
-              label="JSON"
-            />
-            <v-textarea
-              v-if="exportData"
-              label="JSON"
-              :value="JSON.stringify(data)"
-            />
-            <v-card-actions>
-              <v-spacer/>
-              <v-btn
-                color="green darken-1"
-                text
-                @click="dialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                v-if="importData"
-                color="green darken-1"
-                text
-                @click="loadJson"
-              >
-                Import
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-col>
       <v-col offset-md="0" offset-xl="1" xl="10" md="12">
         <v-stepper
@@ -185,8 +181,7 @@ export default {
       data: {
         name: '',
         description: '',
-        plugins: [
-        ]
+        plugins: []
       }
     }
   },
