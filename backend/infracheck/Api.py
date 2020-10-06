@@ -167,9 +167,6 @@ class TestRunner(Resource):
 @authentication.route('/login')
 class Login(Resource):
     def post(self):
-        if not app.config['SECURE_API']:
-            return repr(NotImplementedError("Login is not enabled. Restart server and set 'SECURE_API'=true.")), 501
-
         data = request.get_json()
         password = data['password']
         if not password:

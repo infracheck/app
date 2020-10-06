@@ -7,32 +7,27 @@
             <img src="~assets/logo_white.png" alt="infracheck icon">
           </v-card-title>
           <v-card-text>
-            <v-form
-              ref="form"
-              lazy-validation
-            >
+            <v-form ref="form">
               <v-text-field
                 v-model="login.password"
                 label="Password"
                 type="password"
               />
+              <v-btn
+                class="mr-4 pl-8 pr-8 block"
+                right
+                large
+                color="primary"
+                @click="userLogin"
+              >
+                Log in
+              </v-btn>
             </v-form>
             <v-alert v-if="failed" type="error">
               {{ failText }}
             </v-alert>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-              class="mr-4 pl-8 pr-8"
-              right
-              large
-              @click="userLogin"
-              color="primary"
-            >
-              Log in
-            </v-btn>
-          </v-card-actions>
+
         </v-card>
       </v-flex>
     </v-layout>

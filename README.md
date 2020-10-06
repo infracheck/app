@@ -81,6 +81,8 @@ cd diploma-os-testing
 docker-compose up -d    # Build and launch the containers
 ```
 
+#### Offline Setup
+If your target system does not have access to the internet, to download Python packages during runtime, you can follow the [offline tutorial](docs/OFFLINE_GUIDE.md).
 
 ### Develop
 This guide is for developers who want to contribute to this application.
