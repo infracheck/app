@@ -7,6 +7,9 @@ services:
       dockerfile: build/Dockerfile
   backend:
     container_name: infra-backend
+    environment:
+      SECURE: 'true'
+      PASSWORD: 'secret'
     build:
       context: ./backend
       dockerfile: build/Dockerfile

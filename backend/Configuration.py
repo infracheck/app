@@ -36,4 +36,4 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     LOG_LEVEL = 'WARN'
-    SECURE_API = os.environ.get('SECURE') or False
+    SECURE_API = True if os.environ.get('SECURE') == 'true' else False
