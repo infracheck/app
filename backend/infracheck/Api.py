@@ -172,7 +172,7 @@ class Login(Resource):
         if not password:
             return {"msg": "Missing password parameter"}, 400
 
-        if app.config["AUTH_PASSWORD"] != password:
+        if app.config["PASSWORD"] != password:
             return {"msg": "Wrong password"}, 401
 
         access_token = create_access_token(identity='user')

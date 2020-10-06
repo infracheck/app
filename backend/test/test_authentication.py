@@ -12,8 +12,7 @@ class ApiTest(unittest.TestCase):
     def setUp(self) -> None:
         self.client = app.test_client()
         app.config['SECURE_API'] = True
-        app.config['AUTH_USERNAME'] = self.USERNAME
-        app.config['AUTH_PASSWORD'] = self.PASSWORD
+        app.config['PASSWORD'] = self.PASSWORD
 
     def test_failing_authentication(self):
         response = self.client.post('/login', json={"username": "WRONG_USER", "password": "WRONG_PW"})

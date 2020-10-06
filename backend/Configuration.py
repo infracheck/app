@@ -2,6 +2,12 @@ import os
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+"""
+The following configuration can be configured:
+PASSWORD   - Password for /login
+SECURE     - Boolean indicates whether /login is required to use the API
+"""
+
 
 class Config(object):
     """Basic configuration"""
@@ -13,11 +19,10 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     RESULT_FOLDER = F'{ROOT_DIR}/results/'
-    SECRET_KEY = "secret"
 
     SECURE_API = False
-    JWT_SECRET_KEY = "ROFL"
-    AUTH_PASSWORD = os.environ.get('AUTH_PASSWORD') or "password"
+    JWT_SECRET_KEY = os.urandom(24).hex()
+    PASSWORD = os.environ.get('PASSWORD') or "password"
 
 
 class DevelopmentConfig(Config):
@@ -31,5 +36,4 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     LOG_LEVEL = 'WARN'
-    SECRET_KEY = os.environ.get('SECRET_KEY') or "secret"
-    SECURE_API = True
+    SECURE_API = os.environ.get('SECURE') or False
