@@ -6,7 +6,7 @@ from typing import List
 import jsonschema
 from flask import jsonify, send_from_directory, request
 from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt
-from flask_restplus import Resource
+from flask_restplus import Resource, fields
 from jsonschema import validate
 
 from infracheck import api, app, jwt
@@ -29,7 +29,7 @@ def check_if_token_in_blacklist(decrypted_token):
 operations = api.namespace(
     'Test',
     path='/',
-    description='test operation of the checkinfra backend')
+    description='test operation of the CheckInfra backend')
 
 plugin = api.namespace(
     'Plugins',
@@ -39,7 +39,7 @@ plugin = api.namespace(
 authentication = api.namespace(
     'Authentication',
     path='/',
-    description='all authentication operations of the checkinfra backend')
+    description='all authentication operations of the CheckInfra backend')
 
 results = api.namespace(
     'Result',
@@ -64,18 +64,37 @@ def auth_required(fn):
     return wrapper
 
 
-@results.route('/results/<path:path>')
-class Results(Resource):
+@results.route('/results/<path:result_id>')
+class SingleResult(Resource):
     @auth_required
-    def get(self, path):
-        return jsonify(Persistence().Result.query.filter_by(id=path).first())
+    def get(self, result_id):
+        """
+        Returns the test results of a single test, by it's id
+        """
+        return jsonify(Persistence().Result.query.filter_by(id=result_id).first())
 
 
-@results.route('/results/pdf/<path:path>')
+@results.route('/results')
 class Results(Resource):
     @auth_required
-    def get(self, path):
-        return send_from_directory('../results/', path)
+    def get(self):
+        """
+        Returns a list of all test results.
+        """
+        limit = request.args.get('limit')
+        offset = request.args.get('offset')
+        res = Persistence().Result.query.all()[offset:limit]
+        return jsonify(res)
+
+
+@results.route('/results/pdf/<path:result_id>')
+class PdfResult(Resource):
+    @auth_required
+    def get(self, result_id):
+        """
+        Returns the pdf document of a single test result, by it's id
+        """
+        return send_from_directory('../results/', result_id)
 
 
 @plugin.route('/plugins/flat')
@@ -85,7 +104,6 @@ class FlattenPlugins(Resource):
         """
         Returns available plugins in a smaller list
         containing only PluginIds and their ModuleIds
-        :return:
         """
         return {
             plugin_id: {
@@ -106,7 +124,6 @@ class Plugins(Resource):
     def get(self):
         """
         Returns all available plugins.
-        :return:
         """
         return jsonify(plugin_manager.json)
 
@@ -117,8 +134,6 @@ class SinglePlugin(Resource):
     def get(self, plugin_id):
         """
         Returns the documentation and props of a single plugin
-        :param plugin_id:
-        :return:
         """
         return plugin_manager.json[plugin_id]
 
@@ -129,27 +144,31 @@ class SingleModule(Resource):
     def get(self, plugin_id, module_id):
         """
         Returns the documentation and props of a single module
-        :param plugin_id:
-        :param module_id:
-        :return:
         """
         return plugin_manager.json[plugin_id]['modules'][module_id]
 
 
-@results.route('/results')
-class Results(Resource):
-    @auth_required
-    def get(self):
-        limit = request.args.get('limit')
-        offset = request.args.get('offset')
-        res = Persistence().Result.query.all()[offset:limit]
-        return jsonify(res)
-
-
-@operations.route('/test')
+@operations.route(
+    '/test',
+    doc={
+        "description": """
+        This is the route that should be used for infrastructure testing.
+        Before running tests, you should check which plugins you can use.
+        For an easy start the use of the frontend is recommended.
+        It supports you, creating your test cases and let you export your test data as JSON.
+        That JSON can be used for this route.
+        """
+    })
+@operations.doc(body=api.schema_model('TestData', test_data_scheme))
 class TestRunner(Resource):
+    @operations.response(200, 'Success')
+    @operations.response(400, 'Connection error, when connecting to remote hosts')
+    @operations.response(401, 'Permission error, when authenticating with remote hosts')
     @auth_required
     def post(self):
+        """
+        This route can be used to trigger a infrastructure check with InfraCheck.
+        """
         try:
             json = request.get_json()
             validate(json, schema=test_data_scheme)
@@ -164,9 +183,21 @@ class TestRunner(Resource):
             return repr(err), 401
 
 
+login_fields = api.model('LoginData', {
+    'password': fields.String(description='Password to authenticate with the API', required=True),
+})
+
+
 @authentication.route('/login')
+@authentication.doc(body=login_fields)
 class Login(Resource):
+    @authentication.response(200, 'Success')
+    @authentication.response(400, 'Missing password parameter')
+    @authentication.response(401, 'Wrong password')
     def post(self):
+        """
+        Login with password only. Receive a JWT token as response, that can be used for further requests.
+        """
         data = request.get_json()
         password = data['password']
         if not password:
@@ -182,7 +213,11 @@ class Login(Resource):
 @authentication.route('/logout')
 class Logout(Resource):
     @auth_required
+    @authentication.response(200, 'Success')
     def post(self):
+        """
+        Logout and blacklist your old JWT token.
+        """
         jti = get_raw_jwt()['jti']
         blacklist.add(jti)
         return {"msg": "Successfully logged out"}, 200

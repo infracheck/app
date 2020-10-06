@@ -21,7 +21,7 @@ test_data_scheme = {
             "items": {
                 "type": "object",
                 "required": ["id", "props", "modules"],
-                "additionalProperties": True,
+                "additionalProperties": False,
                 "properties": {
                     "id": {"type": "string"},
                     "props": {"type": "object"},
