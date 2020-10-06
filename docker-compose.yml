@@ -5,11 +5,13 @@ services:
     build:
       context: ./frontend
       dockerfile: build/Dockerfile
+    environment:
+      SECURE: 'true'          # 'true': use 'nuxt auth' module and display proper login page
   backend:
     container_name: infra-backend
     environment:
-      SECURE: 'true'
-      PASSWORD: 'secret'
+      SECURE: 'true'          # 'true': API requires authentication before use
+      PASSWORD: 'secret'      # Password for the api authentication
     build:
       context: ./backend
       dockerfile: build/Dockerfile

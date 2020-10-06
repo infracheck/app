@@ -1,6 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
+const AUTHENTICATION = process.env.SECURE ? process.env.SECURE : PRODUCTION
 
 export default {
   /*
@@ -22,7 +23,7 @@ export default {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: 'InfraCheck',
     meta: [
-      { charset: 'utf-8' },
+      {charset: 'utf-8'},
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
@@ -79,10 +80,10 @@ export default {
   ** Authentication
   ** https://auth.nuxtjs.org/guide/middleware.html
   */
-  router: PRODUCTION ? {
+  router: AUTHENTICATION ? {
     middleware: ['auth']
   } : {},
-  auth: PRODUCTION ? {
+  auth: AUTHENTICATION ? {
     strategies: {
       local: {
         endpoints: {
@@ -107,7 +108,7 @@ export default {
   * browserBaseURL => URL for clients
   */
   axios: {
-    retry: { retries: 3 },
+    retry: {retries: 3},
     baseURL: PRODUCTION ? 'http://backend:8080' : 'http://localhost:5000',
     browserBaseURL: PRODUCTION ? '/api/' : 'http://localhost:5000'
   },

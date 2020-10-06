@@ -60,9 +60,14 @@ services:
   frontend:
     container_name: infra-frontend
     image: infra-frontend
+    environment:
+      SECURE: 'true'
   backend:
     container_name: infra-backend
     image: infra-backend
+    environment:
+      SECURE: 'true'
+      PASSWORD: 'secret'
   reverse:
     container_name: infra-reverse
     image: infra-reverse

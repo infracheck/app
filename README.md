@@ -80,7 +80,6 @@ I recommend deploying this application with ``docker`` and ``docker-compose``.
 cd diploma-os-testing
 docker-compose up -d    # Build and launch the containers
 ```
-
 #### Offline Setup
 If your target system does not have access to the internet, to download Python packages during runtime, you can follow the [offline tutorial](docs/OFFLINE_GUIDE.md).
 
@@ -123,6 +122,15 @@ export FLASK_ENV=development
 flask run --host='0.0.0.0' --port=5000 --debugger
 ```
 The backend should now be reachable on http://localhost:5000/plugins.
+
+### Configuration
+The application can be configured using environment variables. The following parameters can be configured:
+
+| Service  | Variable | Description                                                                                                                                                                                                                                                                                        |
+|----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Frontend | SECURE   | Should be 'true' if the backend has SECURE='true' as well. It is used to activate 'nuxt auth' properply. (default: True in 'production' and False in 'development')                                                                                                                                |
+| Backend  | SECURE   | Secures the whole API. A login at /login is necessary before using the application. Authentication is enabled using JWT tokens.  The token is generated after a successful /login request, and should be used with any further request. (default: True in 'production' and False in 'development') |
+| Backend  | PASSWORD | The password that is required for a successful login. (Default:'password')                                                                                                                                                                                                                         | 
 
 ## Testing
 You can launch tests for the backend with:
