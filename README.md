@@ -38,8 +38,7 @@ Being based on a plugin architecture, this
 * 🌐 You don't like JSON, or use this tool the first time? 
     - Try out our fancy web interface
 
-![infracheck images](docs/infracheck.png)
-
+![infracheck images](docs/screenshot2.png)
 
 ### Links
 - 👉 [Demo Application TODO]()
