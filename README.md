@@ -139,6 +139,10 @@ cd backend
 python -m unittest discover test "*Test.py"
 ```
 
+## Documentation
+The API is fully documented with swagger. You can access that by opening `<BACKENDSERVER>` in your browser.
+FOr the frontend, there is no detailed documentation currently.
+
 ## Known Issues
 Things that we want to add later:
 
