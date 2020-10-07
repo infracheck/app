@@ -17,7 +17,7 @@
               block
               color="primary"
               nuxt
-              to="/"
+              :to="error.statusCode === 401 ? '/login':'/'"
             >
               <v-icon
                 left

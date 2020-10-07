@@ -3,15 +3,18 @@ import logging
 from functools import wraps
 from typing import List
 
+import flask_jwt_extended
 import jsonschema
 from flask import jsonify, send_from_directory, request
-from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt
+from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt, create_refresh_token, \
+    jwt_refresh_token_required, get_jwt_identity
 from flask_restplus import Resource, fields
 from jsonschema import validate
 
 from infracheck import api, app, jwt
 from infracheck.PluginManager import PluginManager
-from infracheck.helper.schemes import test_data_scheme
+from infracheck.helper.schemes import test_data_scheme, result_scheme, results_scheme, jwt_scheme, jwt_refresh_scheme, \
+    plugins_output_scheme, plugin_output_scheme
 from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 from infracheck.services.Persistence import Persistence
 
@@ -58,13 +61,17 @@ def auth_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         if app.config["SECURE_API"]:
-            verify_jwt_in_request()
+            try:
+                verify_jwt_in_request()
+            except flask_jwt_extended.exceptions.NoAuthorizationError:
+                return {"msg": "Missing Authorization Header"}, 401
         return fn(*args, **kwargs)
 
     return wrapper
 
 
 @results.route('/results/<path:result_id>')
+@results.response(200, 'Success', api.schema_model('TestResult', result_scheme))
 class SingleResult(Resource):
     @auth_required
     def get(self, result_id):
@@ -75,6 +82,7 @@ class SingleResult(Resource):
 
 
 @results.route('/results')
+@results.response(200, 'Success', api.schema_model('TestResults', results_scheme))
 class Results(Resource):
     @auth_required
     def get(self):
@@ -120,6 +128,7 @@ class FlattenPlugins(Resource):
 
 @plugin.route('/plugins')
 class Plugins(Resource):
+    @plugin.response(200, 'Success', api.schema_model('Plugins Scheme', plugins_output_scheme))
     @auth_required
     def get(self):
         """
@@ -130,6 +139,7 @@ class Plugins(Resource):
 
 @plugin.route('/plugins/<plugin_id>')
 class SinglePlugin(Resource):
+    @plugin.response(200, 'Success', api.schema_model('Plugin Scheme', plugin_output_scheme))
     @auth_required
     def get(self, plugin_id):
         """
@@ -161,7 +171,7 @@ class SingleModule(Resource):
     })
 @operations.doc(body=api.schema_model('TestData', test_data_scheme))
 class TestRunner(Resource):
-    @operations.response(200, 'Success')
+    @operations.response(200, 'Success', api.schema_model('TestResult', result_scheme))
     @operations.response(400, 'Connection error, when connecting to remote hosts')
     @operations.response(401, 'Permission error, when authenticating with remote hosts')
     @auth_required
@@ -183,7 +193,7 @@ class TestRunner(Resource):
             return repr(err), 401
 
 
-login_fields = api.model('LoginData', {
+login_fields = api.model('Login Format', {
     'password': fields.String(description='Password to authenticate with the API', required=True),
 })
 
@@ -191,7 +201,7 @@ login_fields = api.model('LoginData', {
 @authentication.route('/login')
 @authentication.doc(body=login_fields)
 class Login(Resource):
-    @authentication.response(200, 'Success')
+    @authentication.response(200, 'Success', api.schema_model('JWT Login Format', jwt_scheme))
     @authentication.response(400, 'Missing password parameter')
     @authentication.response(401, 'Wrong password')
     def post(self):
@@ -207,13 +217,31 @@ class Login(Resource):
             return {"msg": "Wrong password"}, 401
 
         access_token = create_access_token(identity='user')
-        return {"access_token": access_token}, 200
+        refresh_token = create_refresh_token(identity='user')
+        return {"access_token": access_token,
+                "refresh_token": refresh_token,
+                }, 200
+
+
+@authentication.route('/refresh')
+class Refresh(Resource):
+    @authentication.response(200, 'Success', api.schema_model('JWT Refresh Format', jwt_refresh_scheme))
+    @jwt_refresh_token_required
+    def post(self):
+        """
+        JWT token requires refreshing. That can be done with this route.
+        """
+        current_user = get_jwt_identity()
+        ret = {
+            'access_token': create_access_token(identity=current_user)
+        }
+        return jsonify(ret), 200
 
 
 @authentication.route('/logout')
 class Logout(Resource):
     @auth_required
-    @authentication.response(200, 'Success')
+    @authentication.response(200, 'Successfully logged out')
     def post(self):
         """
         Logout and blacklist your old JWT token.

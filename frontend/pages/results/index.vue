@@ -8,9 +8,25 @@
             :headers="headers"
             :items="results"
             :items-per-page="13"
+            sort-by="date"
+            :sort-desc="true"
             item-key="id"
             class="elevation-1"
+            :search="search"
           >
+            <template v-slot:top>
+              <v-row>
+                <v-col lg="4" md="12">
+                  <v-text-field
+                    v-model="search"
+                    color="primary"
+                    outlined
+                    append-icon="mdi-magnify"
+                    label="Search"
+                  />
+                </v-col>
+              </v-row>
+            </template>
             <template v-slot:item.link="{ item }">
               <v-btn
                 tile
@@ -44,12 +60,13 @@
 <script>
 export default {
   name: 'Results',
-  async asyncData({$axios}) {
+  async asyncData ({ $axios }) {
     const results = await $axios.$get('/results')
-    return {results}
+    return { results }
   },
-  data() {
+  data () {
     return {
+      search: '',
       headers: [
         {
           text: 'Name',

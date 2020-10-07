@@ -33,7 +33,7 @@
             {{ plugin.id }}
           </v-chip>
           <div v-if="selectedPlugin" class="pa-3">
-            <v-divider class="mb-2" />
+            <v-divider class="mb-2"/>
             <h3>DOCUMENTATION - {{ docs[selectedPlugin].id.toUpperCase() }}</h3>
             <p v-if="docs[selectedPlugin].version">
               Version {{ docs[selectedPlugin].version }}
@@ -41,12 +41,9 @@
             <p v-if="docs[selectedPlugin].author">
               Author {{ docs[selectedPlugin].author }}
             </p>
-            <vue-simple-markdown
-              class="white--text mt-0 pt-0"
-              :horizontal-line="false"
-              :source="docs[selectedPlugin].documentation"
-            />
-            <prop-table :props="docs[selectedPlugin].props" />
+            <a class="title" target="_blank" :href="`/documentation/${selectedPlugin}`">
+              Show documentation
+            </a>
           </div>
         </v-card-text>
       </v-card>

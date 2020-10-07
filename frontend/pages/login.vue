@@ -7,22 +7,21 @@
             <img src="~assets/logo_white.png" alt="infracheck icon">
           </v-card-title>
           <v-card-text>
-            <v-form ref="form">
-              <v-text-field
-                v-model="login.password"
-                label="Password"
-                type="password"
-              />
-              <v-btn
-                class="mr-4 pl-8 pr-8 block"
-                right
-                large
-                color="primary"
-                @click="userLogin"
-              >
-                Log in
-              </v-btn>
-            </v-form>
+            <v-text-field
+              v-model="login.password"
+              label="Password"
+              type="password"
+            />
+            <v-btn
+              class="mr-4 pl-8 pr-8 block"
+              right
+              large
+              block
+              color="primary"
+              @click="userLogin"
+            >
+              Log in
+            </v-btn>
             <v-alert v-if="failed" type="error">
               {{ failText }}
             </v-alert>

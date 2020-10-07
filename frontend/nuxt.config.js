@@ -23,7 +23,7 @@ export default {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: 'InfraCheck',
     meta: [
-      {charset: 'utf-8'},
+      { charset: 'utf-8' },
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
@@ -79,18 +79,40 @@ export default {
   /*
   ** Authentication
   ** https://auth.nuxtjs.org/guide/middleware.html
+  ** https://dev.auth.nuxtjs.org/schemes/refresh
   */
   router: AUTHENTICATION ? {
     middleware: ['auth']
   } : {},
   auth: AUTHENTICATION ? {
+    cookie: {
+      options: {
+        sameSite: 'lax'
+      }
+    },
     strategies: {
       local: {
+        scheme: 'refresh',
+        token: {
+          property: 'access_token',
+          maxAge: 1800
+          // type: 'Bearer'
+        },
+        refreshToken: {
+          property: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30
+        },
         endpoints: {
           login: {
             url: '/login',
             method: 'post',
             propertyName: 'access_token'
+          },
+          refresh: {
+            url: '/refresh',
+            method: 'post',
+            propertyName: 'refresh_token'
           },
           logout: {
             url: '/logout',
@@ -108,7 +130,8 @@ export default {
   * browserBaseURL => URL for clients
   */
   axios: {
-    retry: {retries: 3},
+    proxy: true,
+    retry: { retries: 3 },
     baseURL: PRODUCTION ? 'http://backend:8080' : 'http://localhost:5000',
     browserBaseURL: PRODUCTION ? '/api/' : 'http://localhost:5000'
   },

@@ -23,10 +23,10 @@
               @click="selectedPlugin=data.plugins.find(x => x === item)"
             >
               <v-list-item-icon>
-                <v-icon v-text="'mdi-toy-brick'"/>
+                <v-icon v-text="'mdi-toy-brick'" />
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title v-text="item.id"/>
+                <v-list-item-title v-text="item.id" />
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -70,10 +70,10 @@
           >
             Remove plugin
           </v-btn>
-          <v-divider class="mt-2"/>
+          <v-divider class="mt-2" />
 
           <v-row v-if="selectedPlugin" class="pa-3">
-            <v-col>
+            <v-col cols="6">
               <v-subheader>TESTSET</v-subheader>
               <v-expansion-panels inset>
                 <v-expansion-panel
@@ -86,21 +86,13 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content color="lighten-3">
                     <v-row>
-                      <v-col cols="12">
-                        <vue-simple-markdown
-                          class="white--text"
-                          :horizontal-line="false"
-                          :source="docs[selectedPlugin.id].modules[module.id].documentation"
-                        />
-                      </v-col>
-
                       <v-col
                         v-for="(fieldDoc, fieldKey) in docs[selectedPlugin.id].modules[module.id].props"
                         :key="fieldKey"
                         cols="12"
                         md="6"
-                        lg="4"
-                        xl="3"
+                        lg="5"
+                        xl="4"
                       >
                         <InputField
                           :props="module.props"
@@ -108,19 +100,28 @@
                           :field_documentation="fieldDoc"
                         />
                       </v-col>
+                      <v-col cols="12">
+                        <a target="_blank" :href="`/documentation/${selectedPlugin}`">
+                          Show documentation
+                        </a>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          depressed
+                          color="accent"
+                          @click="selectedPlugin.modules = selectedPlugin.modules.filter(mod => mod !== module)"
+                        >
+                          <v-icon color="grey lighten-1">
+                            mdi-delete
+                          </v-icon>
+                          Remove
+                        </v-btn>
+                      </v-col>
                     </v-row>
-                    <v-btn
-                      depressed
-                      @click="selectedPlugin.modules = selectedPlugin.modules.filter(mod => mod !== module)"
-                    >
-                      Remove
-                    </v-btn>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-col>
-            <v-divider vertical/>
-            <v-col cols="4">
+            <v-col cols="6">
               <v-subheader>MODULES</v-subheader>
 
               <v-list>
@@ -130,7 +131,7 @@
                   class="mb-1 accent"
                 >
                   <v-list-item-content>
-                    <v-list-item-title v-text="moduleName"/>
+                    <v-list-item-title v-text="moduleName" />
                   </v-list-item-content>
 
                   <v-list-item-action>
@@ -138,6 +139,7 @@
                       <v-icon color="grey lighten-1">
                         mdi-plus-thick
                       </v-icon>
+                      Add
                     </v-btn>
                   </v-list-item-action>
                 </v-list-item>
