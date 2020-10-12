@@ -71,7 +71,7 @@ export default {
         {
           text: 'Name',
           align: 'start',
-          value: 'name'
+          value: 'label'
         },
         {
           text: 'Date',
@@ -88,7 +88,7 @@ export default {
           text: 'failed tests',
           value: 'failure_count'
         }, {
-          text: 'successul tests',
+          text: 'successful tests',
           value: 'success_count'
         },
         {

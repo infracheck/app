@@ -23,10 +23,13 @@
               @click="selectedPlugin=data.plugins.find(x => x === item)"
             >
               <v-list-item-icon>
-                <v-icon v-text="'mdi-toy-brick'" />
+                <v-icon v-text="'mdi-toy-brick'"/>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title v-text="item.id" />
+                <v-list-item-title v-text="item.id"/>
+                <v-list-item-subtitle>
+                  {{ item.label }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -49,6 +52,13 @@
             show description
           </a>
           <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="selectedPlugin.label"
+                hint="Use the label to tag your plugin sets. Use it as a short description of what you test with this Plugin."
+                label="Label"
+              />
+            </v-col>
             <v-col
               v-for="(fieldDoc, fieldKey) in docs[selectedPlugin.id].props"
               :key="fieldKey"
@@ -70,7 +80,7 @@
           >
             Remove plugin
           </v-btn>
-          <v-divider class="mt-2" />
+          <v-divider class="mt-2"/>
 
           <v-row v-if="selectedPlugin" class="pa-3">
             <v-col cols="6">
@@ -86,13 +96,19 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content color="lighten-3">
                     <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="module.label"
+                          hint="Label of this module. Write a short text to describe this test."
+                          label="Label"
+                        />
+                      </v-col>
                       <v-col
                         v-for="(fieldDoc, fieldKey) in docs[selectedPlugin.id].modules[module.id].props"
                         :key="fieldKey"
                         cols="12"
-                        md="6"
-                        lg="5"
-                        xl="4"
+                        lg="6"
+                        md="12"
                       >
                         <InputField
                           :props="module.props"
@@ -131,7 +147,7 @@
                   class="mb-1 accent"
                 >
                   <v-list-item-content>
-                    <v-list-item-title v-text="moduleName" />
+                    <v-list-item-title v-text="moduleName"/>
                   </v-list-item-content>
 
                   <v-list-item-action>
@@ -157,18 +173,18 @@ import InputField from '@/components/wizard/InputField'
 
 export default {
   name: 'WizardTest',
-  components: { InputField },
+  components: {InputField},
   props: ['data', 'docs'],
-  data () {
+  data() {
     return {
       selectedPlugin: ''
     }
   },
-  created () {
+  created() {
     this.selectedPlugin = this.data.plugins[0]
   },
   methods: {
-    addModule (moduleName) {
+    addModule(moduleName) {
       this.selectedPlugin.modules.push(
         {
           id: moduleName,

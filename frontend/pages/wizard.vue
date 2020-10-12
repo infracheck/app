@@ -40,7 +40,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-col offset-md="0" offset-xl="1" xl="10" md="12">
+      <v-col cols="12">
         <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
           {{ alert.text }}
         </v-alert>
@@ -57,7 +57,7 @@
           Export JSON...
         </v-btn>
       </v-col>
-      <v-col offset-md="0" offset-xl="1" xl="10" md="12">
+      <v-col cols="12">
         <v-stepper
           v-model="step"
           vertical
@@ -179,7 +179,7 @@ export default {
       exportData: true,
       importData: true,
       data: {
-        name: '',
+        label: '',
         description: '',
         plugins: []
       }

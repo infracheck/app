@@ -12,6 +12,12 @@
             :items="Object.keys(docs)"
             label="Standard"
           />
+          <v-text-field
+            v-if="selectedPlugin"
+            v-model="label"
+            hint="Use the label to tag your plugin sets. Use it as a short description of what you test with this Plugin."
+            label="Label"
+          />
           <v-btn
             rounded
             color="primary"
@@ -21,14 +27,14 @@
             Add Plugin
           </v-btn>
           <v-chip
-            v-for="plugin in data.plugins"
-            :key="plugin.id"
+            v-for="(plugin, i) in data.plugins"
+            :key="i"
             class="ma-2"
             color="pink"
             label
             close
             @click="showDoc = docs[plugin.id]"
-            @click:close="data.plugins = data.plugins.filter(dataPlugin=> dataPlugin!== plugin)"
+            @click:close="data.plugins = data.plugins.filter(dataPlugin => dataPlugin!== plugin)"
           >
             {{ plugin.id }}
           </v-chip>
@@ -56,22 +62,25 @@ import PropTable from '@/components/documentation/PropTable'
 
 export default {
   name: 'WizardPlugin',
-  components: { PropTable },
+  components: {PropTable},
   props: ['data', 'docs'],
-  data () {
+  data() {
     return {
       selectedPlugin: '',
-      showDoc: null
+      showDoc: null,
+      label: '',
     }
   },
   methods: {
-    addPlugin () {
+    addPlugin() {
       this.data.plugins.push({
         id: this.selectedPlugin,
+        label: this.label,
         modules: [],
         props: {}
       })
       this.selectedPlugin = ''
+      this.label = ''
     }
 
   }

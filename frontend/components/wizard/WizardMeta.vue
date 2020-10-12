@@ -9,8 +9,8 @@
         Both, the name and the description have no impact on the actual test.
       </p>
       <v-text-field
-        v-model="data.name"
-        :rules="[() => !!data.name || 'This field is required']"
+        v-model="data.label"
+        :rules="[() => !!data.label || 'This field is required']"
         label="Name"
       />
       <v-textarea

@@ -4,10 +4,10 @@
     class="fill-height"
   >
     <v-col
-      offset-lg="2"
-      offset-md="0"
-      lg="8"
-      md="12"
+      offset-xl="2"
+      offset-lg="0"
+      xl="8"
+      lg="12"
     >
       <ResultTable :result="result"/>
     </v-col>

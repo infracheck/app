@@ -132,8 +132,8 @@ export default {
   axios: {
     proxy: true,
     retry: { retries: 3 },
-    baseURL: PRODUCTION ? 'http://backend:8080' : 'http://localhost:5000',
-    browserBaseURL: PRODUCTION ? '/api/' : 'http://localhost:5000'
+    baseURL: PRODUCTION ? 'http://backend:8080' : 'http://127.0.0.1:5000',
+    browserBaseURL: PRODUCTION ? '/api/' : 'http://127.0.0.1:5000'
   },
   /*
   ** vuetify module configuration
@@ -145,8 +145,8 @@ export default {
       themes: {
         light: {
           primary: colors.blue.lighten2,
-          secondary: colors.red.lighten4,
-          accent: colors.grey.lighten3,
+          secondary: '#2d727e',
+          accent: '#2d727e',
           error: '#FF5252',
           info: '#2196F3',
           success: '#18821c',
@@ -154,8 +154,8 @@ export default {
         },
         dark: {
           primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+          accent: '#2d727e',
+          secondary: '#2d727e',
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,

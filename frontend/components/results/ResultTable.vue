@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-card outlined>
         <v-card-title>
-          <h1>{{ result.name }}</h1>
+          <h1>{{ result.label }}</h1>
         </v-card-title>
         <v-card-subtitle>
           <h3>General data</h3>
@@ -31,13 +31,14 @@
     >
       <v-card outlined>
         <v-card-title>
-          <h2>{{ plugin.plugin_name }}</h2>
+          <h2>{{ plugin.label }}</h2>
         </v-card-title>
         <v-card-subtitle>
-          <h3>Plugin result</h3>
+          <h3>{{ plugin.plugin_name }}</h3>
         </v-card-subtitle>
         <v-card-text>
           <v-list dense>
+            <ListItem label="Label" :value="plugin.label"/>
             <ListItem label="Plugin name" :value="plugin.plugin_name"/>
             <ListItem label="Plugin version" :value="plugin.plugin_version"/>
             <ListItem label="Total tests" :value="plugin.total_count"/>
@@ -50,10 +51,17 @@
           >
             {{ plugin.message }}
           </v-alert>
-          <h4>Properties</h4>
-          <v-divider/>
-          <PropTable :props="plugin.props"/>
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
+                Input Properties
+              </v-expansion-panel-header>
+              <v-expansion-panel-content class="p-0">
+                <PropTable :props="plugin.props"/>
 
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
           <v-subheader>
             <h1>Module results</h1>
             <v-divider/>
@@ -69,35 +77,43 @@
             >
               <v-card outlined>
                 <v-card-title>
-                  <h3>{{ module.module_name }}</h3>
+                  <h3>{{ module.label }}</h3>
+
                 </v-card-title>
                 <v-card-subtitle>
-                  <h4>Module result</h4>
+                  <h4>{{ module.module_name }}</h4>
                 </v-card-subtitle>
                 <v-card-text>
-                  <v-list dense>
-                    <ListItem label="Plugin name" :value="module.module_name"/>
-                    <ListItem label="Plugin version" :value="module.module_version"/>
-                  </v-list>
-                  <v-expansion-panels flat tile v-if="module.result_data !== {}">
-                    <v-expansion-panel>
-                      <v-expansion-panel-header class="pl-4 mb-2 accent">
-                        Custom results
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content class="p-0">
-                        <pre class="accent pa-2 rounded">{{ module.result_data }}</pre>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
                   <v-alert
                     dense
                     :type="module.result_successful ? 'success' : 'error'"
                   >
                     {{ module.result_message }}
                   </v-alert>
-                  <h4>Properties</h4>
-                  <v-divider/>
-                  <PropTable :props="module.props"/>
+                  <v-list dense>
+                    <ListItem label="Label" :value="module.label"/>
+                    <ListItem label="Plugin name" :value="module.module_name"/>
+                    <ListItem label="Plugin version" :value="module.module_version"/>
+                  </v-list>
+                  <v-expansion-panels>
+                    <v-expansion-panel v-if="module.result_data !== {}">
+                      <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
+                        Custom results
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content class="p-0">
+                        <pre class="accent pa-2 rounded">{{ module.result_data }}</pre>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel v-if="module.props !== {}">
+                      <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
+                        Input Properties
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content class="p-0">
+                        <PropTable :props="module.props"/>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+
                 </v-card-text>
               </v-card>
             </v-col>
