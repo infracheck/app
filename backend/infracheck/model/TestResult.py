@@ -12,6 +12,7 @@ class ModuleResult:
     result_message: str = ''
     result_data: Dict = {}
     module_name: str = ''
+    label: str = ''
     module_version: float = 0.0
     props: Dict = {}
 
@@ -21,12 +22,18 @@ class ModuleResult:
         self.result_data = result_data
 
     def json(self) -> json:
+        """
+        Because this is not a dataclass, like the other RESULT classes,
+        it needs to provide a json() function
+        :return:
+        """
         return {
             "result_successful": self.result_successful,
             "result_message": self.result_message,
             "result_data": self.result_data,
             "module_name": self.module_name,
             "module_version": self.module_version,
+            "label": self.label,
             "props": self.props
         }
 
@@ -41,13 +48,14 @@ class PluginResult:
     message: str
     module_result: List[ModuleResult]
     props: Dict = field(default_factory=dict)
+    label: str = ''
 
 
 @dataclass
 class TestResult:
     id: str
     pdf_link: str
-    name: str
+    label: str
     description: str
     success_count: int
     failure_count: int

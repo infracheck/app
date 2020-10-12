@@ -1,11 +1,14 @@
 localhost_test_data = {
-    "name": "Just another test",
+    "label": "Just another test",
     "description": "Hey there its me",
     "plugins": [
         {
             "id": "TestInfraPlugin",
+            "label": "My favorite Test on localhost",
             "props": {
-                "host_address": ["localhost"],
+                "host_address": [
+                    "localhost"
+                ],
                 "username": "",
                 "password": "",
                 "os": "linux",
@@ -14,12 +17,14 @@ localhost_test_data = {
             "modules": [
                 {
                     "id": "CheckTargetAddress",
+                    "label": "Is Google reachable?",
                     "props": {
                         "url": "google.de"
                     }
                 },
                 {
                     "id": "CheckServiceSpecs",
+                    "label": "Is it linux?",
                     "props": {
                         "type": "linux",
                         "distribution": "",
@@ -29,6 +34,7 @@ localhost_test_data = {
                 },
                 {
                     "id": "CompareCommandOutput",
+                    "label": "Is 'lol' == 'lol'",
                     "props": {
                         "command1": "echo LOL",
                         "command2": "echo LOL"
@@ -36,6 +42,7 @@ localhost_test_data = {
                 },
                 {
                     "id": "CheckServiceSpecs",
+                    "label": "Does docker run?",
                     "props": {
                         "service": "docker",
                         "enabled": True,

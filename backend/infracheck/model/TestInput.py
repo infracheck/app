@@ -9,6 +9,7 @@ class ModuleInput:
     """
     id: str
     props: Dict[str, Any]
+    label: str = ''
 
 
 @dataclass
@@ -22,6 +23,7 @@ class PluginInput:
     id: str
     props: Dict[str, any]
     modules: List[ModuleInput]
+    label: str = ''
 
 
 @dataclass
@@ -31,6 +33,6 @@ class TestInput:
         - test meta data (name, description)
         - A list of PluginDataObjects, one for each plugin that should be used for the test
     """
-    name: str
     description: str
     plugins: List[PluginInput]
+    label: str = ''

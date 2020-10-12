@@ -13,7 +13,7 @@ from jsonschema import validate
 
 from infracheck import api, app, jwt
 from infracheck.PluginManager import PluginManager
-from infracheck.helper.schemes import test_data_scheme, result_scheme, results_scheme, jwt_scheme, jwt_refresh_scheme, \
+from infracheck.model.schemes import test_data_scheme, result_scheme, results_scheme, jwt_scheme, jwt_refresh_scheme, \
     plugins_output_scheme, plugin_output_scheme
 from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 from infracheck.services.Persistence import Persistence

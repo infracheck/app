@@ -3,7 +3,7 @@ import unittest
 from jsonschema import validate
 
 from infracheck import app
-from infracheck.helper.schemes import plugin_scheme
+from infracheck.model.schemes import plugin_scheme
 
 
 class ApiTest(unittest.TestCase):

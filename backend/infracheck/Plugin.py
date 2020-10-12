@@ -161,19 +161,35 @@ class Plugin(ABC):
         """
         This function executes the actual tests
         It deals as deserializer for the input data and spreads it over multiple test modules
+        Results can come from various modules as a list of ModuleResults
+        They need to be serialized before into one object before send back
+        to the PluginManager.
         :param plugin_input:
         :return:
         """
-        results: List[ModuleResult] = []
+        module_results: List[ModuleResult] = []
 
+        # Deserialize Test execution data
         for module_data in plugin_input.modules:
             module = self._get_module_instance(module_data.id)
             module._set_props(module_data.props, self.props)
-            module_result: ModuleResult = module.execute_test()
+            module_result: ModuleResult = module.execute_test(module_data)
             module_result.props = self._get_result_props_of(module)
-            results.append(module_result)
+            module_results.append(module_result)
 
-        return self._serialize_results(results)
+        # Serialize result data
+        return PluginResult(
+            message=F"{self.__id__}@{self.__version__} complete with failure_count: "
+                    F"{sum(not module.result_successful for module in module_results)}",
+            success_count=sum(module.result_successful for module in module_results),
+            failure_count=sum(not module.result_successful for module in module_results),
+            total_count=len(module_results),
+            plugin_name=self.__id__,
+            module_result=[result.json() for result in module_results],
+            props=self._get_result_props_of(self),
+            label=plugin_input.label,
+            plugin_version=self.__version__,
+        )
 
     @staticmethod
     def _get_result_props_of(obj: Any) -> Dict[str, Dict[str, str]]:
@@ -200,24 +216,3 @@ class Plugin(ABC):
                 "value": prop_value
             }
         return result
-
-    def _serialize_results(self, module_results: List[ModuleResult]) -> PluginResult:
-        """
-        Results can come from various modules as a list of ModuleResults
-        They need to be serialized before into one object before send back
-        to the PluginManager.
-
-        :param module_results:
-        :return:
-        """
-        return PluginResult(
-            message=F"{self.__id__}@{self.__version__} complete with failure_count: "
-                    F"{sum(not module.result_successful for module in module_results)}",
-            success_count=sum(module.result_successful for module in module_results),
-            failure_count=sum(not module.result_successful for module in module_results),
-            total_count=len(module_results),
-            plugin_name=self.__id__,
-            module_result=[result.json() for result in module_results],
-            props=self._get_result_props_of(self),
-            plugin_version=self.__version__
-        )

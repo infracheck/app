@@ -130,7 +130,7 @@ class PluginManager:
         result = TestResult(
             id=uid,
             pdf_link=F"/results/{uid}.pdf",
-            name=input_data.name,
+            label=input_data.label,
             description=input_data.description,
             success_count=sum(c.success_count for c in plugin_results),
             failure_count=sum(c.failure_count for c in plugin_results),

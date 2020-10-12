@@ -82,17 +82,18 @@ results_scheme = {
 # This is how the input data, to launch a test, should look like
 test_data_scheme = {
     "type": "object",
-    "required": ["name", "description", "plugins"],
+    "required": ["label", "description", "plugins"],
     "properties": {
-        "name": {"type": "string"},
+        "label": {"type": "string"},
         "description": {"type": "string"},
         "plugins": {
             "type": "array",
             "items": {
                 "type": "object",
                 "required": ["id", "props", "modules"],
-                "additionalProperties": False,
+                "additionalProperties": True,
                 "properties": {
+                    "label": {"type": "string"},
                     "id": {"type": "string"},
                     "props": {"type": "object"},
                     "modules": {
@@ -100,8 +101,9 @@ test_data_scheme = {
                         "items": {
                             "type": "object",
                             "required": ["id", "props"],
-                            "additionalProperties": False,
+                            "additionalProperties": True,
                             "properties": {
+                                "label": {"type": "string"},
                                 "id": {"type": "string"},
                                 "props": {"type": "object"}
                             }

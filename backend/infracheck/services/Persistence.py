@@ -38,7 +38,7 @@ class Persistence:
         If the table does not exist, it will be created when the application starts.
         """
         id: str = db.Column(db.String, primary_key=True)
-        name: str = db.Column(db.String(80), nullable=False)
+        label: str = db.Column(db.String(80), nullable=False)
         description: str = db.Column(db.String(120), nullable=False)
         success_count: int = db.Column(db.String(120), nullable=False)
         failure_count: int = db.Column(db.String(120), nullable=False)
@@ -56,7 +56,7 @@ class Persistence:
         """
         db.session.add(self.Result(
             id=result.id,
-            name=result.name,
+            label=result.label,
             description=result.description,
             success_count=result.success_count,
             failure_count=result.failure_count,

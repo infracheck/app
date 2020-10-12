@@ -101,7 +101,7 @@ class PdfGenerator(FPDF):
         self.alias_nb_pages()
         self.chapter_title(1, 'General Data')
         self.print_info("id", report.id)
-        self.print_info("name", report.name)
+        self.print_info("name", report.label)
         self.print_info("description", report.description)
         self.print_info("message", report.message)
         self.print_info("date", report.date)

@@ -20,7 +20,7 @@ class ApiTest(unittest.TestCase):
             self.assertTrue(response.status_code == 401)
 
         with self.subTest("Access denied on /plugins"):
-            self.assertEqual(self.client.get('/plugins').status_code, 500)
+            self.assertEqual(self.client.get('/plugins').status_code, 401)
 
     def test_authentication(self):
         response = self.client.post('/login', json={"username": self.USERNAME, "password": self.PASSWORD})

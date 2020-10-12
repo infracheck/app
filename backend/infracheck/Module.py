@@ -4,6 +4,7 @@ import os
 from abc import ABC, abstractmethod
 from typing import Any, Dict
 
+from infracheck.model.TestInput import ModuleInput
 from infracheck.model.TestResult import ModuleResult
 
 
@@ -59,7 +60,7 @@ class Module(ABC):
             "documentation": self.__documentation__,
             "version": self.__version__,
             "compatibility": self.__compatibility__,
-            "props": self._props_as_json
+            "props": self._props_as_json,
         }
 
     def __init__(self) -> None:
@@ -70,7 +71,7 @@ class Module(ABC):
         if not self.__documentation__:
             raise NotImplementedError("documentation must be set")
 
-    def execute_test(self) -> ModuleResult:
+    def execute_test(self, input_data: ModuleInput) -> ModuleResult:
         """
 
         :return:
@@ -78,6 +79,7 @@ class Module(ABC):
         result: ModuleResult = self.test()
         result.module_version = self.__version__
         result.module_name = self.__id__
+        result.label = input_data.label
         return result
 
     @abstractmethod
