@@ -1,174 +1,161 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-dialog
-        v-model="dialog"
-        max-width="290"
-      >
-        <v-card>
-          <v-card-title class="headline">
-            Import from JSON...
-          </v-card-title>
-          <v-textarea
+  <v-row class="fill-height" no-gutters dense>
+    <v-dialog
+      v-model="dialog"
+      max-width="500"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Import from JSON...
+        </v-card-title>
+        <v-textarea
+          v-if="importData"
+          v-model="insertJSON"
+          filled
+          color="accent"
+          label="JSON"
+        />
+        <v-textarea
+          color="accent"
+          v-if="exportData"
+          label="JSON"
+          :value="JSON.stringify(data)"
+        />
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn
+            color="accent"
+            text
+            @click="dialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
             v-if="importData"
-            v-model="insertJSON"
-            filled
-            label="JSON"
-          />
-          <v-textarea
-            v-if="exportData"
-            label="JSON"
-            :value="JSON.stringify(data)"
-          />
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn
-              color="green darken-1"
-              text
-              @click="dialog = false"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              v-if="importData"
-              color="green darken-1"
-              text
-              @click="loadJson"
-            >
-              Import
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-col cols="12">
-        <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
-          {{ alert.text }}
-        </v-alert>
-        <v-btn
-          color="accent"
-          @click="dialog=true;exportData=false;importData=true"
-        >
-          Import JSON...
-        </v-btn>
-        <v-btn
-          color="accent"
-          @click="dialog=true;exportData=true;importData=false;"
-        >
-          Export JSON...
-        </v-btn>
-      </v-col>
-      <v-col cols="12">
-        <v-stepper
-          v-model="step"
-          vertical
-        >
-          <!--  STEP 1  -->
-          <v-stepper-step
-            step="1"
-            :complete="Boolean(data.description) && Boolean(data.description)"
+            color="accent"
+            text
+            @click="loadJson"
           >
-            Define Meta data
-          </v-stepper-step>
-          <v-stepper-content step="1">
-            <WizardMeta :data="data"/>
-            <v-btn
-              color="primary"
-              :disabled="!data.description && data.description"
-              @click="step = 2"
-            >
-              Continue
-            </v-btn>
-          </v-stepper-content>
-
-          <!--  STEP 2  -->
-          <v-stepper-step
-            step="2"
-            :complete="data.plugins.length>0"
+            Import
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-col cols="12" class="fill-height">
+      <v-card class="fill-height">
+        <v-card-title> Test Wizard</v-card-title>
+        <v-card-text>
+          <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
+            {{ alert.text }}
+          </v-alert>
+          <v-btn
+            color="secondary"
+            @click="dialog=true;exportData=false;importData=true"
           >
-            Select Plugins
-          </v-stepper-step>
-
-          <v-stepper-content step="2">
-            <wizard-plugin :data="data" :docs="docs"/>
-            <v-btn
-              color="primary"
-              :disabled="!data.plugins.length>0"
-              @click="step = 3"
-            >
-              Continue
-            </v-btn>
-            <v-btn text @click="step=1">
-              Back
-            </v-btn>
-          </v-stepper-content>
-
-          <!--  STEP 3  -->
-          <v-stepper-step
-            step="3"
-            :complete="data.plugins.length>0"
+            Import JSON...
+          </v-btn>
+          <v-btn
+            color="secondary"
+            @click="dialog=true;exportData=true;importData=false;"
           >
-            Insert data
-          </v-stepper-step>
-
-          <v-stepper-content step="3">
-            <wizard-test :data="data" :docs="docs"/>
-            <v-btn
-              color="primary"
-              @click="step=4"
-            >
-              Ready for launch
-            </v-btn>
-            <v-btn text @click="step=2">
-              Back
-            </v-btn>
-          </v-stepper-content>
-          <!--  STEP 4  -->
-          <v-stepper-step step="4">
-            Run test
-          </v-stepper-step>
-
-          <v-stepper-content step="4">
-            <v-btn
-              color="primary"
-              @click="launchTest"
-            >
-              Launch test
-            </v-btn>
-            <v-btn text @click="step=3">
-              Back
-            </v-btn>
+            Export JSON...
+          </v-btn>
+          <v-stepper
+            non-linear
+            class="rounded-0 elevation-0 transparent mt-2"
+            v-model="step"
+          >
+            <v-stepper-header class="blue-grey darken-4">
+              <v-stepper-step
+                color="accent"
+                editable
+                step="1"
+                :complete="Boolean(data.description) && Boolean(data.description)"
+              >
+                Meta
+                <small>Define your testsets meta data</small>
+              </v-stepper-step>
+              <v-divider></v-divider>
+              <v-stepper-step
+                color="accent"
+                editable
+                step="2"
+                :complete="data.plugins.length>0"
+              >
+                Test set
+                <small>Add Plugins and Modules</small>
+              </v-stepper-step>
+              <v-divider></v-divider>
+              <v-stepper-step editable color="accent" step="3">
+                Result
+              </v-stepper-step>
+            </v-stepper-header>
             <v-progress-linear
               v-if="loading"
               indeterminate
-              color="primary"
+              color="accent"
             />
-            <ResultTable v-if="result" :result="result"/>
-          </v-stepper-content>
-        </v-stepper>
-      </v-col>
-    </v-row>
-  </v-container>
+            <v-stepper-items>
+              <v-stepper-content step="1">
+                <WizardMeta :data="data"/>
+                <v-btn
+                  color="accent"
+                  @click="step = 2"
+                >
+                  Continue
+                </v-btn>
+              </v-stepper-content>
+              <v-stepper-content step="2">
+                <wizard-test :data="data" :docs="docs"/>
+                <v-btn
+                  color="accent"
+                  @click="step=3"
+                  :disabled="data.plugins.length === 0"
+                >
+                  Ready for launch
+                </v-btn>
+                <v-btn text @click="step=1">
+                  Back
+                </v-btn>
+              </v-stepper-content>
+              <v-stepper-content step="3">
+                <v-btn
+                  color="accent"
+                  @click="launchTest"
+                >
+                  Launch test
+                </v-btn>
+                <v-btn text @click="step=2">
+                  Back
+                </v-btn>
+                <ResultTable v-if="result" :result="result"/>
+              </v-stepper-content>
+            </v-stepper-items>
+
+          </v-stepper>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import ResultTable from '@/components/results/ResultTable'
 import WizardMeta from '@/components/wizard/WizardMeta'
-import WizardPlugin from '@/components/wizard/WizardPlugin'
 import WizardTest from '@/components/wizard/WizardTest'
 
 export default {
   name: 'Wizard',
   components: {
     WizardTest,
-    WizardPlugin,
     WizardMeta,
     ResultTable
   },
-  async asyncData ({ $axios }) {
+  async asyncData({$axios}) {
     const docs = await $axios.$get('/plugins')
-    return { docs }
+    return {docs}
   },
-  data () {
+  data() {
     return {
       step: 1,
       result: null,
@@ -186,13 +173,13 @@ export default {
     }
   },
   methods: {
-    async launchTest () {
+    async launchTest() {
       this.loading = true
       const result = await this.$axios.post('/test', this.data)
       this.result = result.data
       this.loading = false
     },
-    loadJson () {
+    loadJson() {
       try {
         this.data = JSON.parse(this.insertJSON)
         this.alert = {

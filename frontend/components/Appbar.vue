@@ -5,6 +5,23 @@
       app
       clipped
     >
+      <v-list-item nuxt to="/" link dense>
+        <v-list-item-content class="text-center">
+
+          <img
+            src="~/assets/logo_without_text.png"
+            alt="infracheck logo"
+          >
+          <v-list-item-title class="title">
+            InfraCheck
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Easy infrastructure testing
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
       <v-list dense>
         <v-list-item v-for="(item,key) of items" :key="key" link :to="item.to">
           <v-list-item-action>
@@ -21,18 +38,8 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
-
       <v-toolbar-title class="mr-12 align-center">
-        <nuxt-link
-          to="/"
-        >
-          <img
-            src="~/assets/logo_white.png"
-            alt=""
-            height="60px"
-            class="mt-2"
-          >
-        </nuxt-link>
+        InfraCheck
       </v-toolbar-title>
       <v-spacer/>
       <LogoutButton/>
@@ -45,8 +52,8 @@ import LogoutButton from '~/components/LogoutButton'
 
 export default {
   name: 'Appbar',
-  components: { LogoutButton },
-  data () {
+  components: {LogoutButton},
+  data() {
     return {
       clipped: false,
       drawer: false,

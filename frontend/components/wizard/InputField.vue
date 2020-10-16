@@ -1,24 +1,35 @@
 <template>
   <div>
     <v-text-field
+      outlined
+      hide-details
+      color="accent"
       v-if="field_documentation.type ==='Type.String'"
       v-model="props[field_label]"
       type="text"
       :label="field_label"
     />
     <v-text-field
+      outlined
+      hide-details
+      color="accent"
       v-else-if="field_documentation.type ==='Type.Password'"
       v-model="props[field_label]"
       type="password"
       :label="field_label"
     />
     <v-text-field
+      outlined
+      hide-details
+      color="accent"
       v-else-if="field_documentation.type ==='Type.Number'"
       v-model="props[field_label]"
       type="number"
       :label="field_label"
     />
     <v-switch
+      hide-details
+      color="accent"
       v-else-if="field_documentation.type ==='Type.Boolean'"
       v-model="props[field_label]"
       inset

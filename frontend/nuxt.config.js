@@ -46,7 +46,7 @@ export default {
   ** Global CSS
   */
   css: [
-    '~/assets/style.scss'
+    '~/assets/style.scss',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -144,22 +144,22 @@ export default {
       dark: true,
       themes: {
         light: {
-          primary: colors.blue.lighten2,
-          secondary: '#2d727e',
-          accent: '#2d727e',
-          error: '#FF5252',
-          info: '#2196F3',
-          success: '#18821c',
-          warning: '#FFC107'
+          primary: colors.indigo.base,
+          secondary: colors.blueGrey.base,
+          accent: colors.teal.base,
+          error: colors.red.base,
+          warning: colors.orange.base,
+          info: colors.lightBlue.base,
+          success: colors.lightGreen.darken2
         },
         dark: {
-          primary: colors.blue.darken2,
-          accent: '#2d727e',
-          secondary: '#2d727e',
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.darken4
+          primary: colors.indigo.base,
+          secondary: colors.blueGrey.base,
+          accent: colors.teal.base,
+          error: colors.red.base,
+          warning: colors.orange.base,
+          info: colors.lightBlue.base,
+          success: colors.lightGreen.darken2
         }
       }
     }

@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-card outlined class="mb-3" color="accent">
+        <v-card outlined class="mb-3">
           <v-card-text class="white--text">
             <v-row>
               <v-col xl="8" lg="6" md="12">
@@ -50,7 +50,7 @@
           sm="12"
         >
           <v-card
-            color="accent"
+            color="secondary darken-2"
             outlined
             class="mb-3"
             nuxt

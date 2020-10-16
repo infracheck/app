@@ -2,8 +2,9 @@
   <v-btn
     class="mr-4"
     @click="logout"
-    color="accent"
+    color="secondary"
   >
+    <v-icon>mdi-export</v-icon>
     Log out
   </v-btn>
 </template>

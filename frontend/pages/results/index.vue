@@ -1,9 +1,8 @@
 <template>
   <v-row class="fill-height" no-gutters dense>
     <v-col class="fill-height">
-      <v-card class="fill-height">
-        <v-card-title>Results</v-card-title>
-        <v-card-text>
+      <v-card class="fill-height pa-0">
+        <v-card-text class="pa-0">
           <v-data-table
             :headers="headers"
             :items="results"
@@ -16,11 +15,12 @@
           >
             <template v-slot:top>
               <v-row>
-                <v-col lg="4" md="12">
+                <v-col class="px-5" lg="4" md="11">
                   <v-text-field
                     v-model="search"
-                    color="primary"
+                    color="accent"
                     outlined
+                    dense
                     append-icon="mdi-magnify"
                     label="Search"
                   />
@@ -31,9 +31,10 @@
               <v-btn
                 tile
                 nuxt
+                color="accent"
                 :to="'results/'+item.id"
               >
-                Open...
+                Open
               </v-btn>
             </template>
             <template v-slot:item.result="{ item }">
@@ -45,7 +46,7 @@
               </v-chip>
               <v-chip
                 v-else
-                color="primary"
+                color="success"
               >
                 SUCCESS
               </v-chip>

@@ -3,30 +3,31 @@
     <v-row no-gutters>
       <v-col cols="9">
         <v-text-field
+          outlined
+          hide-details
+          dense
           v-model="newItem"
-          label="Add item"
+          color="accent"
+          :label="label"
           :type="number_list ? 'number': 'text'"
         />
       </v-col>
       <v-col cols="3">
         <v-btn
-          color="primary"
-          class="mt-3"
-          fab
-          small
+          color="accent"
+          class="py-5"
           :disabled="newItem.length===0"
           @click="addItem"
         >
           <v-icon>mdi-plus-thick</v-icon>
+          Add
         </v-btn>
       </v-col>
     </v-row>
-    <label>{{ label }}: </label>
     <v-alert
       v-if="value.length === 0"
       dense
       prominent
-      color="error"
     >
       List is empty ...
     </v-alert>
@@ -34,7 +35,7 @@
       v-for="(item, id) in value"
       :key="id"
       class="ma-2"
-      color="pink"
+      color="primary"
       label
       close
       @click:close="removeItem(id)"

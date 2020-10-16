@@ -5,7 +5,7 @@
         v-for="(pluginData,pluginId) in plugins"
         :key="pluginId"
       >
-        <v-card hover outlined nuxt :to="`/documentation/${pluginId}`" color="accent">
+        <v-card hover outlined nuxt :to="`/documentation/${pluginId}`">
           <v-card-title v-text="pluginId"></v-card-title>
           <v-card-text>
             <v-row>

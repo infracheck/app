@@ -17,7 +17,7 @@
               block
               color="primary"
               nuxt
-              :to="error.statusCode === 401 ? '/login':'/'"
+              :to="[401,500].includes(error.statusCode) ? '/login':'/'"
             >
               <v-icon
                 left
@@ -42,13 +42,13 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       pageNotFound: '404 Not Found',
       otherError: 'An error occurred'
     }
   },
-  head () {
+  head() {
     const title =
       this.error.statusCode === 404 ? this.pageNotFound : this.otherError
     return {

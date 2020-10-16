@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-card outlined>
+      <v-card outlined elevation="10">
         <v-card-title>
           <h1>{{ result.label }}</h1>
         </v-card-title>
@@ -10,7 +10,6 @@
         </v-card-subtitle>
         <v-card-text>
           <v-list dense>
-            <ListItem label="Name" :value="result.name"/>
             <ListItem label="Date" :value="result.date"/>
             <ListItem label="Description" :value="result.description"/>
           </v-list>
@@ -29,43 +28,43 @@
       :key="plugin.id"
       cols="12"
     >
-      <v-card outlined>
-        <v-card-title>
-          <h2>{{ plugin.label }}</h2>
+      <v-card outlined elevation="10">
+        <v-card-title class="ml-1 mt-1">
+          <v-badge
+            left
+            color="secondary"
+            :content="plugin.module_result.length"
+          >
+            <h2>{{ plugin.label }}</h2>
+          </v-badge>
         </v-card-title>
         <v-card-subtitle>
-          <h3>{{ plugin.plugin_name }}</h3>
+          <h3>{{ plugin.plugin_name }} {{plugin.plugin_version}}</h3>
         </v-card-subtitle>
         <v-card-text>
           <v-list dense>
-            <ListItem label="Label" :value="plugin.label"/>
-            <ListItem label="Plugin name" :value="plugin.plugin_name"/>
-            <ListItem label="Plugin version" :value="plugin.plugin_version"/>
             <ListItem label="Total tests" :value="plugin.total_count"/>
             <ListItem label="Successful tests" :value="plugin.success_count"/>
             <ListItem label="Failed tests" :value="plugin.failure_count"/>
           </v-list>
+          <v-expansion-panels flat focusable>
+            <v-expansion-panel class="ma-0 pa-0">
+              <v-expansion-panel-header class="pl-4">
+                Input Properties
+              </v-expansion-panel-header>
+              <v-expansion-panel-content class="p-0">
+                <PropTable :props="plugin.props"/>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
           <v-alert
+            class="mt-2"
             dense
             :type="plugin.failure_count > 0 ? 'error':'success'"
           >
             {{ plugin.message }}
           </v-alert>
-          <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
-                Input Properties
-              </v-expansion-panel-header>
-              <v-expansion-panel-content class="p-0">
-                <PropTable :props="plugin.props"/>
 
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-          <v-subheader>
-            <h1>Module results</h1>
-            <v-divider/>
-          </v-subheader>
 
           <v-row>
             <v-col
@@ -75,45 +74,40 @@
               lg="6"
               md="12"
             >
-              <v-card outlined>
+              <v-card outlined flat elevation="0">
                 <v-card-title>
                   <h3>{{ module.label }}</h3>
 
                 </v-card-title>
                 <v-card-subtitle>
-                  <h4>{{ module.module_name }}</h4>
+                  <h4>{{ module.module_name }} {{ module.module_version }}</h4>
                 </v-card-subtitle>
                 <v-card-text>
-                  <v-alert
-                    dense
-                    :type="module.result_successful ? 'success' : 'error'"
-                  >
-                    {{ module.result_message }}
-                  </v-alert>
-                  <v-list dense>
-                    <ListItem label="Label" :value="module.label"/>
-                    <ListItem label="Plugin name" :value="module.module_name"/>
-                    <ListItem label="Plugin version" :value="module.module_version"/>
-                  </v-list>
-                  <v-expansion-panels>
+                  <v-expansion-panels flat focusable>
                     <v-expansion-panel v-if="module.result_data !== {}">
-                      <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
+                      <v-expansion-panel-header class="pl-4">
                         Custom results
                       </v-expansion-panel-header>
-                      <v-expansion-panel-content class="p-0">
-                        <pre class="accent pa-2 rounded">{{ module.result_data }}</pre>
+                      <v-expansion-panel-content class="pa-0">
+                        <pre class="pa-2 rounded">{{ module.result_data }}</pre>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                     <v-expansion-panel v-if="module.props !== {}">
-                      <v-expansion-panel-header class="pl-4 mb-2" color="secondary">
+                      <v-expansion-panel-header class="pl-4">
                         Input Properties
                       </v-expansion-panel-header>
-                      <v-expansion-panel-content class="p-0">
+                      <v-expansion-panel-content class="pa-0">
                         <PropTable :props="module.props"/>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
-
+                  <v-alert
+                    dense
+                    class="mt-2"
+                    :type="module.result_successful ? 'success' : 'error'"
+                  >
+                    {{ module.result_message ? module.result_message : 'Test successful' }}
+                  </v-alert>
                 </v-card-text>
               </v-card>
             </v-col>

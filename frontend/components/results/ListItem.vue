@@ -1,5 +1,5 @@
 <template>
-  <v-col md="12" xl="4" lg="6" class="pa-0">
+  <v-col md="12" class="pa-0">
     <v-list-item>
       <v-list-item-content>{{ label }}</v-list-item-content>
       <v-list-item-content class="align-end">

@@ -1,6 +1,7 @@
 <template>
   <v-footer
     padless
+    class="caption"
   >
     <v-row
       justify="center"
@@ -13,13 +14,13 @@
         :to="link"
         nuxt
         text
-        rounded
-        class="my-2"
+        shaped
+        class="my-2 caption"
       >
         {{ key }}
       </v-btn>
       <v-col
-        class=" py-4 text-center accent"
+        class=" py-4 text-center"
         cols="12"
       >
         {{ new Date().getFullYear() }} — <strong>InfraCheck</strong>
