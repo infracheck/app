@@ -75,7 +75,16 @@
 
 export default {
   components: {},
-  created () {
+  methods: {
+    async refresh() {
+      // Not used for now, but should be implemented on every page later
+      try {
+        await this.$auth.refreshTokens()
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 }
 </script>

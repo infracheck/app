@@ -53,7 +53,7 @@ export default {
     DocContent,
     DocMenu
   },
-  async asyncData ({ $axios, params }) {
+  async asyncData({$axios, params}) {
     const plugins = await $axios.$get('/plugins/flat')
     const pluginId = params.pluginId
     const moduleId = params.moduleId
@@ -69,13 +69,13 @@ export default {
       activeDoc
     }
   },
-  data () {
+  data() {
     return {
       activeDoc: null
     }
   },
   computed: {
-    breads () {
+    breads() {
       const res = [
         {
           text: 'Documentation',
@@ -100,7 +100,7 @@ export default {
     }
   },
   methods: {
-    onChildClick (value) {
+    onChildClick(value) {
       this.activeMenu = value
     }
   }

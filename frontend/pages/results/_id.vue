@@ -19,12 +19,12 @@ import ResultTable from '@/components/results/ResultTable'
 
 export default {
   name: 'Result',
-  components: { ResultTable },
-  async asyncData ({ $axios, params }) {
+  components: {ResultTable},
+  async asyncData({$axios, params}) {
     const result = await $axios.$get('/results/' + params.id)
-    return { result }
+    return {result}
   },
-  async validate ({ params, $axios }) {
+  async validate({params, $axios}) {
     const result = await $axios.$get('/results/' + params.id)
     return result
   }

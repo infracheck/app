@@ -7,21 +7,24 @@
             <img src="~assets/logo_white.png" alt="infracheck icon">
           </v-card-title>
           <v-card-text>
-            <v-text-field
-              v-model="login.password"
-              label="Password"
-              type="password"
-            />
-            <v-btn
-              class="mr-4 pl-8 pr-8 block"
-              right
-              large
-              block
-              color="primary"
-              @click="userLogin"
-            >
-              Log in
-            </v-btn>
+            <form @submit.prevent="userLogin">
+              <v-text-field
+                v-model="login.password"
+                label="Password"
+                type="password"
+              />
+              <v-btn
+                class="mr-4 pl-8 pr-8 block"
+                right
+                large
+                block
+                color="primary"
+                type="submit"
+                @click="userLogin"
+              >
+                Log in
+              </v-btn>
+            </form>
             <v-alert v-if="failed" type="error">
               {{ failText }}
             </v-alert>
@@ -45,10 +48,10 @@ export default {
     }
   }),
   methods: {
-    async userLogin () {
+    async userLogin() {
       this.failed = false
       try {
-        await this.$auth.loginWith('local', { data: this.login })
+        await this.$auth.loginWith('local', {data: this.login})
         await this.$router.push({
           path: '/'
         })
@@ -60,7 +63,7 @@ export default {
             this.failText = 'Credentials not correct.'
             break
           case 400:
-            this.failText = 'Connection failed. Did you enter both, a username and a password?'
+            this.failText = 'Did you even enter a password?'
             break
           default:
             this.failText = 'Unknown issue. Check your server and ask your admin for help.'

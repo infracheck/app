@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+import refresh from "@nuxtjs/auth-next/dist/schemes/refresh";
 
 const PRODUCTION = process.env.NODE_ENV === 'production'
 const AUTHENTICATION = process.env.SECURE ? process.env.SECURE : PRODUCTION
@@ -23,7 +24,7 @@ export default {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: 'InfraCheck',
     meta: [
-      { charset: 'utf-8' },
+      {charset: 'utf-8'},
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1'
@@ -74,7 +75,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth-next'
   ],
   /*
   ** Authentication
@@ -101,24 +102,25 @@ export default {
         refreshToken: {
           property: 'refresh_token',
           data: 'refresh_token',
-          maxAge: 60 * 60 * 24 * 30
+          maxAge: 60 * 60 * 24 * 30,
+          required: true,
+          tokenRequired: true
         },
         endpoints: {
           login: {
             url: '/login',
-            method: 'post',
-            propertyName: 'access_token'
+            method: 'post'
           },
           refresh: {
-            url: '/refresh',
-            method: 'post',
-            propertyName: 'refresh_token'
+            url: '/refresh', // TODO: Send refresh token in authorization header
+            method: 'post'
           },
           logout: {
             url: '/logout',
             method: 'post'
           },
-          user: false
+          user: false,
+          autoLogout: true
         }
       }
     }
@@ -131,7 +133,7 @@ export default {
   */
   axios: {
     proxy: true,
-    retry: { retries: 3 },
+    retry: {retries: 3},
     baseURL: PRODUCTION ? 'http://backend:8080' : 'http://127.0.0.1:5000',
     browserBaseURL: PRODUCTION ? '/api/' : 'http://127.0.0.1:5000'
   },

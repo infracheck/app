@@ -13,9 +13,9 @@ from jsonschema import validate
 
 from infracheck import api, app, jwt
 from infracheck.PluginManager import PluginManager
+from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 from infracheck.model.schemes import test_data_scheme, result_scheme, results_scheme, jwt_scheme, jwt_refresh_scheme, \
     plugins_output_scheme, plugin_output_scheme
-from infracheck.model.TestInput import TestInput, PluginInput, ModuleInput
 from infracheck.services.Persistence import Persistence
 
 log = logging.getLogger()
@@ -232,10 +232,9 @@ class Refresh(Resource):
         JWT token requires refreshing. That can be done with this route.
         """
         current_user = get_jwt_identity()
-        ret = {
-            'access_token': create_access_token(identity=current_user)
-        }
-        return jsonify(ret), 200
+        return {
+               "access_token": create_access_token(identity=current_user)
+               }, 200
 
 
 @authentication.route('/logout')

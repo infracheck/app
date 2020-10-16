@@ -61,11 +61,11 @@
 <script>
 export default {
   name: 'Results',
-  async asyncData ({ $axios }) {
+  async asyncData({$axios}) {
     const results = await $axios.$get('/results')
-    return { results }
+    return {results}
   },
-  data () {
+  data() {
     return {
       search: '',
       headers: [

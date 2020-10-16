@@ -22,6 +22,7 @@ class Config(object):
 
     SECURE_API = False
     JWT_SECRET_KEY = os.urandom(24).hex()
+    JWT_ACCESS_TOKEN_EXPIRES = 3600
     PASSWORD = os.environ.get('PASSWORD') or "password"
 
 

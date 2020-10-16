@@ -79,7 +79,7 @@ and compare it to the `infracheck` input:
     __compatibility__ = "Linux, Windows(partly)"
 
     class props:
-        host_address: Types.TextList = ["localhost", "localhost"]
+        host_address: Types.TextList = ["localhost"]
         username: Types.Text = ""
         os: Types.Text = "linux"
         password: Types.Password = ""
