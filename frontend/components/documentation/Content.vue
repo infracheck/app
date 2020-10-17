@@ -1,8 +1,9 @@
 <template>
-  <v-container>
-    <v-row>
+  <div>
+
+    <v-row no-gutters>
       <v-col cols="12">
-        <v-card outlined class="mb-3">
+        <v-card flat class="mb-3 transparent">
           <v-card-text class="white--text">
             <v-row>
               <v-col xl="8" lg="6" md="12">
@@ -24,60 +25,62 @@
                 />
               </v-col>
               <v-col xl="4" lg="6" md="12">
-                <v-card class="mb-2" outlined>
-                  <v-card-text>
-                    <div class="overline mb-4">
-                      Input Properties
-                    </div>
-                    <PropTable :props="documentation.props"/>
-                  </v-card-text>
-                </v-card>
+                <v-row>
+                  <v-col>
+                    <v-card class="mb-2" outlined>
+                      <v-card-text>
+                        <div class="overline mb-4">
+                          Input Properties
+                        </div>
+                        <PropTable :props="documentation.props"/>
+                      </v-card-text>
+                    </v-card>
+                  </v-col>
+                </v-row>
+                <v-subheader v-if="documentation.modules">Modules
+                  <v-divider></v-divider>
+                </v-subheader>
+                <v-row v-if="documentation.modules">
+                  <v-col cols="12">
+                    <v-text-field
+                      color="secondary darken-2"
+                      outlined
+                      dense
+                      filled
+                      v-model="moduleSearch"
+                      label="Search modules ..."
+                      prepend-inner-icon="mdi-magnify"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    v-if="module.id.includes( moduleSearch)"
+                    v-for="(module, moduleId) in documentation.modules"
+                    :key="moduleId"
+                    md="6"
+                    sm="12">
+                    <v-card
+                      color="secondary darken-2"
+                      outlined
+                      class="mb-3"
+                      nuxt
+                      hover
+                      :to="`/documentation/${documentation.id}/${moduleId}`">
+                      <v-card-title>
+                        {{ moduleId }} {{ documentation.version }}
+                      </v-card-title>
+                      <v-card-subtitle> {{ documentation.author }}</v-card-subtitle>
+                    </v-card>
+                  </v-col>
+                </v-row>
+
               </v-col>
             </v-row>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <div v-if="documentation.modules">
-      <v-subheader>Modules</v-subheader>
-      <v-divider class="mb-2"></v-divider>
-      <v-row dense>
-        <v-col
-          v-for="(module, moduleId) in documentation.modules"
-          :key="moduleId"
-          lg="4"
-          md="6"
-          sm="12"
-        >
-          <v-card
-            color="secondary darken-2"
-            outlined
-            class="mb-3"
-            nuxt
-            hover
-            :to="`/documentation/${documentation.id}/${moduleId}`">
-            <v-card-text>
-              <div class="overline mb-1">
-                {{ module.type }}
-              </div>
-              <div class="headline mb-0">
-                {{ moduleId }}
-              </div>
-              <v-row>
-                <v-col>Author</v-col>
-                <v-col>{{ documentation.author }}</v-col>
-              </v-row>
-              <v-row>
-                <v-col>Version</v-col>
-                <v-col>{{ documentation.version }}</v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+  </div>
 
-  </v-container>
 </template>
 
 <script lang="ts">
@@ -95,14 +98,17 @@ export default {
       type: String,
       default: ''
     }
-  }
+  },
+  data: () => ({
+    moduleSearch: ''
+  })
 }
 </script>
 
 <style>
 .v-application code {
   color: #2884a5;
-  background: #2f2e2e;
+  background: #1e1e1e;
 }
 
 

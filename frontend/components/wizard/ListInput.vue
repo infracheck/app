@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col cols="9">
+      <v-col cols="7">
         <v-text-field
           outlined
           hide-details
@@ -12,8 +12,9 @@
           :type="number_list ? 'number': 'text'"
         />
       </v-col>
-      <v-col cols="3">
+      <v-col cols="5">
         <v-btn
+          block
           color="accent"
           class="py-5"
           :disabled="newItem.length===0"
@@ -49,31 +50,32 @@
 export default {
   name: 'ListInput',
   props: {
-    value: {},
+    input: {},
     label: {},
     number_list: {
       type: Boolean,
       default: false
     }
   },
-  data () {
+  data() {
     return {
-      newItem: ''
+      newItem: '',
+      value: this.input
 
     }
   },
   methods: {
-    updateDate () {
+    update() {
       this.$emit('input', this.value)
     },
-    removeItem (index) {
+    removeItem(index) {
       this.value.splice(index, 1)
-      this.updateDate()
+      this.update()
     },
-    addItem () {
-      this.value.push(this.newItem)
+    addItem() {
+      this.number_list ? this.value.push(Number(this.newItem)) : this.value.push(this.newItem)
       this.newItem = ''
-      this.updateDate()
+      this.update()
     }
   }
 }

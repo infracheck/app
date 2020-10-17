@@ -5,22 +5,15 @@
       app
       clipped
     >
-      <v-list-item nuxt to="/" link dense>
-        <v-list-item-content class="text-center">
-
+      <div class="text-center">
+        <nuxt-link to="/" class="text-center">
           <img
             src="~/assets/logo_without_text.png"
             alt="infracheck logo"
-          >
-          <v-list-item-title class="title">
-            InfraCheck
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            Easy infrastructure testing
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
+          ></nuxt-link>
+        <h1>InfraCheck</h1>
+        <h3 class="caption">Easy infrastructure testing</h3>
+      </div>
       <v-divider></v-divider>
       <v-list dense>
         <v-list-item v-for="(item,key) of items" :key="key" link :to="item.to">

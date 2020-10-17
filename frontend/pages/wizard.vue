@@ -44,22 +44,24 @@
     <v-col cols="12" class="fill-height">
       <v-card class="fill-height">
         <v-card-title> Test Wizard</v-card-title>
-        <v-card-text>
-          <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
-            {{ alert.text }}
-          </v-alert>
-          <v-btn
-            color="secondary"
-            @click="dialog=true;exportData=false;importData=true"
-          >
-            Import JSON...
-          </v-btn>
-          <v-btn
-            color="secondary"
-            @click="dialog=true;exportData=true;importData=false;"
-          >
-            Export JSON...
-          </v-btn>
+        <v-card-text class="pa-0">
+          <div class="ml-2">
+            <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
+              {{ alert.text }}
+            </v-alert>
+            <v-btn
+              color="secondary"
+              @click="dialog=true;exportData=false;importData=true"
+            >
+              Import JSON...
+            </v-btn>
+            <v-btn
+              color="secondary"
+              @click="dialog=true;exportData=true;importData=false;"
+            >
+              Export JSON...
+            </v-btn>
+          </div>
           <v-stepper
             non-linear
             class="rounded-0 elevation-0 transparent mt-2"
@@ -105,7 +107,7 @@
                   Continue
                 </v-btn>
               </v-stepper-content>
-              <v-stepper-content step="2">
+              <v-stepper-content class="pa-0" step="2">
                 <wizard-test :data="data" :docs="docs"/>
                 <v-btn
                   color="accent"

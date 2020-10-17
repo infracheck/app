@@ -1,6 +1,10 @@
 
 .markdown-body {
-  border: 0 !important;
+  h1, h2, h3, h4, h5, h6 {
+    border: 0 !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+  }
 
   .hljs {
     color: #e2e2e2 !important;
@@ -47,7 +51,7 @@
   }
 
   pre {
-    background: #5e5e5e !important;
+    background: #1e1e1e !important;
     color: aliceblue;
   }
 

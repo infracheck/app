@@ -4,6 +4,7 @@
       dense
     >
       <v-list-group
+        :value="search !== ''"
         v-for="(pluginData, plugin_id) in docs"
         :key="plugin_id"
       >
@@ -63,7 +64,25 @@ export default {
     search: '',
     tree: []
   }),
-  computed: {},
+  computed: {
+    documentationArray() {
+      let res = Object.keys(this.docs).map(plugin => {
+        return {
+          label: plugin,
+          url: `/documentation/${plugin}`
+        }
+      })
+      // res = res.map(plugin => {
+      //   return this.docs[plugin].modules.map(module => {
+      //     return {
+      //       label: module,
+      //       url: `/documentation/${plugin}/${module}`
+      //     }
+      //   })
+      // })
+      return res
+    }
+  },
   methods: {}
 }
 </script>
