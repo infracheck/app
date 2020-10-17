@@ -46,7 +46,7 @@
         <v-card-title> Test Wizard</v-card-title>
         <v-card-text class="pa-0">
           <div class="ml-2">
-            <v-alert v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
+            <v-alert dismissible v-if="alert" transition="scale-transition" class="mt-2" :type="alert.type">
               {{ alert.text }}
             </v-alert>
             <v-btn

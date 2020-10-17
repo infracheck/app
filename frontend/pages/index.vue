@@ -14,24 +14,17 @@
         <v-card-title class="headline">
           <img src="~assets/logo_white.png" alt="infracheck icon">
         </v-card-title>
-        <v-card-subtitle>
+        <v-card-subtitle class="caption">
           Infrastructure Testing - Plug in system - REST API
         </v-card-subtitle>
         <v-card-text>
-          <h1>Welcome</h1>
-          <p>
-            This tool gives you a universal codeless test server. <br>
-            Send simple json files to InfraCheck and start complex test flows. <br>
-            Custom plugins and modules extend the functionality of this tool. <br>
-            If you need to perform complicated test operations, write them once, as a plugin or module and share them
-            with everybody. <br>
-            This tool grows, as you do.
-          </p>
-
           <h3>Why InfraCheck?</h3>
           <p class="h4 ml-1">
-            Are your tired of programming your test code? <br>
-            Would you like to test your infrastructure more often?<br>
+            Are your tired of coding your infrastructure tests? </p>
+          <p>
+            Would you like to test your infrastructure more often?
+          </p>
+          <p>
             Is testing so far more of a chore?
           </p>
           Did you answer any of these questions with yes? Then <b>InfraCheck</b> could help you.
