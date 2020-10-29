@@ -1,11 +1,9 @@
----
 kind: pipeline
-type: docker
 name: default
 
 steps:
-- name: greeting
-  image: golang:1.12
+- name: test
+  image: python
   commands:
-  - go build
-  - go test
+  - pip install -r requirements.txt
+  - pytest
