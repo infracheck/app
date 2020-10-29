@@ -1,3 +1,6 @@
+
+[![Build Status](https://drone.martin-welcker.duckdns.org/api/badges/MartinWelcker/diploma-os-testing/status.svg)](https://drone.martin-welcker.duckdns.org/MartinWelcker/diploma-os-testing)
+
 ![infracheck logo](docs/logo_dark.png)
 # InfraCheck 
 > This tool delivers you a universal codeless test server. Send simple ``json`` files to **InfraCheck** and start complex test flows.
