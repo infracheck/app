@@ -1,5 +1,4 @@
-
-[![Build Status](https://drone.martin-welcker.duckdns.org/api/badges/MartinWelcker/diploma-os-testing/status.svg)](https://drone.martin-welcker.duckdns.org/MartinWelcker/diploma-os-testing)
+[![CircleCI](https://circleci.com/gh/MartinWelcker/diploma-os-testing.svg?style=shield&circle-token=56572f590804c1e16ac0fa2ad93b5ef6544708a9)](https://app.circleci.com/pipelines/github/MartinWelcker/diploma-os-testing)
 
 ![infracheck logo](docs/logo_dark.png)
 # InfraCheck 
