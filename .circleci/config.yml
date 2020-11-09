@@ -9,4 +9,4 @@ jobs:
       - run: pip install -r backend/requirements.txt
       - run: |
           cd backend
-          python -m unittest discover -s backend
+          python -m unittest discover -s test
