@@ -6,7 +6,17 @@ jobs:
       - image: circleci/python:3.9
     steps:
       - checkout
-      - run: pip install -r backend/requirements.txt
-      - run: |
-          cd backend
-          python -m unittest discover -s test
+      - run: cd backend
+      - run:
+          name: Install requirements
+          command: pip install -r requirements.txt
+  test:
+    working_directory: ~/backend
+    docker:
+      - image: circleci/python:3.9
+    steps:
+      - checkout
+      - run: cd backend
+      - run:
+          name: Run backend uittests
+          command: python -m unittest discover -s test -v
