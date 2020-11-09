@@ -2,8 +2,6 @@ from typing import Any
 
 import testinfra
 
-from plugins.TestinfraPlugin.Configuration import Configuration
-
 
 class Connection:
     """
@@ -32,14 +30,16 @@ class Connection:
         :return:
         """
         if self.address in ['localhost', '127.0.0.1']:
-            host = self._get_localhost()
+            return self._get_localhost()
         elif self.os == 'linux':
-            host = self._get_linux_host()
+            return self._get_linux_host()
         elif self.os == 'windows':
-            host = self._get_windows_host()
-        return host
+            return self._get_windows_host()
+        else:
+            raise AttributeError("'os' must be either 'linux' or 'windows'")
 
-    def _get_localhost(self):
+    @staticmethod
+    def _get_localhost():
         return testinfra.get_host("local://")
 
     def _get_windows_host(self):
@@ -48,4 +48,4 @@ class Connection:
 
     def _get_linux_host(self):
         return testinfra.get_host(
-            F"paramiko://{self.user}@{self.address}:{self.port}?ssh_identity_file={Configuration.SSH_FOLDER}id_rsa&no_ssl=true&no_verify_ssl=true")
+            F"ssh://{self.user}:{self.password}@{self.address}:{self.port}?no_ssl=true&no_verify_ssl=true")

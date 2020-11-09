@@ -8,7 +8,7 @@ import jsonschema
 from flask import jsonify, send_from_directory, request
 from flask_jwt_extended import create_access_token, verify_jwt_in_request, get_raw_jwt, create_refresh_token, \
     jwt_refresh_token_required, get_jwt_identity
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from jsonschema import validate
 
 from infracheck import api, app, jwt
