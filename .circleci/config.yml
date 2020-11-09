@@ -6,6 +6,4 @@ jobs:
       - image: circleci/python:3.9
     steps:
       - checkout
-      - run:
-          command: |  # use pipenv to install dependencies
-            pip install -r requirements.txt
+      - run: pip install -r backend/requirmements.txt
