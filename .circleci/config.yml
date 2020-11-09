@@ -7,4 +7,6 @@ jobs:
     steps:
       - checkout
       - run: pip install -r backend/requirements.txt
-      - run: python -m unittest discover -s backend
+      - run: |
+          cd backend
+          python -m unittest discover -s backend
