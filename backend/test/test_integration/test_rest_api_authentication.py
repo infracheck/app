@@ -4,7 +4,10 @@ from infracheck import app
 from test import mock_data
 
 
-class ApiTest(unittest.TestCase):
+class RestAPIAuthenticationTest(unittest.TestCase):
+    """
+    S-2 - Implementierung einer Autorisierung
+    """
     USERNAME = "user"
     PASSWORD = "pw"
     token = ''
@@ -22,7 +25,7 @@ class ApiTest(unittest.TestCase):
         with self.subTest("Access denied on /plugins"):
             self.assertEqual(self.client.get('/plugins').status_code, 401)
 
-    def test_authentication(self):
+    def test_working_authentication(self):
         response = self.client.post('/login', json={"username": self.USERNAME, "password": self.PASSWORD})
         data = response.get_json()
 

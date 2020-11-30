@@ -6,10 +6,13 @@ from infracheck import app
 from infracheck.model.schemes import plugin_scheme
 
 
-class ApiTest(unittest.TestCase):
+class RestAPITest(unittest.TestCase):
+    """
+    S-1 - REST-API
+    I-3 - Datenformate
+    """
     def setUp(self) -> None:
         self.client = app.test_client()
-        # Disable Authentication
         app.config['SECURE_API'] = False
 
     def test_swagger(self):
