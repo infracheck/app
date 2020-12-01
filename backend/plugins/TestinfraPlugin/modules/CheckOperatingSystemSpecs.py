@@ -35,6 +35,7 @@ class CheckOperatingSystemSpecs(Module):
 
         for connection in self.plugin_props.connections:
             host = connection.host
+            print(host)
             result[connection.name] = {}
             if self.props.type != "":
                 equal_type = host.system_info.type == self.props.type

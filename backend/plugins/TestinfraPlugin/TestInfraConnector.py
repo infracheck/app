@@ -1,3 +1,4 @@
+import os
 from typing import Any
 
 import testinfra
@@ -48,4 +49,5 @@ class Connection:
 
     def _get_linux_host(self):
         return testinfra.get_host(
-            F"ssh://{self.user}:{self.password}@{self.address}:{self.port}?no_ssl=true&no_verify_ssl=true")
+            F"ssh://{self.user}:{self.password}@{self.address}:{self.port}?"
+            F"ssh_config={os.path.dirname(__file__)}/ssh-config&no_ssl=true&no_verify_ssl=true&o=true")

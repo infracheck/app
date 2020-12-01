@@ -1,11 +1,15 @@
-import os
 import unittest
 
 from infracheck import app
 from test import mock_data
 
 
-class TestrunTest(unittest.TestCase):
+class TestExecutionTest(unittest.TestCase):
+    """
+    K-1 - Ausführung von Infrastrukturtests
+    K-2 - Abruf der Testresultaten
+    """
+
     def setUp(self):
         self.client = app.test_client()
         app.config['SECURE_API'] = False
@@ -29,10 +33,10 @@ class TestrunTest(unittest.TestCase):
             self.assertTrue(response.status_code == 200)
             self.assertEqual(response.headers.get('Content-Type'), "application/pdf")
 
-        # Remove that pdf
-        pdf = F"{app.config['RESULT_FOLDER']}/{id}.pdf"
-        if os.path.isfile(pdf):
-            os.remove(pdf)
+        with self.subTest("retrieve result after test"):
+            response = self.client.get(F"/results/{id}")
+            self.assertTrue(response.status_code == 200)
+            self.assertEqual(response.headers.get('Content-Type'), "application/json")
 
     def tearDown(self) -> None:
         yield self.client

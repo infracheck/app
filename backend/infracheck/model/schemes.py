@@ -143,7 +143,6 @@ jwt_refresh_scheme = {
 }
 
 # PLUGIN
-
 plugin_output_scheme = {
     "type": "object",
     "required": [
@@ -162,6 +161,8 @@ plugin_output_scheme = {
     }
 }
 
+
+# TODO: Fix scheme, because its an object not a list
 plugins_output_scheme = {
     "type": "array",
     "items": plugin_output_scheme

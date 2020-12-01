@@ -63,7 +63,6 @@ remote_test_data = {
             "label": "My favorite Test on localhost",
             "props": {
                 "host_address": [
-                    "172.17.0.3"
                 ],
                 "username": "root",
                 "password": "password",
