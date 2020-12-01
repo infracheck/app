@@ -71,10 +71,13 @@ remote_test_data = {
             },
             "modules": [
                 {
-                    "id": "CheckTargetAddress",
-                    "label": "Is Google reachable?",
+                    "id": "CheckServiceSpecs",
+                    "label": "Is it linux?",
                     "props": {
-                        "url": "google.de"
+                        "type": "linux",
+                        "distribution": "",
+                        "release": "",
+                        "codename": ""
                     }
                 }
             ]

@@ -44,7 +44,7 @@ class FunctionalPluginTest(unittest.TestCase):
     I-5 - Entfernen empfindlicher Informationen
     """
     DOCKER_IMAGE_NAME = 'ubuntu-sshd'
-    TEST_HOST_COUNT = 30  # Just a single host
+    TEST_HOST_COUNT = 3
 
     @classmethod
     def setUpClass(cls) -> None:

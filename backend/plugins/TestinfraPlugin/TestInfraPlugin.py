@@ -94,4 +94,4 @@ and compare it to the `infracheck` input:
             )
 
     def tear_down(self):
-        print("Teardown")
+        pass
