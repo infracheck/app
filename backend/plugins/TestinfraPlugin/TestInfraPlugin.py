@@ -90,7 +90,7 @@ and compare it to the `infracheck` input:
                 Connection(
                     self.props.username, address,
                     self.props.password, self.props.port,
-                    self.props.os)
+                    self.props.os).host
             )
 
     def tear_down(self):

@@ -22,9 +22,10 @@ class Connection:
         self.port = port
         self.os = os
         self.name = F'{os}_{user}@{host}:{port}'
+        self.host = self._host
 
     @property
-    def host(self) -> Any:
+    def _host(self) -> Any:
         """
         This property is the actual testinfra host to run tests on.
         It is implemented as a factory method, that returns the testinfra host object.

@@ -19,8 +19,8 @@ plugin_data = {
     ]
 }
 
-service_module = {
-    "id": "CheckServiceSpecs",
+os_module = {
+    "id": "CheckOSSpecs",
     "label": "Is it linux?",
     "props": {
         "type": "linux",
@@ -30,8 +30,8 @@ service_module = {
     }
 }
 
-os_module = {
-    "id": "CheckServiceSpecs",
+service_module = {
+    "id": "CheckServiceSpecsParallel",
     "label": "Is it linux?",
     "props": {
         "type": "linux",
