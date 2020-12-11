@@ -1,0 +1,121 @@
+host_count,module_count,time,Optimierung
+1,5,6.635488884999177,Keine Optimierung
+2,5,10.665455518000272,Keine Optimierung
+3,5,19.296062395999797,Keine Optimierung
+4,5,21.860275134000403,Keine Optimierung
+5,5,33.24444439000035,Keine Optimierung
+6,5,41.21112397900015,Keine Optimierung
+7,5,47.34791454999959,Keine Optimierung
+8,5,55.22280273999968,Keine Optimierung
+9,5,61.0817961190005,Keine Optimierung
+10,5,67.85929987700001,Keine Optimierung
+11,5,73.52280310300011,Keine Optimierung
+12,5,82.00957853599994,Keine Optimierung
+13,5,87.67636990000028,Keine Optimierung
+14,5,95.19156747299985,Keine Optimierung
+15,5,97.44208625400006,Keine Optimierung
+16,5,108.55557785000019,Keine Optimierung
+17,5,113.70500949699999,Keine Optimierung
+18,5,121.4236742359999,Keine Optimierung
+19,5,126.94351533100053,Keine Optimierung
+20,5,133.23185203899993,Keine Optimierung
+21,5,141.73841491500025,Keine Optimierung
+22,5,148.59031833899826,Keine Optimierung
+23,5,150.5584008650003,Keine Optimierung
+24,5,159.11944753900025,Keine Optimierung
+25,5,167.31268933799947,Keine Optimierung
+26,5,173.79647965599906,Keine Optimierung
+27,5,180.73621349099994,Keine Optimierung
+28,5,187.14112315700004,Keine Optimierung
+29,5,189.9510317969998,Keine Optimierung
+30,5,200.740816997999,Keine Optimierung
+1,5,3.878374132999852,Persistente SSH-Verbindung
+2,5,11.751130912000008,Persistente SSH-Verbindung
+3,5,18.177572158000203,Persistente SSH-Verbindung
+4,5,25.632470551000097,Persistente SSH-Verbindung
+5,5,34.78652097000031,Persistente SSH-Verbindung
+6,5,39.14940911399981,Persistente SSH-Verbindung
+7,5,47.06444101499983,Persistente SSH-Verbindung
+8,5,52.359774096000365,Persistente SSH-Verbindung
+9,5,61.074413322000055,Persistente SSH-Verbindung
+10,5,60.70558996600039,Persistente SSH-Verbindung
+11,5,71.69715732699979,Persistente SSH-Verbindung
+12,5,81.08656521500006,Persistente SSH-Verbindung
+13,5,86.70085092700037,Persistente SSH-Verbindung
+14,5,90.75767530300027,Persistente SSH-Verbindung
+15,5,99.19268467600023,Persistente SSH-Verbindung
+16,5,106.70460893999962,Persistente SSH-Verbindung
+17,5,112.94836114200007,Persistente SSH-Verbindung
+18,5,117.18143639899972,Persistente SSH-Verbindung
+19,5,123.85594925799978,Persistente SSH-Verbindung
+20,5,131.6932525530001,Persistente SSH-Verbindung
+21,5,140.0062716679995,Persistente SSH-Verbindung
+22,5,146.09448122499998,Persistente SSH-Verbindung
+23,5,152.21792038700005,Persistente SSH-Verbindung
+24,5,159.6278918879998,Persistente SSH-Verbindung
+25,5,166.47899216299993,Persistente SSH-Verbindung
+26,5,172.08024722200025,Persistente SSH-Verbindung
+27,5,182.77489329299988,Persistente SSH-Verbindung
+28,5,186.94224509800006,Persistente SSH-Verbindung
+29,5,197.31233323800234,Persistente SSH-Verbindung
+30,5,210.39402857000221,Persistente SSH-Verbindung
+1,5,9.22698979300003,Parallelisierung (10 Threads)
+2,5,8.008492472000398,Parallelisierung (10 Threads)
+3,5,6.470016387000214,Parallelisierung (10 Threads)
+4,5,6.57393797900022,Parallelisierung (10 Threads)
+5,5,7.160703788000319,Parallelisierung (10 Threads)
+6,5,6.865935015000105,Parallelisierung (10 Threads)
+7,5,6.740431221999643,Parallelisierung (10 Threads)
+8,5,6.323345423999854,Parallelisierung (10 Threads)
+9,5,6.402870261999851,Parallelisierung (10 Threads)
+10,5,5.812260346000585,Parallelisierung (10 Threads)
+11,5,12.283003475999976,Parallelisierung (10 Threads)
+12,5,11.91387826600021,Parallelisierung (10 Threads)
+13,5,10.99388364600054,Parallelisierung (10 Threads)
+14,5,10.588270270999601,Parallelisierung (10 Threads)
+15,5,10.779873628999667,Parallelisierung (10 Threads)
+16,5,11.419255275000069,Parallelisierung (10 Threads)
+17,5,10.422814104999816,Parallelisierung (10 Threads)
+18,5,11.057593986999564,Parallelisierung (10 Threads)
+19,5,11.261382774000595,Parallelisierung (10 Threads)
+20,5,11.196548736000295,Parallelisierung (10 Threads)
+21,5,17.617152281000017,Parallelisierung (10 Threads)
+22,5,16.50579057699997,Parallelisierung (10 Threads)
+23,5,15.758388848999857,Parallelisierung (10 Threads)
+24,5,15.448481051000272,Parallelisierung (10 Threads)
+25,5,15.018689337000069,Parallelisierung (10 Threads)
+26,5,15.479899156999636,Parallelisierung (10 Threads)
+27,5,15.34620041100061,Parallelisierung (10 Threads)
+28,5,15.477535193000222,Parallelisierung (10 Threads)
+29,5,15.894893714000318,Parallelisierung (10 Threads)
+30,5,16.141928275000282,Parallelisierung (10 Threads)
+1,5,9.080129275000218,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+2,5,7.5180622980005865,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+3,5,6.441242588000023,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+4,5,6.040017790000093,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+5,5,7.420827590999579,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+6,5,7.779741674999968,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+7,5,6.788426496000284,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+8,5,6.414672444000644,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+9,5,6.248396854999555,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+10,5,6.214206220000051,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+11,5,12.479115250999712,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+12,5,11.965500806999444,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+13,5,11.195961284000077,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+14,5,10.505800810999972,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+15,5,10.615500124999926,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+16,5,10.33030195900028,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+17,5,10.631520259000354,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+18,5,10.970562550000068,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+19,5,10.527755512000113,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+20,5,11.007915065999441,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+21,5,16.67985924899949,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+22,5,16.681019061999905,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+23,5,15.619193773000006,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+24,5,15.373036617999787,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+25,5,15.844077544999891,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+26,5,15.468069018999813,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+27,5,15.161590407000404,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+28,5,15.540002104999985,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+29,5,15.801791754000078,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
+30,5,15.632668707999983,Persistente SSH-Verbindung + Parallelisierung (10 Threads)
