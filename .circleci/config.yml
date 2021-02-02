@@ -12,8 +12,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install requirements
-          command: cd backend && pip install -r requirements.txt
+          name: Install build requirements
+          command: cd backend && pip install -r requirements/build.txt
+      - run:                                                                                                                                                                                                                         
+          name: Install test requirements                                                                                                                                                                                           
+          command: cd backend && pip install -r requirements/test.txt      
       - run:
           name: Run backend uittests
           command: cd backend && python -m unittest discover -s test -v

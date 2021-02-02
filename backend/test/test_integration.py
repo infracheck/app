@@ -1,19 +1,25 @@
-import json
 import unittest
 import uuid
 from datetime import datetime
 
 import docker
-from flask import jsonify
 from jsonschema import validate
 
 from infracheck import app
 from infracheck.Api import convert_test_input_json_to_dataclasses
 from infracheck.PluginManager import PluginManager
 from infracheck.model.TestResult import TestResult
-from infracheck.model.schemes import plugin_scheme, plugins_output_scheme
+from infracheck.model.schemes import plugin_scheme
 from infracheck.services.Persistence import Persistence
 from test import mock_data
+
+
+def check_docker_daemon() -> bool:
+    try:
+        docker.from_env().info()
+    except:
+        return False
+    return True
 
 
 class DemoPluginTest(unittest.TestCase):
@@ -47,6 +53,7 @@ class FunctionalPluginTest(unittest.TestCase):
     TEST_HOST_COUNT = 3
 
     @classmethod
+    @unittest.skipUnless(check_docker_daemon(), "Skip during pipeline")
     def setUpClass(cls) -> None:
         plugin_id = "TestInfraPlugin"
         cls.plugin_manager = PluginManager()
