@@ -3,7 +3,7 @@ flask-login==0.5.0
 waitress==1.4.4
 jsonschema==3.2.0
 flask-cors==3.0.9
-cryptography==3.2.1
+cryptography==3.3.2
 fpdf==1.7.2
 flask-restx==0.2.0
 Werkzeug==0.16.1
