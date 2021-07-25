@@ -44,8 +44,6 @@ Being based on a plugin architecture, this
 
 ### Links
 - 👉 [Demo Application TODO]()
-- 🌟 The Company behind: [Profi.com AG](https://www.proficom.de/)
-- 📘 Developer documentation: [Docs]()
 
 ### Built With
 #### Frontend
@@ -148,23 +146,15 @@ FOr the frontend, there is no detailed documentation currently.
 Things that we want to add later:
 
 ## Versioning
-We use [SemVer](http://semver.org/) for versioning. For the more information see [Versioning](https://git.lab.proficom.de/lab/scrummaster/src/branch/master/docs/VERSIONING.md).
+We use [SemVer](http://semver.org/) for versioning.
 
 ## Contribute
-Please feel free to open [Bugs, Feature Requests](https://git.lab.proficom.de/lab/scrummaster/issues) or [Pull Requests](https://git.lab.proficom.de/lab/scrummaster/pulls).
+Please feel free to open [Bugs, Feature Requests](https://github.com/mwelcker/diploma-os-testing/issues) or [Pull Requests](https://github.com/mwelcker/diploma-os-testing/pulls).
 
 ## License
-This work is licensed under “profi.com AG business soulutions".
+Copyright 2021 Martin Welcker.
 
 ## Contact
-If you have trouble or need help running InfraCheck, please contact us:
-- Mail [pclabadmin@proficom.de](mailto:pclabadmin@proficom.de)
-
-## Authors
-- **Martin Welcker** - *Architect and Developer* - [Mail](mailto:mwelcker@proficom.de)
-- **Mike Junghanns** - *Product Owner* - [Mail](mailto:mjunghanns@proficom.de)
-- **Daniel Schier** - *Product Owner* - [Mail](mailto:dschier@proficom.de)
-
-
+If you have trouble or need help running InfraCheck, please contact me or open an issue.
 
 
